@@ -7,12 +7,16 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @Service
 public class S3Service {
@@ -32,20 +36,25 @@ public class S3Service {
                 .build();
     }
 
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file) throws IOException {
         String filename = file.getOriginalFilename();
+        String imageKey = UUID.randomUUID().toString() + "_" + filename;
+
         if (filename == null) {
             throw new RuntimeException("missing file to upload");
         }
 
-        amazonS3Client.putObject(
-                PutObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(filename)
-                    .build(),
-                Paths.get(filename)
-        );
+        try (InputStream inputStream = file.getInputStream()) {
+            amazonS3Client.putObject(
+                    PutObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(String.valueOf(imageKey))
+                            .build(),
+                    RequestBody.fromInputStream(inputStream, file.getSize())
+            );
+        }
 
-        return "https://" + bucketName + ".s3.amazonaws.com/" + filename;
+
+        return "https://" + bucketName + ".s3.amazonaws.com/" + imageKey;
     }
 }

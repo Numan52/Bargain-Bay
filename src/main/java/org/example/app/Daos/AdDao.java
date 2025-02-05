@@ -6,7 +6,10 @@ import jakarta.persistence.PersistenceContext;
 import org.example.app.Models.AdDto;
 import org.example.app.Models.CreateAdDto;
 import org.example.app.Models.Entities.Ad;
+import org.example.app.Models.Entities.Image;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class AdDao {
@@ -16,7 +19,12 @@ public class AdDao {
 
     public void postAd(Ad ad) {
        entityManager.persist(ad);
+    }
 
+    public void saveImages(List<Image> images) {
+        for (Image image : images) {
+            entityManager.persist(image);
+        }
     }
 
 }

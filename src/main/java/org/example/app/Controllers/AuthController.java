@@ -48,16 +48,22 @@ public class AuthController {
                     List.of(role)
                     )
             );
+            return ResponseEntity.ok("Registration successfull");
 
         } catch (UserException e) {
             return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            throw new Exception("An unexpected Error occurred.");
         }
-        return ResponseEntity.ok("Registration successfull");
+
+
     }
 
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) throws Exception {
+//        throw new Exception("dada");
+
         if (loginRequest.get("password") == null || loginRequest.get("username") == null) {
             return ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(400), "Missing username and password credentials", "/login");
         }
@@ -80,7 +86,7 @@ public class AuthController {
             return ResponseEntity.ok(json);
         } catch (Exception e) {
             logger.error("error logging in: ", e);
-            throw e;
+            throw new Exception("An unexpected Error occurred.");
         }
 
     }

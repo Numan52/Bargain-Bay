@@ -77,7 +77,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             response.getWriter().write("Invalid JWT token. Pls login again");
             return;
         }
-        logger.error("filter passed");
+        logger.info("filter passed");
         filterChain.doFilter(request, response);
     }
 }

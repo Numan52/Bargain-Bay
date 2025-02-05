@@ -32,9 +32,10 @@ public class AdController {
 
     @PostMapping(path = "/ads", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> postAd(@RequestPart("ad") CreateAdDto createAdDto,
-                                    @RequestPart("images") List<MultipartFile> images,
-                                    HttpServletRequest request) {
+                                    @RequestPart(value = "images", required = false) List<MultipartFile> images,
+                                    HttpServletRequest request) throws Exception {
         logger.info("posting ad");
+
         try {
             String username = (String) request.getAttribute("username");
             createAdDto.setUsername(username);
@@ -43,7 +44,7 @@ public class AdController {
             adService.postAd(createAdDto);
         } catch (Exception e) {
             logger.error("Error posting ad: ", e);
-            return ExceptionUtil.buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), "/ads");
+            throw new Exception("An unexpected error occurred.");
         }
 
         return ResponseEntity.ok().build();

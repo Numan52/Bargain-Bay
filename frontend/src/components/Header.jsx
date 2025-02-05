@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
-import { getDecodedJwt } from './jwtUtils'
-import "./css/header.css"
+import { getDecodedJwt } from '../jwtUtils'
+import "../css/header.css"
 import { Link } from 'react-router-dom'
 
 const Header = () => {

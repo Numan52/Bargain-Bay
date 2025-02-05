@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import { getJwt } from './jwtUtils'
+import { getJwt } from '../jwtUtils'
+import { postAd } from '../api/api'
+import { useNavigate } from 'react-router-dom'
 const apiUrl = import.meta.env.VITE_API_URL
 
 const CreateAd = () => {
     const [errorMsg, setErrorMsg] = useState("")
+
+    const navigate = useNavigate()
 
     const [images, setImages] = useState([])
     const [adData, setAdData] = useState({
@@ -17,7 +21,7 @@ const CreateAd = () => {
     function handleFileChange(event) {
         console.log([...event.target.files])
         if (event.target.files) {
-            setImages([event.target.files])
+            setImages([...event.target.files])
         }
     }
 
@@ -47,29 +51,13 @@ const CreateAd = () => {
             form.append("images", images[i]);
         }
 
-        console.log(form)
-        console.log(images)
         try {
-            const response = await fetch(`${apiUrl}/ads`, {
-              method: "POST",
-              headers: { 
-                "Authorization": `Bearer ${getJwt()}`
-              },
-              body: form
-            })
-          
-            if(response.ok) {
-                console.log("success")
-            } else {
-                const errorMessage = await response.json()
-                setErrorMsg("An error occurred. Pls try again laer")
-                console.log("response: ", errorMessage)
-            }
-        
-          } catch (error) {
-                console.log("error while creating ad: ", error)
-                setErrorMsg("An error ocurred. Please try again later")
-          }
+            await postAd(form)
+            navigate("/success", {state: { title: adData.title}})
+        } catch (error) {
+            console.log("error while creating ad: ", error)
+            setErrorMsg("An error ocurred. Please try again later")
+        }
     }
 
         

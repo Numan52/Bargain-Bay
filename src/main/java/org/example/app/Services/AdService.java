@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,21 +36,23 @@ public class AdService {
     }
 
     @Transactional
-    public void postAd(CreateAdDto createAdDto) {
-        int imagesCount = createAdDto.getImages().size();
+    public void postAd(CreateAdDto createAdDto) throws IOException {
         User user = userDao.findUserByUsername(createAdDto.getUsername());
         if (user == null) {
             logger.error("Error posting ad: User {} not found", createAdDto.getUsername());
             throw new RuntimeException("User not found");
         }
-        List<Image> imageUrls = new ArrayList<>();
+        List<Image> images = new ArrayList<>();
 
-        for (MultipartFile imageFile : createAdDto.getImages()) {
-            String imageUrl = s3Service.uploadFile(imageFile);
-            imageUrls.add(new Image(imageUrl));
 
+        if (createAdDto.getImages() != null) {
+            for (MultipartFile imageFile : createAdDto.getImages()) {
+                String imageUrl = s3Service.uploadFile(imageFile);
+                images.add(new Image(imageUrl));
+            }
+
+            adDao.saveImages(images);
         }
-
 
         Ad ad = new Ad(
                 createAdDto.getTitle(),
@@ -57,7 +60,7 @@ public class AdService {
                 createAdDto.getDescription(),
                 createAdDto.getCondition(),
                 user,
-                imageUrls
+                images
         );
 
         adDao.postAd(ad);

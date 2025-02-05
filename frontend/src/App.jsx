@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import './App.css'
-import Dashboard from './Dashboard'
+import './css/app.css'
+import Dashboard from './components/Dashboard'
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
-import Login from './Login'
-import Register from './Register'
+import Login from './components/Login'
+import Register from './components/Register'
 import { checkJwtExpired } from './jwtUtils'
-import CreateAd from './CreateAd'
+import CreateAd from './components/CreateAd'
+import CreateAdSuccess from './components/CreateAdSuccess'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -62,6 +63,12 @@ function App() {
         <Route
           path="/create-ad" 
           element={token ? <CreateAd /> : <Navigate to="/login" replace />} 
+        >
+        </Route>
+
+        <Route
+          path="/success" 
+          element={token ? <CreateAdSuccess /> : <Navigate to="/login" replace />} 
         >
         </Route>
 

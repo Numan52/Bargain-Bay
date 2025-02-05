@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import "./css/login.css"
+import "../css/login.css"
 import PropTypes from 'prop-types';
+import { loginUser } from '../api/api';
 const apiUrl = import.meta.env.VITE_API_URL
 
 const Login = ({setToken, jwtMessage}) => {
@@ -12,37 +13,16 @@ const Login = ({setToken, jwtMessage}) => {
   const navigate = useNavigate()
 
   console.log("jwtMessage: ", jwtMessage)
+  
   async function handleLogin(e) {
     e.preventDefault()
     setErrorMessage("")
-
     try {
-      const response = await fetch(`${apiUrl}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify({username: username, password: password})
-      })
-    
-      if(response.ok) {
-        const data = await response.json()
-        console.log(data)
-        console.log("login successful") 
-        localStorage.setItem("token", data.jwt);
-        setToken(data.jwt)
-      } else {
-        const message = await response.text()
-        if (message.toLowerCase().includes("incorrect username or password")) {
-          setErrorMessage(message)
-          console.log(true)
-        } else {
-          setErrorMessage("An error ocurred. Please try again later")
-        }
-        console.log("response: " + message)
-      }
-  
+      const json = await loginUser(username, password)
+      localStorage.setItem("token", json.jwt)
+      setToken(json.jwt)
     } catch (error) {
-      console.log("error while logging in: ", error)
-      setErrorMessage("An error ocurred. Please try again later")
+      setErrorMessage(error.message)
     }
   }
 

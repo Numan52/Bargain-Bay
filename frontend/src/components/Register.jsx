@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import "./css/register.css"
+import "../css/register.css"
+import { registerUser } from '../api/api'
 const apiUrl = import.meta.env.VITE_API_URL
 
 const Register = () => {
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("")
   const [secondPassword, setSecondPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
 
@@ -20,27 +24,11 @@ const Register = () => {
       setErrorMessage("The two passwords don't match")
       return;
     }
-
-
     try {
-      const response = await fetch(`${apiUrl}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({username: username, password: password})
-      })
-
-      if(response.ok) {
-        console.log("registration successful")
-        navigate("/login")
-      } else {
-        const errorMessage = await response.json()
-        setErrorMessage(errorMessage.error)
-        console.log("response: ", errorMessage)
-      }
-  
+      await registerUser(firstName, lastName, username, password, email)
+      navigate("/login")
     } catch (error) {
-      setErrorMessage("An error ocurred. Pls try again later.")
-      console.log("error while registering: " + error)
+      setErrorMessage(error)
     }
   }
 
@@ -49,7 +37,31 @@ const Register = () => {
       
       <form onSubmit={handleRegister}>
         <div className='register-header'>Register</div>
+
+        <label htmlFor="register-first-name">First Name</label>
         <input 
+          id='register-first-name'
+          type="text" 
+          placeholder='First Name'
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required  
+        />
+
+
+        <label htmlFor="register-last-name">Last Name</label>
+        <input 
+          id='register-last-name'
+          type="text" 
+          placeholder='Last Name'
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required  
+        />
+
+        <label htmlFor="register-username">Username</label>
+        <input 
+          id='register-username'
           type="text" 
           placeholder='Username'
           value={username}
@@ -57,7 +69,19 @@ const Register = () => {
           required  
         />
 
+        <label htmlFor="register-email">Email Address</label>
         <input 
+          id='register-email'
+          type="text" 
+          placeholder='Email Address'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required  
+        />
+
+        <label htmlFor="register-password">Password</label>
+        <input 
+          id='register-password'
           type="password" 
           placeholder='Password'
           
@@ -66,7 +90,9 @@ const Register = () => {
           required  
         />
 
-        <input 
+        <label htmlFor="register-password-confirm">Confirm Password</label>
+        <input
+          id='register-password-confirm'
           type="password" 
           placeholder='Confirm your Password'
           value={secondPassword}
