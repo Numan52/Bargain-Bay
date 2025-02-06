@@ -17,6 +17,10 @@ public class AdDao {
     private EntityManager entityManager;
 
 
+    public void getAds() {
+        entityManager.persist();
+    }
+
     public void postAd(Ad ad) {
        entityManager.persist(ad);
     }

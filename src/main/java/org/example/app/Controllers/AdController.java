@@ -30,6 +30,12 @@ public class AdController {
     }
 
 
+    @GetMapping("ads")
+    public ResponseEntity<?> getAds() {
+
+    }
+
+
     @PostMapping(path = "/ads", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> postAd(@RequestPart("ad") CreateAdDto createAdDto,
                                     @RequestPart(value = "images", required = false) List<MultipartFile> images,
@@ -49,4 +55,7 @@ public class AdController {
 
         return ResponseEntity.ok().build();
     }
+
+
+
 }

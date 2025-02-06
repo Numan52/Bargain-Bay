@@ -2,13 +2,13 @@ import { getJwt } from "../jwtUtils"
 
 const apiUrl = import.meta.env.VITE_API_URL
 
-async function apiRequest(
+async function makeApiRequest({ 
     endpoint, 
     method = "GET", 
     body = null, 
     requiresAuth = false, 
-    customHeaders = {}) 
-{
+    customHeaders = {} 
+}) {
     if (requiresAuth) {
         const token = getJwt()
         customHeaders["Authorization"] = `Bearer ${token}`
@@ -26,7 +26,7 @@ async function apiRequest(
         })
     
         const data = await response.json().catch(() => null)
-    
+        console.log("data", data)
         if (!response.ok) {
             const message = data?.error || "An unexpected error occurred."
             console.log(data)
@@ -35,28 +35,52 @@ async function apiRequest(
     
         return data
     } catch (error) {
-        throw new Error("An unexpected Error occurred.")
+        if (error instanceof TypeError) {
+            throw new Error("An unexpected Error occurred.")
+        }
+        throw error
     }
     
 } 
 
 
 function loginUser(username, password) {
-    return apiRequest("/login", "POST", JSON.stringify({username, password}))
+    return makeApiRequest({
+        endpoint: "/login",
+        method: "POST",
+        body: JSON.stringify({username, password})
+    })
 }
 
 
 function registerUser(firstName, lastName, username, password, email) {
-    return apiRequest("/register", "POST", JSON.stringify({firstName, lastName, email, username, password}))
+    return makeApiRequest({
+        endpoint: "/register",
+        method: "POST",
+        body: JSON.stringify({firstName, lastName, email, username, password})
+    })
 }
 
 
 function postAd(form) {
-    return apiRequest("/ads", "POST", form, true)
+    return makeApiRequest({
+        endpoint: "/ads",
+        method: "POST",
+        body: form,
+        requiresAuth: true
+    })
 }
 
 
-export {apiRequest, loginUser, registerUser, postAd}
+function getAds() {
+    return makeApiRequest({
+        endpoint: "/ads",
+        method: "GET",
+    })
+}
+
+
+export {makeApiRequest, loginUser, registerUser, postAd, getAds}
     
 
 

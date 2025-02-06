@@ -65,14 +65,14 @@ public class AuthController {
 //        throw new Exception("dada");
 
         if (loginRequest.get("password") == null || loginRequest.get("username") == null) {
-            return ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(400), "Missing username and password credentials", "/login");
+            return ResponseEntity.status(400).body(ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(400), "Missing username and password credentials", "/login"));
         }
 
         try {
             User user = userService.findUser(loginRequest.get("username"));
             if (user == null || !userService.verifyLogin(user, loginRequest.get("password"))) {
                 logger.error("Incorrect user or password on login");
-                return ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(400), "Incorrect user or password", "/login");
+                return ResponseEntity.status(400).body(ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(400), "Incorrect user or password", "/login"));
             }
 
             String jwt = jwtUtil.generateToken(
