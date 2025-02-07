@@ -7,6 +7,7 @@ import Register from './components/Register'
 import { checkJwtExpired } from './jwtUtils'
 import CreateAd from './components/CreateAd'
 import CreateAdSuccess from './components/CreateAdSuccess'
+import AdDetails from './components/AdDetails'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -63,6 +64,13 @@ function App() {
         <Route
           path="/create-ad" 
           element={token ? <CreateAd /> : <Navigate to="/login" replace />} 
+        >
+        </Route>
+
+
+        <Route
+          path="/ad/:adId" 
+          element={<AdDetails />} 
         >
         </Route>
 

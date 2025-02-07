@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from './Header'
 import Ads from './Ads'
 import { getAds, makeApiRequest } from '../api/api'
+import "../css/dashboard.css"
 
 const Dashboard = () => {
   const [ads, setAds] = useState([])
@@ -12,7 +13,7 @@ const Dashboard = () => {
 
     const fetchAds = async () => {
       try {
-        const adsJson = await getAds()
+        const adsJson = await getAds(0, 10)
         setAds(adsJson)
       } catch (error) {
         console.log(error)
@@ -30,7 +31,10 @@ const Dashboard = () => {
     <div>
       <Header />
       
-      <Ads ads={ads}/>
+      <div className='dashboard'>
+        <Ads ads={ads}/>
+      </div>
+      
     </div>
   )
 }

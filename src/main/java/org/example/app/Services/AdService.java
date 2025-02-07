@@ -8,22 +8,23 @@ import org.example.app.Models.CreateAdDto;
 import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.Image;
 import org.example.app.Models.Entities.User;
-import org.example.app.Security.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdService {
     private AdDao adDao;
     private UserDao userDao;
     private S3Service s3Service;
+
 
     private static final Logger logger = LoggerFactory.getLogger(AdService.class);
 
@@ -34,6 +35,14 @@ public class AdService {
         this.s3Service = s3Service;
 
     }
+
+
+    @Transactional
+    public List<Ad> getAds(int offset, int limit) {
+        List<Ad> ads = adDao.getAds(offset, limit);
+        return ads;
+    }
+
 
     @Transactional
     public void postAd(CreateAdDto createAdDto) throws IOException {
@@ -54,15 +63,46 @@ public class AdService {
             adDao.saveImages(images);
         }
 
+        LocalDateTime creationTime = LocalDateTime.now();
+
         Ad ad = new Ad(
                 createAdDto.getTitle(),
                 createAdDto.getPrice(),
                 createAdDto.getDescription(),
                 createAdDto.getCondition(),
+                creationTime,
+                creationTime,
                 user,
-                images
+                images,
+                false
         );
 
         adDao.postAd(ad);
+    }
+
+
+    public AdDto toDto(Ad ad) {
+        return new AdDto(
+                ad.getId(),
+                ad.getTitle(),
+                ad.getPrice(),
+                ad.getDescription(),
+                ad.getCondition(),
+                ad.getUser().getId(),
+                ad.getImages().stream().map((image -> image.getUrl())).collect(Collectors.toList()),
+                ad.isHasPriority(),
+                ad.getCreatedAt(),
+                ad.getLastBumpedAt()
+        );
+
+    }
+
+
+    public List<AdDto> toDtos(List<Ad> ads) {
+        List<AdDto> adDtos = new ArrayList<>();
+        for (Ad ad : ads) {
+            adDtos.add(toDto(ad));
+        }
+        return adDtos;
     }
 }

@@ -72,9 +72,17 @@ function postAd(form) {
 }
 
 
-function getAds() {
+function getAds(offset, limit) {
     return makeApiRequest({
-        endpoint: "/ads",
+        endpoint: `/ads?offset=${offset}&limit=${limit}`,
+        method: "GET",
+    })
+}
+
+
+function getAd(id) {
+    return makeApiRequest({
+        endpoint: `/ad?id=${id}`,
         method: "GET",
     })
 }

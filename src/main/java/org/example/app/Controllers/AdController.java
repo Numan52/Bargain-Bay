@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.example.app.Exceptions.ExceptionUtil;
 import org.example.app.Models.AdDto;
 import org.example.app.Models.CreateAdDto;
+import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.User;
 import org.example.app.Security.JwtUtil;
 import org.example.app.Services.AdService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
 
 @RestController
 public class AdController {
@@ -30,12 +32,19 @@ public class AdController {
     }
 
 
-    @GetMapping("ads")
-    public ResponseEntity<?> getAds() {
-
+    @GetMapping("/ads")
+    public ResponseEntity<?> getAds(@RequestParam int offset, @RequestParam int limit) throws Exception {
+        try {
+            List<Ad> ads = adService.getAds(offset, limit);
+            List<AdDto> adDtos = adService.toDtos(ads);
+            return ResponseEntity.ok(adDtos);
+        } catch (Exception e) {
+            logger.error("error getting ads: ", e);
+            throw new Exception("An unexpected error occurred.");
+        }
     }
 
-
+    // TODO: FIX MAXIMUM SIZE EXCEEDED ERROR
     @PostMapping(path = "/ads", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> postAd(@RequestPart("ad") CreateAdDto createAdDto,
                                     @RequestPart(value = "images", required = false) List<MultipartFile> images,

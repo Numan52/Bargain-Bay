@@ -1,8 +1,8 @@
 package org.example.app.Models.Entities;
 
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.batch.BatchTransactionManager;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +20,14 @@ public class Ad {
     private String description;
     @Column(nullable = false)
     private String condition;
+    @Column(nullable = false)
+    private boolean hasPriority;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime lastBumpedAt; // used for sorting ads
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
@@ -27,19 +35,32 @@ public class Ad {
 
     @OneToMany()
     @JoinColumn(name = "ad_id")
-    private List<Image> imageUrls;
+    private List<Image> images;
 
     public Ad() {
     }
 
 
-    public Ad(String title, float price, String description, String condition, User user, List<Image> imageUrls) {
+    public Ad(
+            String title,
+            float price,
+            String description,
+            String condition,
+            LocalDateTime createdAt,
+            LocalDateTime lastBumpedAt,
+            User user,
+            List<Image> images,
+            boolean hasPriority
+    ) {
         this.title = title;
         this.price = price;
         this.description = description;
         this.condition = condition;
+        this.createdAt = createdAt;
+        this.lastBumpedAt = lastBumpedAt;
         this.user = user;
-        this.imageUrls = imageUrls;
+        this.images = images;
+        this.hasPriority = hasPriority;
     }
 
 
@@ -91,11 +112,35 @@ public class Ad {
         this.id = id;
     }
 
-    public List<Image> getImageUrls() {
-        return imageUrls;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public void setImageUrls(List<Image> imageUrls) {
-        this.imageUrls = imageUrls;
+    public void setImages(List<Image> imageUrls) {
+        this.images = imageUrls;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime dateTime) {
+        this.createdAt = dateTime;
+    }
+
+    public boolean isHasPriority() {
+        return hasPriority;
+    }
+
+    public void setHasPriority(boolean hasPriority) {
+        this.hasPriority = hasPriority;
+    }
+
+    public LocalDateTime getLastBumpedAt() {
+        return lastBumpedAt;
+    }
+
+    public void setLastBumpedAt(LocalDateTime lastBumpedAt) {
+        this.lastBumpedAt = lastBumpedAt;
     }
 }

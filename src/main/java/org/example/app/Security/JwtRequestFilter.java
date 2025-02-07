@@ -39,6 +39,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
+        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
+            response.setStatus(200);
+            return;
+        }
+
         String path = request.getRequestURI();
         if (path.equals("/register") ||
                 path.equals("/login") ||
@@ -89,6 +94,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
         logger.info("filter passed");
+
         filterChain.doFilter(request, response);
     }
 }
