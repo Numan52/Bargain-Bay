@@ -47,7 +47,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         if (path.equals("/register") ||
                 path.equals("/login") ||
-                (path.equals("/ads") && request.getMethod().equalsIgnoreCase("GET"))
+                (path.equals("/ads") && request.getMethod().equalsIgnoreCase("GET")) ||
+                (path.equals("/ad") && request.getMethod().equalsIgnoreCase("GET")) ||
+                (path.equals("/user") && request.getMethod().equalsIgnoreCase("GET"))
         ) {
             logger.info("Skipping jwt validation for {}", path);
             filterChain.doFilter(request, response); // Skip JWT validation for these endpoints

@@ -13,8 +13,6 @@ function App() {
   const [token, setToken] = useState(null)
   const [jwtMessage, setJwtMessage] = useState("")
 
-  console.log("jwt messsage: ", jwtMessage)
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     setToken(token)

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +36,12 @@ public class AdService {
         this.s3Service = s3Service;
 
     }
+
+
+     @Transactional
+     public Ad getAd(UUID id) {
+        return adDao.getAd(id);
+     }
 
 
     @Transactional

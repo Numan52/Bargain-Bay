@@ -88,7 +88,15 @@ function getAd(id) {
 }
 
 
-export {makeApiRequest, loginUser, registerUser, postAd, getAds}
+function getUser(id) {
+    return makeApiRequest({
+        endpoint: `/user?id=${id}`,
+        method: "GET",
+    })
+}
+
+
+export {makeApiRequest, loginUser, registerUser, postAd, getAds, getAd, getUser}
     
 
 

@@ -1,7 +1,5 @@
 package org.example.app.Models;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +10,7 @@ public class AdDto {
     private float price;
     private String description;
     private String condition;
-    private UUID user_id;
+    private UUID userId;
     private List<String> imageUrls;
     private boolean hasPriority;
     private LocalDateTime createdAt;
@@ -28,7 +26,7 @@ public class AdDto {
             float price,
             String description,
             String condition,
-            UUID user_id,
+            UUID userId,
             List<String> imageUrls,
             boolean hasPriority,
             LocalDateTime createdAt,
@@ -39,7 +37,7 @@ public class AdDto {
         this.price = price;
         this.description = description;
         this.condition = condition;
-        this.user_id = user_id;
+        this.userId = userId;
         this.imageUrls = imageUrls;
         this.hasPriority = hasPriority;
         this.createdAt = createdAt;
@@ -55,12 +53,12 @@ public class AdDto {
         this.id = id;
     }
 
-    public UUID getUser_id() {
-        return user_id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUser_id(UUID user_id) {
-        this.user_id = user_id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getTitle() {

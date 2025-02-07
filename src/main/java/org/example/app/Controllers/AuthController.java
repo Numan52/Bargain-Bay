@@ -69,7 +69,7 @@ public class AuthController {
         }
 
         try {
-            User user = userService.findUser(loginRequest.get("username"));
+            User user = userService.findUserByName(loginRequest.get("username"));
             if (user == null || !userService.verifyLogin(user, loginRequest.get("password"))) {
                 logger.error("Incorrect user or password on login");
                 return ResponseEntity.status(400).body(ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(400), "Incorrect user or password", "/login"));

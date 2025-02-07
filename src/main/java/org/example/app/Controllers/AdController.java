@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -29,6 +30,22 @@ public class AdController {
     public AdController(AdService adService, JwtUtil jwtUtil) {
         this.adService = adService;
         this.jwtUtil = jwtUtil;
+    }
+
+
+    @GetMapping("/ad")
+    public ResponseEntity<?> getAd(String id) throws Exception {
+        try {
+            Ad ad = adService.getAd(UUID.fromString(id));
+            if (ad == null) {
+                return ResponseEntity.status(404).body(ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(404), "Ad not found", "/ad"));
+            }
+            AdDto adDto = adService.toDto(ad);
+            return ResponseEntity.ok(adDto);
+        } catch (Exception e) {
+            logger.error("error getting ad: ", e);
+            throw new Exception("An unexpected error occurred");
+        }
     }
 
 

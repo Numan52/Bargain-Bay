@@ -1,3 +1,145 @@
-.ad-details-ad-container {
+body {
+    font-size: 1.1rem;
+}
+
+.details__container {
+    margin: 20px 60px;
+}
+
+
+.details__ad-container {
+    display: flex;
+    flex-direction: column;
     
 }
+
+
+.details__ad-overview-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+
+.details__ad-user-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.details__price-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+.details__price-container > span:nth-of-type(1) {
+    color: blue;
+    font-size: 1.5rem;
+}
+
+
+.details__price-container > span:nth-of-type(2) {
+    color: rgb(70, 70, 70);
+}
+
+
+.details__ad-user {
+    border-top: 1px solid rgb(112, 112, 112);
+    padding-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+
+.details__ad-user img {
+    width: 50px;
+    height: 50px;
+}
+
+
+.details__similar-ads-container {
+    border-top: 1px solid grey;
+    padding-top: 20px;
+}
+
+
+.details__arrow {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+
+.details__ad-all-images-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+
+.details__ad-all-images-overview {
+    display: flex;
+    gap: 10px;
+}
+
+
+.details__ad-all-images-overview img{
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    opacity: 0.4;
+    cursor: pointer;
+}
+
+
+.image-selected {
+    opacity: 1 !important;
+}
+
+
+.details__ad-current-image-container img {
+    width: 400px;
+    height: 500px;
+    object-fit: contain;
+}
+
+
+.details__chat-container {
+    background-color: rgba(170, 170, 170, 0.329);
+    padding: 0 20px 20px 20px;
+    border-radius: 5px;
+}
+
+
+.details__chat-container textarea {
+    max-width: 500px;
+    max-height: 400px;
+    min-width: 300px;
+    min-height: 100px;
+}
+
+
+.details__send-message-btn {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    background-color: rgb(127, 192, 252);
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+    cursor: pointer;
+}
+
+
+.details__send-message-btn img{
+    width: 30px;
+    height: 30px;
+}
+
+

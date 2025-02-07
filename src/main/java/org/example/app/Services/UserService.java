@@ -5,11 +5,15 @@ import org.example.app.Daos.UserDao;
 import org.example.app.Exceptions.UserException;
 import org.example.app.Models.Entities.Role;
 import org.example.app.Models.Entities.User;
+import org.example.app.Models.UserDto;
 import org.example.app.RoleType;
 import org.example.app.Security.PasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -21,7 +25,12 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public User findUser(String username) {
+    public User findUserById(UUID id) {
+        return userDao.findUserById(id);
+    }
+
+
+    public User findUserByName(String username) {
         return userDao.findUserByUsername(username);
 
     }
@@ -58,5 +67,18 @@ public class UserService {
         String hash = PasswordEncoder.hashPassword(password, salt)[1];
 
         return storedHash.equals(hash);
+    }
+
+
+    public UserDto toDto(User user) {
+        return new UserDto(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getUsername(),
+                user.getRoles().stream().map((role -> role.getRole().toString())).toList(),
+                user.getAds().stream().map((ad) -> ad.getId()).toList()
+        );
     }
 }

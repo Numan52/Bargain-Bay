@@ -9,6 +9,7 @@ import org.example.app.Models.Entities.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class AdDao {
@@ -25,6 +26,12 @@ public class AdDao {
 
         return query.getResultList();
     }
+
+
+    public Ad getAd(UUID id) {
+        return entityManager.find(Ad.class, id);
+    }
+
 
     public void postAd(Ad ad) {
        entityManager.persist(ad);

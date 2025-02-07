@@ -9,10 +9,17 @@ import org.example.app.Models.Entities.User;
 import org.example.app.RoleType;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 public class UserDao {
     @PersistenceContext
     private EntityManager entityManager;
+
+
+    public User findUserById(UUID id) {
+        return entityManager.find(User.class, id);
+    }
 
 
     public User findUserByUsername(String username) {
