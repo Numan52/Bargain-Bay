@@ -1,3 +1,9 @@
+a {
+    text-decoration: none;
+    color: black;
+}
+
+
 .header-profile-pic {
     width: 40px;
     height: 40px;
@@ -6,8 +12,14 @@
 .header-container {
     display: flex;
     justify-content: space-between;
-    margin: 0 20px;
-    align-items: center;
+    align-items: flex;
+    margin: 20px;
+    align-items: flex-end;
+}
+
+
+.header-container h1 {
+    margin: 0;
 }
 
 
@@ -15,6 +27,7 @@
     display: flex;
     align-items: center;
     gap: 50px;
+    font-size: 1.2rem;
 } 
 
 
@@ -23,4 +36,18 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
+}
+
+
+.header-chat-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+
+.header-chat-container img {
+    width: 25px;
+    height: 25px;
+    
 }

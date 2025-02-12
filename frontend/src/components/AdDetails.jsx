@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import "../css/adDetails.css"
 import Header from './Header'
 import { getAd, getUser } from '../api/api'
+import { UserIdContext } from '../Context/UserContext'
+import { WebSocketContext } from '../Context/WebSocketContext'
 
 
 const AdDetails = () => {
@@ -10,10 +12,10 @@ const AdDetails = () => {
   const [ad, setAd] = useState(null)
   const [user, setUser] = useState(null)
   const [slideshowIndex, setSlideshowIndex] = useState(0)
+  const [chatMessage, setChatMessage] = useState("")
+  const userInfo = useContext(UserIdContext)
+  const {publishMessage} = useContext(WebSocketContext)
   
-  console.log("ad: ", ad)
-  console.log("user: ", user)
- 
   useEffect(() => {
     async function fetchdata() { 
       try {
@@ -31,6 +33,23 @@ const AdDetails = () => {
     fetchdata()
     
   }, [adId])
+
+
+
+  function sendMessage() {
+    const message = {
+      senderId: userInfo.userId,
+      receiverId: ad.userId,
+      content: chatMessage 
+    }
+    
+    try {
+      publishMessage(ad.userId, message)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   return (
     <>
@@ -86,8 +105,15 @@ const AdDetails = () => {
 
                 <div className='details__chat-container'>
                   <p>Send a message to the seller</p>
-                  <textarea name="chat" id="details__textarea"></textarea>
-                  <button className='details__send-message-btn'>
+                  <textarea 
+                    name="chat" 
+                    id="details__textarea"
+                    value={chatMessage}
+                    onChange={(e) => setChatMessage(e.target.value)}
+                  >
+              
+                  </textarea>
+                  <button className='details__send-message-btn' onClick={sendMessage}>
                     <img src="/chat.png" alt="" />
                     Send Message
                   </button>

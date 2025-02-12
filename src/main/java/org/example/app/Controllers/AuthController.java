@@ -2,7 +2,7 @@ package org.example.app.Controllers;
 
 import org.example.app.Exceptions.ExceptionUtil;
 import org.example.app.Exceptions.UserException;
-import org.example.app.Models.RegistrationRequest;
+import org.example.app.Models.Dtos.RegistrationRequest;
 import org.example.app.Models.Entities.Role;
 import org.example.app.Models.Entities.User;
 import org.example.app.RoleType;

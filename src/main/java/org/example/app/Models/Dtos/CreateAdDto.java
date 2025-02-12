@@ -1,9 +1,8 @@
-package org.example.app.Models;
+package org.example.app.Models.Dtos;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 public class CreateAdDto {
     private String title;

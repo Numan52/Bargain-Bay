@@ -5,7 +5,7 @@ import org.example.app.Daos.UserDao;
 import org.example.app.Exceptions.UserException;
 import org.example.app.Models.Entities.Role;
 import org.example.app.Models.Entities.User;
-import org.example.app.Models.UserDto;
+import org.example.app.Models.Dtos.UserDto;
 import org.example.app.RoleType;
 import org.example.app.Security.PasswordEncoder;
 import org.slf4j.Logger;
@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {

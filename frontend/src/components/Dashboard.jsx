@@ -1,13 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from './Header'
 import Ads from './Ads'
 import { getAds, makeApiRequest } from '../api/api'
 import "../css/dashboard.css"
+import { UserIdContext } from '../Context/UserContext'
+import { WebSocketContext } from  '../Context/WebSocketContext'
 
 const Dashboard = () => {
   const [ads, setAds] = useState([])
+  const userInfo = useContext(UserIdContext)
   const [errorMessage, setErrorMessage] = useState("")
+  const {messages} = useContext(WebSocketContext)
+
+  console.log("dashboard user id: ", userInfo)
+
   console.log("ads", ads)
+
+  console.log("messages in dashboard: ", messages)
 
   useEffect(() => {
 

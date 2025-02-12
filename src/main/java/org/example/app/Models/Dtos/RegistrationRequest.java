@@ -1,6 +1,4 @@
-package org.example.app.Models;
-
-import org.example.app.RoleType;
+package org.example.app.Models.Dtos;
 
 public class RegistrationRequest {
     private String firstName;

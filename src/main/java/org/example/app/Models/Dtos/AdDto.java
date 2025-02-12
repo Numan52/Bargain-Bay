@@ -1,4 +1,4 @@
-package org.example.app.Models;
+package org.example.app.Models.Dtos;
 
 import java.time.LocalDateTime;
 import java.util.List;

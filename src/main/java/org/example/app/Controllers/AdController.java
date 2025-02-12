@@ -2,10 +2,9 @@ package org.example.app.Controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.app.Exceptions.ExceptionUtil;
-import org.example.app.Models.AdDto;
-import org.example.app.Models.CreateAdDto;
+import org.example.app.Models.Dtos.AdDto;
+import org.example.app.Models.Dtos.CreateAdDto;
 import org.example.app.Models.Entities.Ad;
-import org.example.app.Models.Entities.User;
 import org.example.app.Security.JwtUtil;
 import org.example.app.Services.AdService;
 import org.slf4j.Logger;

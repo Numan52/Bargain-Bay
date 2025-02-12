@@ -20,7 +20,14 @@ const Header = () => {
             <h1>Unique Name</h1>
             
             <div className='header-right-container'>
-                <Link to={"/create-ad"}>Create an Ad</Link>
+                <Link to={"/create-ad"}>Create Ad</Link>
+                
+                <Link to={"/chats"} className='header-chat-container'>
+                    <img src="/chat.png" alt="" />
+                    Chats
+                </Link>
+
+                
                 
                 <div className='header-profile-container'>
                     <img className='header-profile-pic' src="/user.png" alt="" />

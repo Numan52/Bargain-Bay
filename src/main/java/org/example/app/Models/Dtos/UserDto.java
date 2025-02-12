@@ -1,4 +1,4 @@
-package org.example.app.Models;
+package org.example.app.Models.Dtos;
 
 import java.util.List;
 import java.util.UUID;
