@@ -16,6 +16,7 @@ public class Chat {
     private UUID id;
     private LocalDateTime createdAt;
 
+
     @ManyToOne
     @JoinColumn(name = "user_one_id")
     private User userOne;

@@ -1,0 +1,168 @@
+.messages-content-container {
+    margin: 40px;
+    display: flex;
+    gap: 30px;
+    height: 85vh;
+}
+
+
+.chats__contact-container img {
+    width: 30px;
+    height: 30px;
+}
+
+
+.messages-contacts-container {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    
+}
+
+.chats__contact-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    border: 1px solid rgba(173, 165, 165, 0.623);
+    padding: 15px;
+    cursor: pointer;
+}
+
+
+.chats__contact-container:hover {
+    color: blue;
+}
+
+
+.chats__contact-selected {
+    color: blue;
+}
+
+
+.chats__contact-details {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.chats__contact-username {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.chats_contact-last-message-container {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.1rem;
+    gap: 2px;
+    color: rgb(82, 82, 82);
+}
+
+
+
+
+
+.chats__send-message-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+
+.chats__send-message-container textarea {
+    overflow: hidden;
+    resize: none;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 10px;
+    width: 90%;
+    color: white;
+    background-color: rgb(20, 20, 20);
+}
+
+.chats__send-message-container img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+
+.chats__message {
+    position: relative;
+    border: 1px solid rgba(128, 128, 128, 0.274);
+    padding: 10px;
+    padding-bottom: 20px; /* Extra space at the bottom for the timestamp */
+
+    border-radius: 10px;
+    align-items: center;
+    word-wrap: break-word;
+    max-width: 40%;
+    min-width: 100px;
+}
+
+
+
+
+.chats__messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    flex-grow: 1;
+    overflow-y: scroll;
+}
+
+
+.chats__own-message {
+    align-self: self-end;
+    background-color: rgba(194, 194, 194, 0.397)
+}
+
+
+.chats__other-message {
+    align-self: self-start;
+}
+
+
+.chats__message-content {
+    max-width: 70%;
+}
+
+
+.chats__message-date {
+    position: absolute;
+    font-size: 0.9rem;
+    bottom: 2px;
+    right: 2px;
+}
+
+
+.chats__messages-area-container {
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+   /* height: 60vh; */
+   width: 50vw;
+}
+
+
+.chats__contact_username-container {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.chats__contact-unseen-messages {
+    display: flex; /* Center content */
+    align-items: center;
+    justify-content: center;
+    color: white;
+    width: 20px;  
+    height: 20px;
+    border-radius: 50%;
+    padding: 8px;
+    background-color: red;
+}

@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import "../css/adDetails.css"
 import Header from './Header'
 import { getAd, getUser } from '../api/api'
-import { UserIdContext } from '../Context/UserContext'
+import { UserContext } from '../Context/UserContext'
 import { WebSocketContext } from '../Context/WebSocketContext'
 
 
@@ -13,7 +13,7 @@ const AdDetails = () => {
   const [user, setUser] = useState(null)
   const [slideshowIndex, setSlideshowIndex] = useState(0)
   const [chatMessage, setChatMessage] = useState("")
-  const userInfo = useContext(UserIdContext)
+  const userInfo = useContext(UserContext)
   const {publishMessage} = useContext(WebSocketContext)
   
   useEffect(() => {
@@ -103,7 +103,7 @@ const AdDetails = () => {
 
                 </div>
 
-                <div className='details__chat-container'>
+                {ad.userId !== userInfo.userId && <div className='details__chat-container'>
                   <p>Send a message to the seller</p>
                   <textarea 
                     name="chat" 
@@ -117,7 +117,7 @@ const AdDetails = () => {
                     <img src="/chat.png" alt="" />
                     Send Message
                   </button>
-                </div>
+                </div>}
 
               </div>
             </div>

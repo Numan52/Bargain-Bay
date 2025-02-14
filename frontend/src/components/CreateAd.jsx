@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { getJwt } from '../jwtUtils'
 import { postAd } from '../api/api'
 import { useNavigate } from 'react-router-dom'
+import Header from './Header'
 const apiUrl = import.meta.env.VITE_API_URL
 
 const CreateAd = () => {
@@ -63,6 +64,7 @@ const CreateAd = () => {
         
     return (
         <div>
+            <Header />
             <form onSubmit={submitAd}>
                 <div className='file-container'>
                     <label htmlFor="images"></label>

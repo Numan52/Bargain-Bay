@@ -3,12 +3,12 @@ import Header from './Header'
 import Ads from './Ads'
 import { getAds, makeApiRequest } from '../api/api'
 import "../css/dashboard.css"
-import { UserIdContext } from '../Context/UserContext'
+import { UserContext } from '../Context/UserContext'
 import { WebSocketContext } from  '../Context/WebSocketContext'
 
 const Dashboard = () => {
   const [ads, setAds] = useState([])
-  const userInfo = useContext(UserIdContext)
+  const userInfo = useContext(UserContext)
   const [errorMessage, setErrorMessage] = useState("")
   const {messages} = useContext(WebSocketContext)
 

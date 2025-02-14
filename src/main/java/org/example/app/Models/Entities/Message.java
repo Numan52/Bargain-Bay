@@ -16,6 +16,9 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(nullable = false)
+    private boolean wasSeen;
+
     @ManyToOne
     @JoinColumn(name = "sender_id")
     private User sender;
@@ -36,9 +39,10 @@ public class Message {
     }
 
 
-    public Message(User sender, User receiver, Chat chat, LocalDateTime sentAt, String content) {
+    public Message(User sender, User receiver, boolean wasSeen, Chat chat, LocalDateTime sentAt, String content) {
         this.sender = sender;
         this.receiver = receiver;
+        this.wasSeen = wasSeen;
         this.chat = chat;
         this.sentAt = sentAt;
         this.content = content;

@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 
 const Ads = ({ads}) => {
   
-  
-    
   return (
     <div className='ads-container'> 
       {ads.map((ad) => (

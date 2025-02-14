@@ -21,13 +21,12 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 
@@ -71,6 +70,7 @@ public class ChatController {
                             message.getId(),
                             message.getSender().getId(),
                             message.getReceiver().getId(),
+                            false,
                             message.getChat().getId(),
                             message.getSentAt(),
                             message.getContent()
@@ -90,7 +90,7 @@ public class ChatController {
             String username = (String) request.getAttribute("username");
             User currentUser = userService.findUserByName(username);
             List<Chat> chats = chatService.findChatByUser(currentUser.getId());
-
+            Map<UUID, Long> unreadCounts = chatService.getUnreadMessageCounts(currentUser.getId());
             List<ChatContactsDto> contacts = chats.stream()
                     .map((chat -> {
                         User other = chat.getUserOne().getId().equals(currentUser.getId()) ?
@@ -101,7 +101,8 @@ public class ChatController {
                                 other.getId(),
                                 other.getUsername(),
                                 chat.getLastMessage().getContent(),
-                                chat.getLastMessage().getSentAt()
+                                chat.getLastMessage().getSentAt(),
+                                unreadCounts.getOrDefault(chat.getId(), 0L)
                         );
                     }))
                     .toList();
@@ -122,9 +123,19 @@ public class ChatController {
             if (!messageDto.getSenderId().equals(senderId)) {
                 throw new Exception("Unauthorized: Sender ID does not match authenticated user");
             }
+
+
             MessageDto savedMsgDto = chatService.saveMessage(messageDto);
+            logger.info("saved msg dto: {}", savedMsgDto.toString());
             messagingTemplate.convertAndSendToUser(
                     String.valueOf(messageDto.getReceiverId()),
+                    "/queue/messages",
+                    savedMsgDto
+            );
+
+            // Send the message back to the sender
+            messagingTemplate.convertAndSendToUser(
+                    String.valueOf(senderId),
                     "/queue/messages",
                     savedMsgDto
             );
@@ -132,7 +143,19 @@ public class ChatController {
             logger.error("error handling message: ", e);
             throw e;
         }
+    }
 
+    @PostMapping("/chats/{chatId}/seen")
+    public ResponseEntity<?> markMessagesAsRead(@PathVariable UUID chatId, HttpServletRequest request) throws Exception {
+        String username = (String) request.getAttribute("username");
+        User currentUser = userService.findUserByName(username);
+        try {
+            chatService.markMessagesAsRead(chatId, currentUser.getId());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error("error updating messages as read: ", e);
+            throw new Exception("Unexpected Error occurred");
+        }
     }
 
 }

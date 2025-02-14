@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { Client } from '@stomp/stompjs';
-import { UserIdContext } from './UserContext';
+import { UserContext } from './UserContext';
 
 const SOCKET_URL = "ws://localhost:8080/ws"
 
@@ -8,7 +8,7 @@ const WebSocketContext = createContext(null)
 
 // TODO: disconnect on logout
 const WebSocketProvider = ({children}) => {
-    const userInfo = useContext(UserIdContext)
+    const userInfo = useContext(UserContext)
 
     const clientRef = useRef(null)
     const [messages, setMessages] = useState([])
@@ -54,6 +54,7 @@ const WebSocketProvider = ({children}) => {
     
     
     function publishMessage(receiverId, message) {
+        console.log("message: ", message)
         clientRef.current.publish({
             destination: "/app/chat",
             body: JSON.stringify(message)

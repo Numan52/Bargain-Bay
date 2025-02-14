@@ -20,5 +20,5 @@ public class ChatContactsDto {
     private String username;
     private String lastMessage;
     private LocalDateTime lastMessageTime;
-
+    private Long unreadMessages;
 }

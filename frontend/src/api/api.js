@@ -104,7 +104,35 @@ function getUserId(username) {
 }
 
 
-export {makeApiRequest, loginUser, registerUser, postAd, getAds, getAd, getUser, getUserId}
+function getAllContacts() {
+    return makeApiRequest({
+        endpoint: `/chats/contacts`,
+        method: "GET",
+        requiresAuth: true
+    })
+}
+
+
+function getChatMessages(chatId) {
+    return makeApiRequest({
+        endpoint: `/chats/${chatId}/messages`,
+        method: "GET",
+        requiresAuth: true
+    })
+}
+
+
+function markChatAsSeen(chatId) {
+    return makeApiRequest({
+        endpoint: `/chats/${chatId}/seen`,
+        method: "POST",
+        requiresAuth: true
+    })
+}
+
+
+
+export {makeApiRequest, loginUser, registerUser, postAd, getAds, getAd, getUser, getUserId, getAllContacts, getChatMessages, markChatAsSeen}
     
 
 

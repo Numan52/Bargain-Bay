@@ -9,10 +9,12 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class MessageDto {
     private UUID id;
     private UUID senderId;
     private UUID receiverId;
+    private boolean wasSeen;
     private UUID chatId;
     private LocalDateTime sentAt;
     private String content;

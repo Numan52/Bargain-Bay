@@ -8,7 +8,7 @@ import { checkJwtExpired, getDecodedJwt } from './jwtUtils'
 import CreateAd from './components/CreateAd'
 import CreateAdSuccess from './components/CreateAdSuccess'
 import AdDetails from './components/AdDetails'
-import { UserIdContext } from './Context/UserContext'
+import { UserContext } from './Context/UserContext'
 import { getUserId } from './api/api'
 import {WebSocketProvider} from './Context/WebSocketContext'
 import Chats from './components/Chats'
@@ -16,9 +16,9 @@ import Chats from './components/Chats'
 function App() {
   const [token, setToken] = useState(null)
   const [jwtMessage, setJwtMessage] = useState("")
-  const [userId, setUserId] = useState("")
+  const [user, setUser] = useState({})
 
-  
+  console.log("user: ", user)
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -31,18 +31,26 @@ function App() {
       return
     }
     
-    const username = getDecodedJwt(token).sub
-
     async function getId(username) {
       try {
         const json = await getUserId(username)
         console.log("json: ", json)
-        setUserId(json.userId)
+        setUser((prev) => ({
+          ...prev,
+          userId: json.userId
+        }))
+
         return json.userId
       } catch (error) {
         console.log("error getting user id: ", error)
       }
     }
+
+    const username = getDecodedJwt(token).sub
+    setUser((prev) => ({
+      ...prev, 
+      username
+    }))
 
     getId(username)
   }, [token])
@@ -69,7 +77,7 @@ function App() {
   
   return (
     <>
-      <UserIdContext.Provider value={userId}>
+      <UserContext.Provider value={user}>
         <WebSocketProvider>
           <Routes>
             <Route
@@ -97,7 +105,7 @@ function App() {
             </Route>
 
             <Route
-              path="/chats" 
+              path="/chats/" 
               element={token ? <Chats /> : <Navigate to="/login" replace />} 
             >
             </Route>
@@ -117,7 +125,7 @@ function App() {
           </Routes> 
         </WebSocketProvider>
         
-      </UserIdContext.Provider>
+      </UserContext.Provider>
     </>
   )
 }
