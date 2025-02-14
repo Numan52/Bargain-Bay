@@ -5,6 +5,7 @@ import { getAllContacts, getChatMessages, markChatAsSeen } from '../api/api'
 import "../css/chats.css"
 import Header from './Header'
 import { WebSocketContext } from '../Context/WebSocketContext'
+import { formatDateTime, DateToTime } from '../util.js/dateUtils'
 // import { RotatingLines } from 'react-loader-spinner'
 
 
@@ -17,7 +18,7 @@ const Chats = () => {
   const [allContacts, setAllContacts] = useState([])
   const [selectedChatId, setSelectedChatId] = useState(null)
   const [chatMessages, setChatMessages] = useState([])
- 
+  const chatRef = useRef(null)
   const [inputText, setInputText] = useState("")
   const [loading, setLoading] = useState(false);
 
@@ -29,39 +30,42 @@ const Chats = () => {
   console.log("chat messages: ", chatMessages)
 
   useEffect(() => {
-    async function fetchContacts() {
-        try {
-            const json = await getAllContacts(userInfo.username)
-            setAllContacts(json)
-        } catch (error) {
-            console.log(error)
-        }
+    async function init() {
+      setInputText("")
+      try {
+          const json = await getAllContacts(userInfo.username)
+          setAllContacts(json)
+          console.log("json: ", json)
+          if (json.length > 0) {
+            if (chatId) {
+              handleContactClick(chatId)
+            } else {
+              handleContactClick(json[0].chatId)
+            }
+          }
+      } catch (error) {
+          console.log(error)
+      }
     } 
 
-    fetchContacts()
-    
-  }, [userInfo])
+    init()
+
+  
+  }, [userInfo, chatId])
+
+
+  function handleMsgInput(e) {
+    setInputText(e.target.value)
+
+    textareaRef.current.style.height = 'auto'; // Reset height to auto
+    textareaRef.current.style.height = `${textareaRef.current.scrollHeight - 20}px`; // Set height to the scroll height
+  }
 
 
   useEffect(() => {
-    const mainTextarea = textareaRef.current
-
-    if (!mainTextarea) return;
-
-    const handleInput = (textarea) => {
-      textarea.style.height = 'auto'; // Reset height to auto
-      textarea.style.height = `${textarea.scrollHeight - 20}px`; // Set height to the scroll height
-    }
-
-
-    mainTextarea.addEventListener("input", () => handleInput(mainTextarea))
-
-
-    return () => {
-      mainTextarea.removeEventListener("input", () => handleInput(mainTextarea))
-    }
-  }, [inputText])
-
+    scrollToBottom()
+  }, [chatMessages])
+   
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -83,14 +87,19 @@ const Chats = () => {
 
 
   async function handleContactClick(chatId) {
-
-    if (chatId !== selectedChatId) {
-      setSelectedChatId(chatId)
-      const chat = await fetchMessages(chatId) 
-      setChatMessages(chat.messages)
+    try {
+      if (chatId !== selectedChatId) {
+        setSelectedChatId(chatId)
+        const chat = await getChatMessages(chatId) 
+        setChatMessages(chat.messages)
+        navigate(`/chats/${chatId}`); // Ensure URL updates
+      }
+  
+      updateUnreadCounts(chatId)
+    } catch (error) {
+      console.log(error)
     }
-
-    updateUnreadCounts(chatId)
+    
   }
 
 
@@ -111,8 +120,8 @@ const Chats = () => {
   }
 
 
-  function fetchMessages(chatId) {
-    return getChatMessages(chatId)
+  function scrollToBottom() {
+    chatRef.current.scrollTop = chatRef.current.scrollHeight
   }
 
 
@@ -120,6 +129,7 @@ const Chats = () => {
     if (!inputText) {
       return
     }
+
 
     console.log("sending message")
     try {
@@ -139,10 +149,46 @@ const Chats = () => {
     setInputText("")
   }
 
+
+  function renderMessages() {
+    let lastMessageDate = null
+
+    return chatMessages.map((message) => {
+      
+      const messageDate = new Date(message.sentAt).toLocaleDateString()
+      const fromToday = new Date().toLocaleDateString() === messageDate
+      const showDate = !fromToday && (messageDate !== lastMessageDate)
+      lastMessageDate = messageDate
+
+      return (
+        <>
+          {showDate && 
+            <div className='chats__date-separator'>
+              {messageDate}
+            </div>
+          }
+          <div className={`chats__message ${message.senderId === userInfo.userId ? 'chats__own-message' : 'chats__other-message' }`} key={message.id}>
+            <div className='chats__message-content'>{message.content}</div>
+            <span className='chats__message-date'>
+              {DateToTime(message.sentAt)}
+            </span>
+          </div>
+        </>
+        
+      )})
+  }
+  
+
+
+  // TODO: insert date for messages
   return (
     <>
       <Header />
-      <div className='messages-content-container'>
+      <div className='chats__container'>
+        <h2>Your Messages</h2>
+
+        <div className='messages-content-container'>
+        
         <div className='messages-contacts-container'>
           {allContacts.map((contact) => (
             <div key={contact.chatId} className='chats__contact-container' onClick={() => handleContactClick(contact.chatId)}>
@@ -155,7 +201,7 @@ const Chats = () => {
                 
                 <div className='chats_contact-last-message-container'>
                   <span>{contact.lastMessage}</span>
-                  <span>{contact.lastMessageTime}</span>
+                  <span>{formatDateTime(contact.lastMessageTime)}</span>
                 </div>
                 
               </div>
@@ -182,16 +228,8 @@ const Chats = () => {
           
         </div>
         <div className='chats__messages-area-container'>
-          <div className='chats__messages-container'>
-            {chatMessages.map((message => (
-              <div className={`chats__message ${message.senderId === userInfo.userId ? 'chats__own-message' : 'chats__other-message' }`} key={message.id}>
-                <div className='chats__message-content'>{message.content}</div>
-                <span className='chats__message-date'>
-                  {new Date(message.sentAt).toLocaleTimeString("en-GB", {hour:"2-digit", minute:"2-digit"})}
-                </span>
-              </div>
-            )))}
-            
+          <div className='chats__messages-container' ref={chatRef}>
+            {renderMessages()}
           </div>
 
           {selectedChatId  &&
@@ -201,7 +239,7 @@ const Chats = () => {
                       placeholder="Type a message"
                       rows={1}
                       value={inputText}
-                      onChange={(e) => setInputText(e.target.value)}
+                      onChange={(e) => handleMsgInput(e)}
                   >
 
               </textarea>
@@ -213,6 +251,9 @@ const Chats = () => {
 
         
       </div>
+      </div>
+      
+      
     </>
     
     

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { getJwt } from '../jwtUtils'
+import { getJwt } from '../util.js/jwtUtils'
 import { postAd } from '../api/api'
 import { useNavigate } from 'react-router-dom'
 import Header from './Header'

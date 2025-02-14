@@ -44,7 +44,10 @@ public class ChatDao {
 
 
     public List<Chat> findByUser(UUID userId) {
-        List<Chat> chats = entityManager.createQuery("SELECT c FROM Chat c WHERE c.userOne.id = :userId OR c.userTwo.id = :userId", Chat.class)
+        List<Chat> chats = entityManager.createQuery(
+                "SELECT c FROM Chat c WHERE c.userOne.id = :userId OR c.userTwo.id = :userId " +
+                        "ORDER BY c.lastMessage.sentAt DESC",
+                        Chat.class)
                 .setParameter("userId", userId)
                 .getResultList();
         return chats;
@@ -52,7 +55,10 @@ public class ChatDao {
 
 
     public List<Message> findMessagesByChat(UUID chatId) {
-        List<Message> messages = entityManager.createQuery("SELECT m FROM Message m WHERE m.chat.id = :chatId", Message.class)
+        List<Message> messages = entityManager.createQuery(
+                "SELECT m FROM Message m WHERE m.chat.id = :chatId " +
+                        "ORDER BY m.sentAt ASC",
+                        Message.class)
                 .setParameter("chatId", chatId)
                 .getResultList();
         return messages;

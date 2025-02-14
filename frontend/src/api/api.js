@@ -1,4 +1,4 @@
-import { getJwt } from "../jwtUtils"
+import { getJwt } from "../util.js/jwtUtils"
 
 const apiUrl = import.meta.env.VITE_API_URL
 

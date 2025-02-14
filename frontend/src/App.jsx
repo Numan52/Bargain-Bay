@@ -4,7 +4,7 @@ import Dashboard from './components/Dashboard'
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import Login from './components/Login'
 import Register from './components/Register'
-import { checkJwtExpired, getDecodedJwt } from './jwtUtils'
+import { checkJwtExpired, getDecodedJwt } from './util.js/jwtUtils'
 import CreateAd from './components/CreateAd'
 import CreateAdSuccess from './components/CreateAdSuccess'
 import AdDetails from './components/AdDetails'
@@ -101,6 +101,12 @@ function App() {
             <Route
               path="/create-ad" 
               element={token ? <CreateAd /> : <Navigate to="/login" replace />} 
+            >
+            </Route>
+
+            <Route
+              path="/chats/:chatId" 
+              element={token ? <Chats /> : <Navigate to="/login" replace />} 
             >
             </Route>
 

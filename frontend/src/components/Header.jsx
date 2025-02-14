@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode'
 import React, { useContext, useEffect, useState } from 'react'
-import { getDecodedJwt } from '../jwtUtils'
+import { getDecodedJwt } from '../util.js/jwtUtils'
 import "../css/header.css"
 import { Link } from 'react-router-dom'
 import { UserContext } from '../Context/UserContext'
@@ -10,7 +10,10 @@ const Header = () => {
 
     return (
         <header className='header-container'>
-            <h1>Unique Name</h1>
+            <Link to={"/"}>
+                <h1>Unique Name</h1>
+            </Link>
+            
             
             <div className='header-right-container'>
                 <Link to={"/create-ad"}>Create Ad</Link>
