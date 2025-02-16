@@ -34,6 +34,7 @@
     height: 300px;
     object-fit: contain;
     cursor: pointer;
+    
 }
 
 
@@ -53,4 +54,9 @@
 
 .ads-section__ad-price {
     color: rgb(0, 119, 255)
+}
+
+
+.ads__section__header {
+    margin-bottom: 0;
 }

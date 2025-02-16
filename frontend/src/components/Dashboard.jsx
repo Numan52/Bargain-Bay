@@ -33,8 +33,8 @@ const Dashboard = () => {
 
         const [trendingAds, personalizedAds, freshAds] = await Promise.all([
           getTrendingAds(20),
-          getPersonalizedAds(),
-          getFreshAds()
+          getPersonalizedAds(20),
+          getFreshAds(20)
         ])
         console.log("Fetching finished at:", new Date().toISOString());
 
@@ -43,7 +43,7 @@ const Dashboard = () => {
         setFreshAds(freshAds)
         
       } catch (error) {
-        console.log(error)
+        console.error(error)
         setErrorMessage("Could not load the ads. Try again later")
       }
       
@@ -60,8 +60,8 @@ const Dashboard = () => {
       
       <div className='dashboard'>
         <AdsCarousel ads={trendingAds} header="Currently trending"/>
-        {/* <AdsCarousel ads={freshAds} header="Recently added"/>
-        <AdsCarousel ads={personalizedAds} header="For you"/> */}
+        <AdsCarousel ads={freshAds} header="Recently added"/>
+        {/* <AdsCarousel ads={personalizedAds} header="For you"/>  */}
 
         {/* <Ads ads={ads}/> */}
       </div>

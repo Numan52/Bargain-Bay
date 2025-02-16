@@ -88,7 +88,7 @@ function getTrendingAds(limit) {
 }
 
 
-function getPersonalizedAds(offset, limit) {
+function getPersonalizedAds(limit) {
     // return makeApiRequest({
     //     endpoint: `/ads?offset=${offset}&limit=${limit}`,
     //     method: "GET",
@@ -97,12 +97,11 @@ function getPersonalizedAds(offset, limit) {
 }
 
 
-function getFreshAds(offset, limit) {
-    // return makeApiRequest({
-    //     endpoint: `/ads?offset=${offset}&limit=${limit}`,
-    //     method: "GET",
-    // })
-    return null
+function getFreshAds(limit) {
+    return makeApiRequest({
+        endpoint: `/ads/fresh?limit=${limit}`,
+        method: "GET",
+    })
 }
 
 

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const AdsCarousel = ({ads, header}) => {
   const adsCarouselRef = useRef(null)
-
+  console.log(`ads for ${header}: `, ads)
   function scrollCarousel(direction) {
     const scrollAmount = 400
     adsCarouselRef.current.scrollBy({
@@ -18,7 +18,7 @@ const AdsCarousel = ({ads, header}) => {
   console.log("ads: ", ads)
   return (
     <div>
-      <h3>{header}</h3>
+      <h3 className='ads__section__header'>{header}</h3>
       <div className='ads-section__container' >
         <button className='ads-section__arrow' onClick={() => scrollCarousel("left")}>
           <FaChevronLeft size={24}/>

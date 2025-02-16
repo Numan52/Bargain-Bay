@@ -7,7 +7,7 @@ const apiUrl = import.meta.env.VITE_API_URL
 
 const CreateAd = () => {
     const [errorMsg, setErrorMsg] = useState("")
-
+    const [submitted, setSubmitted] = useState(false)
     const navigate = useNavigate()
 
     const [images, setImages] = useState([])
@@ -40,6 +40,11 @@ const CreateAd = () => {
 
 
     async function submitAd(event) {
+        if (submitted) {
+            return
+        }
+        setSubmitted(true)
+
         setErrorMsg("")
         event.preventDefault();
 
@@ -55,9 +60,12 @@ const CreateAd = () => {
         try {
             await postAd(form)
             navigate("/success", {state: { title: adData.title}})
+            
         } catch (error) {
             console.log("error while creating ad: ", error)
             setErrorMsg("An error ocurred. Please try again later")
+        } finally {
+            setSubmitted(false)
         }
     }
 

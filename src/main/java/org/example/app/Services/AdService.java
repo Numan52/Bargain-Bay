@@ -10,6 +10,7 @@ import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.AdView;
 import org.example.app.Models.Entities.Image;
 import org.example.app.Models.Entities.User;
+import org.example.app.Services.AdsFetching.AdFetchStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -48,16 +49,8 @@ public class AdService {
 
 
     @Transactional
-    public List<Ad> getAds(int offset, int limit) {
-        List<Ad> ads = adDao.getAds(offset, limit);
-        return ads;
-    }
-
-    @Transactional
-    public List<Ad> getTrendingAds(int limit) {
-        List<Ad> ads = adDao.getTrendingAds(40);
-        Collections.shuffle(ads);
-        return ads.subList(0, Math.min(ads.size(), limit));
+    public List<Ad> getAds(AdFetchStrategy fetchStrategy, int limit) {
+        return fetchStrategy.fetchAds(limit);
     }
 
 
@@ -145,5 +138,4 @@ public class AdService {
         }
         return adDtos;
     }
-
 }

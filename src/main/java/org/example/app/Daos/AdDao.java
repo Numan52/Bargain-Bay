@@ -36,6 +36,16 @@ public class AdDao {
     }
 
 
+    public List<Ad> getFreshAds(int limit) {
+        List<Ad> freshAds = entityManager.createQuery(
+                        "SELECT a from Ad a ORDER BY a.createdAt DESC ", Ad.class
+                )
+                .setMaxResults(limit)
+                .getResultList();
+        return freshAds;
+    }
+
+
     public void updateViewsCount(UUID adId) {
         entityManager.createQuery("UPDATE Ad a SET a.viewsCount = a.viewsCount + 1 where a.id = :adId")
                 .setParameter("adId", adId)
@@ -84,6 +94,5 @@ public class AdDao {
     public void saveAdView(AdView adView) {
         entityManager.persist(adView);
     }
-
 
 }

@@ -10,6 +10,9 @@ import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.User;
 import org.example.app.Security.JwtUtil;
 import org.example.app.Services.AdService;
+import org.example.app.Services.AdsFetching.FreshAdsStrat;
+import org.example.app.Services.AdsFetching.PersonalizedAdsStrat;
+import org.example.app.Services.AdsFetching.TrendingAdsStrat;
 import org.example.app.Services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +33,18 @@ public class AdController {
     private AdService adService;
     private JwtUtil jwtUtil;
     private final static Logger logger = LoggerFactory.getLogger(AdController.class);
+    private final TrendingAdsStrat trendingAdsStrat;
+    private final FreshAdsStrat freshAdsStrat;
+    private final PersonalizedAdsStrat personalizedAdsStrat;
 
-
-    public AdController(AdService adService, JwtUtil jwtUtil, UserDao userDao, UserService userService) {
+    public AdController(AdService adService, JwtUtil jwtUtil, UserDao userDao, UserService userService, TrendingAdsStrat trendingAdsStrat, FreshAdsStrat freshAdsStrat, PersonalizedAdsStrat personalizedAdsStrat) {
         this.adService = adService;
         this.jwtUtil = jwtUtil;
         this.userDao = userDao;
         this.userService = userService;
+        this.trendingAdsStrat = trendingAdsStrat;
+        this.freshAdsStrat = freshAdsStrat;
+        this.personalizedAdsStrat = personalizedAdsStrat;
     }
 
 
@@ -56,17 +64,17 @@ public class AdController {
     }
 
 
-    @GetMapping("/ads")
-    public ResponseEntity<?> getAds(@RequestParam int offset, @RequestParam int limit) throws Exception {
-        try {
-            List<Ad> ads = adService.getAds(offset, limit);
-            List<AdDto> adDtos = adService.toDtos(ads);
-            return ResponseEntity.ok(adDtos);
-        } catch (Exception e) {
-            logger.error("error getting ads: ", e);
-            throw new Exception("An unexpected error occurred.");
-        }
-    }
+//    @GetMapping("/ads")
+//    public ResponseEntity<?> getAds(@RequestParam int offset, @RequestParam int limit) throws Exception {
+//        try {
+//            List<Ad> ads = adService.getAds(offset, limit);
+//            List<AdDto> adDtos = adService.toDtos(ads);
+//            return ResponseEntity.ok(adDtos);
+//        } catch (Exception e) {
+//            logger.error("error getting ads: ", e);
+//            throw new Exception("An unexpected error occurred.");
+//        }
+//    }
 
     // TODO: FIX MAXIMUM SIZE EXCEEDED ERROR
     @PostMapping(path = "/ads", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -89,17 +97,26 @@ public class AdController {
         return ResponseEntity.ok().build();
     }
 
+
+    // TODO: Why so so many sql queries in console
     @GetMapping("/ads/trending")
     public ResponseEntity<?> getTrendingAds(@RequestParam int limit) throws Exception {
-        try {
-            List<Ad> ads = adService.getTrendingAds(limit);
-            List<AdDto> adDtos = adService.toDtos(ads);
 
-            return ResponseEntity.ok(adDtos);
-        } catch (Exception e) {
-            logger.error("error getting ads: ", e);
-            throw new Exception("An unexpected error occurred.");
-        }
+        List<Ad> ads = adService.getAds(trendingAdsStrat, limit);
+        List<AdDto> adDtos = adService.toDtos(ads);
+
+        return ResponseEntity.ok(adDtos);
+
+    }
+
+
+    @GetMapping("/ads/fresh")
+    public ResponseEntity<?> getFreshAds(@RequestParam int limit) throws Exception {
+        List<Ad> ads = adService.getAds(freshAdsStrat, limit);
+        List<AdDto> adDtos = adService.toDtos(ads);
+
+        return ResponseEntity.ok(adDtos);
+
     }
 
 
