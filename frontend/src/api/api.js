@@ -80,6 +80,33 @@ function getAds(offset, limit) {
 }
 
 
+function getTrendingAds(limit) {
+    return makeApiRequest({
+        endpoint: `/ads/trending?limit=${limit}`,
+        method: "GET",
+    })
+}
+
+
+function getPersonalizedAds(offset, limit) {
+    // return makeApiRequest({
+    //     endpoint: `/ads?offset=${offset}&limit=${limit}`,
+    //     method: "GET",
+    // })
+    return null
+}
+
+
+function getFreshAds(offset, limit) {
+    // return makeApiRequest({
+    //     endpoint: `/ads?offset=${offset}&limit=${limit}`,
+    //     method: "GET",
+    // })
+    return null
+}
+
+
+
 function getAd(id) {
     return makeApiRequest({
         endpoint: `/ad?id=${id}`,
@@ -131,8 +158,30 @@ function markChatAsSeen(chatId) {
 }
 
 
+function markAdSeenByUser(adId) {
+    return makeApiRequest({
+        endpoint: `/ads/${adId}/user-views`,
+        method: "PATCH",
+        requiresAuth: true
+    })
+}
 
-export {makeApiRequest, loginUser, registerUser, postAd, getAds, getAd, getUser, getUserId, getAllContacts, getChatMessages, markChatAsSeen}
+
+function markAdSeenByGuest(adId) {
+    return makeApiRequest({
+        endpoint: `/ads/${adId}/guest-views`,
+        method: "PATCH",
+    })
+}
+
+
+
+
+export {
+    makeApiRequest, loginUser, registerUser, postAd, getAds, 
+    getTrendingAds, getFreshAds, getPersonalizedAds, getAd, getUser, getUserId, 
+    getAllContacts, getChatMessages, markChatAsSeen, markAdSeenByGuest, markAdSeenByUser
+}
     
 
 

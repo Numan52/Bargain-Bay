@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import "../css/adDetails.css"
 import Header from './Header'
-import { getAd, getUser } from '../api/api'
+import { getAd, getUser, markAdSeenByGuest, markAdSeenByUser } from '../api/api'
 import { UserContext } from '../Context/UserContext'
 import { WebSocketContext } from '../Context/WebSocketContext'
 
@@ -16,6 +16,38 @@ const AdDetails = () => {
   const userInfo = useContext(UserContext)
   const {publishMessage} = useContext(WebSocketContext)
   
+  console.log("user: ", userInfo)
+  // update ad view count
+  useEffect(() => {
+    let viewedAds = localStorage.getItem("viewedAds")
+    console.log("viewed ads update")
+    if (viewedAds === null || !viewedAds) {
+      localStorage.setItem("viewedAds", [])
+    } else {
+      viewedAds = JSON.parse(viewedAds)
+    }
+
+    if (!viewedAds.includes(adId)) {
+      try {
+        console.log("includes")
+        if (userInfo) {
+          markAdSeenByUser(adId)
+          console.log("marked ad as seen by user")
+        } else {
+          markAdSeenByGuest(adId)
+          console.log("marked ad as seen by guest")
+        }
+        
+        localStorage.setItem("viewedAds", JSON.stringify([...viewedAds, adId]))
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    
+  }, [adId, userInfo])
+
+
   useEffect(() => {
     async function fetchdata() { 
       try {

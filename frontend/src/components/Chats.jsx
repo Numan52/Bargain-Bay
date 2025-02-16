@@ -38,9 +38,9 @@ const Chats = () => {
           console.log("json: ", json)
           if (json.length > 0) {
             if (chatId) {
-              handleContactClick(chatId)
+              handleContactSelection(chatId, true)
             } else {
-              handleContactClick(json[0].chatId)
+              handleContactSelection(json[0].chatId, true)
             }
           }
       } catch (error) {
@@ -86,7 +86,7 @@ const Chats = () => {
   }, [messages]); // Runs when new messages arrive
 
 
-  async function handleContactClick(chatId) {
+  async function handleContactSelection(chatId, isPageLoad) {
     try {
       if (chatId !== selectedChatId) {
         setSelectedChatId(chatId)
@@ -94,8 +94,10 @@ const Chats = () => {
         setChatMessages(chat.messages)
         navigate(`/chats/${chatId}`); // Ensure URL updates
       }
-  
-      updateUnreadCounts(chatId)
+      if (!isPageLoad) {
+        updateUnreadCounts(chatId)
+      }
+      
     } catch (error) {
       console.log(error)
     }
@@ -157,14 +159,14 @@ const Chats = () => {
       
       const messageDate = new Date(message.sentAt).toLocaleDateString()
       const fromToday = new Date().toLocaleDateString() === messageDate
-      const showDate = !fromToday && (messageDate !== lastMessageDate)
+      const showDate = messageDate !== lastMessageDate
       lastMessageDate = messageDate
 
       return (
         <>
           {showDate && 
             <div className='chats__date-separator'>
-              {messageDate}
+              {fromToday ? "Today" : messageDate}
             </div>
           }
           <div className={`chats__message ${message.senderId === userInfo.userId ? 'chats__own-message' : 'chats__other-message' }`} key={message.id}>
@@ -191,7 +193,7 @@ const Chats = () => {
         
         <div className='messages-contacts-container'>
           {allContacts.map((contact) => (
-            <div key={contact.chatId} className='chats__contact-container' onClick={() => handleContactClick(contact.chatId)}>
+            <div key={contact.chatId} className='chats__contact-container' onClick={() => handleContactSelection(contact.chatId, false)}>
               <img src="/user.png" alt="user image" />
               <div className='chats__contact-details'>
                 <div className='chats__contact_username-container'>

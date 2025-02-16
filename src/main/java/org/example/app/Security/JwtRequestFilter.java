@@ -35,7 +35,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
@@ -99,12 +99,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
     public boolean requiresAuth(String path, HttpServletRequest request) {
+        logger.info("PATH: {}", path);
         if (path.equals("/register") ||
                 path.equals("/login") ||
-                (path.equals("/ads") && request.getMethod().equalsIgnoreCase("GET")) ||
+                (path.startsWith("/ads") && request.getMethod().equalsIgnoreCase("GET")) ||
                 (path.equals("/ad") && request.getMethod().equalsIgnoreCase("GET")) ||
                 (path.startsWith("/user") && request.getMethod().equalsIgnoreCase("GET")) ||
-                "websocket".equalsIgnoreCase(request.getHeader("Upgrade"))
+                "websocket".equalsIgnoreCase(request.getHeader("Upgrade")) ||
+                (path.matches("^/ads/[^/]+/guest-views$"))
         ) {
             return false;
         }

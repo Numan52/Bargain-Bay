@@ -22,6 +22,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(413).body(ExceptionUtil.buildErrorResponse(HttpStatus.PAYLOAD_TOO_LARGE, "File size exceeds the maximum limit!", request.getServletPath()));
     }
 
+
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleMaxSizeException(Exception e, HttpServletRequest request) {
+        logger.error("Exception: ", e);
+        return ResponseEntity.status(500).body(ExceptionUtil.buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occurred", request.getServletPath()));
+    }
+
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<?> handleMaxSizeException(MissingServletRequestParameterException e, HttpServletRequest request) {
         logger.error("Missing parameters: ", e);

@@ -1,12 +1,17 @@
 package org.example.app.Models.Entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,6 +42,10 @@ public class Ad {
     @JoinColumn(name = "ad_id")
     private List<Image> images;
 
+
+    private int viewsCount = 0;
+
+
     public Ad() {
     }
 
@@ -64,83 +73,4 @@ public class Ad {
     }
 
 
-    public UUID getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> imageUrls) {
-        this.images = imageUrls;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime dateTime) {
-        this.createdAt = dateTime;
-    }
-
-    public boolean isHasPriority() {
-        return hasPriority;
-    }
-
-    public void setHasPriority(boolean hasPriority) {
-        this.hasPriority = hasPriority;
-    }
-
-    public LocalDateTime getLastBumpedAt() {
-        return lastBumpedAt;
-    }
-
-    public void setLastBumpedAt(LocalDateTime lastBumpedAt) {
-        this.lastBumpedAt = lastBumpedAt;
-    }
 }

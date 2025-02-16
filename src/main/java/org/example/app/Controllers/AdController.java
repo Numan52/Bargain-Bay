@@ -1,12 +1,16 @@
 package org.example.app.Controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.example.app.Daos.UserDao;
 import org.example.app.Exceptions.ExceptionUtil;
+import org.example.app.Exceptions.UserException;
 import org.example.app.Models.Dtos.AdDto;
 import org.example.app.Models.Dtos.CreateAdDto;
 import org.example.app.Models.Entities.Ad;
+import org.example.app.Models.Entities.User;
 import org.example.app.Security.JwtUtil;
 import org.example.app.Services.AdService;
+import org.example.app.Services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,19 +25,23 @@ import java.util.UUID;
 
 @RestController
 public class AdController {
+    private final UserDao userDao;
+    private final UserService userService;
     private AdService adService;
     private JwtUtil jwtUtil;
     private final static Logger logger = LoggerFactory.getLogger(AdController.class);
 
 
-    public AdController(AdService adService, JwtUtil jwtUtil) {
+    public AdController(AdService adService, JwtUtil jwtUtil, UserDao userDao, UserService userService) {
         this.adService = adService;
         this.jwtUtil = jwtUtil;
+        this.userDao = userDao;
+        this.userService = userService;
     }
 
 
     @GetMapping("/ad")
-    public ResponseEntity<?> getAd(String id) throws Exception {
+    public ResponseEntity<?> getAd(@RequestParam String id) throws Exception {
         try {
             Ad ad = adService.getAd(UUID.fromString(id));
             if (ad == null) {
@@ -73,14 +81,48 @@ public class AdController {
             createAdDto.setImages(images);
             logger.info("created ad dto: {}", createAdDto);
             adService.postAd(createAdDto);
-        } catch (Exception e) {
+        } catch (UserException e) {
             logger.error("Error posting ad: ", e);
-            throw new Exception("An unexpected error occurred.");
+            return ResponseEntity.status(404).body(ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(404), e.getMessage(), "/ads"));
         }
 
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/ads/trending")
+    public ResponseEntity<?> getTrendingAds(@RequestParam int limit) throws Exception {
+        try {
+            List<Ad> ads = adService.getTrendingAds(limit);
+            List<AdDto> adDtos = adService.toDtos(ads);
+
+            return ResponseEntity.ok(adDtos);
+        } catch (Exception e) {
+            logger.error("error getting ads: ", e);
+            throw new Exception("An unexpected error occurred.");
+        }
+    }
+
+
+    @PatchMapping("/ads/{adId}/user-views")
+    public ResponseEntity<?> updateUserAdViews(@PathVariable UUID adId, HttpServletRequest request) throws Exception {
+        String username = (String) request.getAttribute("username");
+        User user = userService.findUserByName(username);
+        adService.updateUserAdViews(user, adId);
+
+        return ResponseEntity.ok().build();
+
+    }
+
+
+    @PatchMapping("/ads/{adId}/guest-views")
+    public ResponseEntity<?> updateGuestAdViews(@PathVariable UUID adId, HttpServletRequest request) throws Exception {
+        String ipAddress = request.getRemoteAddr();
+
+        adService.updateGuestAdViews(ipAddress, adId);
+
+        return ResponseEntity.ok().build();
+
+    }
 
 
 }

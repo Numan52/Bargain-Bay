@@ -3,9 +3,11 @@ package org.example.app.Services;
 import jakarta.transaction.Transactional;
 import org.example.app.Daos.AdDao;
 import org.example.app.Daos.UserDao;
+import org.example.app.Exceptions.UserException;
 import org.example.app.Models.Dtos.AdDto;
 import org.example.app.Models.Dtos.CreateAdDto;
 import org.example.app.Models.Entities.Ad;
+import org.example.app.Models.Entities.AdView;
 import org.example.app.Models.Entities.Image;
 import org.example.app.Models.Entities.User;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -50,13 +53,20 @@ public class AdService {
         return ads;
     }
 
+    @Transactional
+    public List<Ad> getTrendingAds(int limit) {
+        List<Ad> ads = adDao.getTrendingAds(40);
+        Collections.shuffle(ads);
+        return ads.subList(0, Math.min(ads.size(), limit));
+    }
+
 
     @Transactional
-    public void postAd(CreateAdDto createAdDto) throws IOException {
+    public void postAd(CreateAdDto createAdDto) throws IOException, UserException {
         User user = userDao.findUserByUsername(createAdDto.getUsername());
         if (user == null) {
             logger.error("Error posting ad: User {} not found", createAdDto.getUsername());
-            throw new RuntimeException("User not found");
+            throw new UserException("User not found");
         }
         List<Image> images = new ArrayList<>();
 
@@ -87,6 +97,29 @@ public class AdService {
         adDao.postAd(ad);
     }
 
+    @Transactional
+    public void updateUserAdViews(User user, UUID adId) {
+        Ad ad = adDao.getAd(adId);
+
+        boolean hasSeenAd = adDao.checkIfUserSeen(user.getId(), adId);
+        if (!hasSeenAd) {
+            adDao.saveAdView(new AdView(user, ad, null));
+            adDao.updateViewsCount(adId);
+        }
+    }
+
+
+    @Transactional
+    public void updateGuestAdViews(String ipAddress, UUID adId) {
+        Ad ad = adDao.getAd(adId);
+
+        boolean hasSeenAd = adDao.checkIfGuestSeen(ipAddress, adId);
+        if (!hasSeenAd) {
+            adDao.saveAdView(new AdView(null, ad, ipAddress));
+            adDao.updateViewsCount(adId);
+        }
+    }
+
 
     public AdDto toDto(Ad ad) {
         return new AdDto(
@@ -112,4 +145,5 @@ public class AdService {
         }
         return adDtos;
     }
+
 }
