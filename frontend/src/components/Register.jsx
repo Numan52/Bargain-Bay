@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import "../css/register.css"
-import { registerUser } from '../api/api'
+import { registerUser } from "../api/userApi"
 const apiUrl = import.meta.env.VITE_API_URL
 
 const Register = () => {

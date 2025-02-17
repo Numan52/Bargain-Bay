@@ -24,12 +24,19 @@ public class GlobalExceptionHandler {
 
 
 
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleMaxSizeException(Exception e, HttpServletRequest request) {
         logger.error("Exception: ", e);
         return ResponseEntity.status(500).body(ExceptionUtil.buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occurred", request.getServletPath()));
     }
+
+
+    @ExceptionHandler(ParameterException.class)
+    public ResponseEntity<?> handleParameterException(ParameterException e, HttpServletRequest request) {
+        logger.error("Parameter Exceptiopn: ", e);
+        return ResponseEntity.status(400).body(ExceptionUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getServletPath()));
+    }
+
 
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

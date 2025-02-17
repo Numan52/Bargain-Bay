@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { UserContext } from '../Context/UserContext'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { getAllContacts, getChatMessages, markChatAsSeen } from '../api/api'
+import { getAllContacts, getChatMessages, markChatAsSeen } from "../api/chatsApi"
 import "../css/chats.css"
 import Header from './Header'
 import { WebSocketContext } from '../Context/WebSocketContext'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { getJwt } from '../util.js/jwtUtils'
-import { postAd } from '../api/api'
+import { postAd } from "../api/adsApi"
 import { useNavigate } from 'react-router-dom'
 import Header from './Header'
 const apiUrl = import.meta.env.VITE_API_URL

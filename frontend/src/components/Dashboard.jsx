@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Header from './Header'
 import Ads from './Ads'
-import { getAds, getFreshAds, getPersonalizedAds, getTrendingAds, makeApiRequest } from '../api/api'
+import { makeApiRequest } from '../api/api'
+import { getAds, getFreshAds, getPersonalizedAds, getTrendingAds } from "../api/adsApi"
 import "../css/dashboard.css"
 import { UserContext } from '../Context/UserContext'
 import { WebSocketContext } from  '../Context/WebSocketContext'
 import AdsCarousel from './AdsCarousel'
+import Searchbar from './Searchbar'
+import Separator from './Separator'
 
 const Dashboard = () => {
   const [ads, setAds] = useState([])
@@ -23,8 +26,6 @@ const Dashboard = () => {
 
 
 
-
-  // use Promise.all
   // TODO: check whether concurrent
   useEffect(() => {
     const fetchAds = async () => {
@@ -59,11 +60,20 @@ const Dashboard = () => {
       <Header />
       
       <div className='dashboard'>
-        <AdsCarousel ads={trendingAds} header="Currently trending"/>
-        <AdsCarousel ads={freshAds} header="Recently added"/>
-        {/* <AdsCarousel ads={personalizedAds} header="For you"/>  */}
+        <Searchbar />
+        <div className='dashboard__ads-container'>
+          <AdsCarousel ads={trendingAds} header="Currently trending"/>
 
-        {/* <Ads ads={ads}/> */}
+          <Separator />
+
+          <AdsCarousel ads={freshAds} header="Recently added"/>
+
+          <Separator />
+          {/* <AdsCarousel ads={personalizedAds} header="For you"/>  */}
+
+          {/* <Ads ads={ads}/> */}
+        </div>
+        
       </div>
       
     </div>

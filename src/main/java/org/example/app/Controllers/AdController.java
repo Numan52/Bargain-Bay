@@ -3,6 +3,7 @@ package org.example.app.Controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.app.Daos.UserDao;
 import org.example.app.Exceptions.ExceptionUtil;
+import org.example.app.Exceptions.ParameterException;
 import org.example.app.Exceptions.UserException;
 import org.example.app.Models.Dtos.AdDto;
 import org.example.app.Models.Dtos.CreateAdDto;
@@ -100,8 +101,10 @@ public class AdController {
 
     // TODO: Why so so many sql queries in console
     @GetMapping("/ads/trending")
-    public ResponseEntity<?> getTrendingAds(@RequestParam int limit) throws Exception {
-
+    public ResponseEntity<?> getTrendingAds(@RequestParam(required = false) Integer limit) throws Exception {
+        if (limit == null || limit <= 0) {
+            throw new ParameterException("missing or invalid limit parameter");
+        }
         List<Ad> ads = adService.getAds(trendingAdsStrat, limit);
         List<AdDto> adDtos = adService.toDtos(ads);
 
@@ -111,7 +114,11 @@ public class AdController {
 
 
     @GetMapping("/ads/fresh")
-    public ResponseEntity<?> getFreshAds(@RequestParam int limit) throws Exception {
+    public ResponseEntity<?> getFreshAds(@RequestParam(required = false) Integer limit) throws Exception {
+        if (limit == null || limit <= 0) {
+            throw new ParameterException("missing or invalid limit parameter");
+        }
+
         List<Ad> ads = adService.getAds(freshAdsStrat, limit);
         List<AdDto> adDtos = adService.toDtos(ads);
 

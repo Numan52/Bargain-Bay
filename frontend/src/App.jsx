@@ -9,7 +9,7 @@ import CreateAd from './components/CreateAd'
 import CreateAdSuccess from './components/CreateAdSuccess'
 import AdDetails from './components/AdDetails'
 import { UserContext } from './Context/UserContext'
-import { getUserId } from './api/api'
+import { getUserId } from "./api/userApi"
 import {WebSocketProvider} from './Context/WebSocketContext'
 import Chats from './components/Chats'
 
