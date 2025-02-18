@@ -9,6 +9,7 @@ import { WebSocketContext } from  '../Context/WebSocketContext'
 import AdsCarousel from './AdsCarousel'
 import Searchbar from './Searchbar'
 import Separator from './Separator'
+import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
   const [ads, setAds] = useState([])
@@ -17,13 +18,17 @@ const Dashboard = () => {
   const [trendingAds, setTrendingAds] = useState([])
   const userInfo = useContext(UserContext)
   const [errorMessage, setErrorMessage] = useState("")
- 
+  const navigate = useNavigate()
 
   console.log("dashboard user id: ", userInfo)
 
   console.log("ads", ads)
 
+  console.log(19 / 10)
 
+  function handleSearch(input) {
+    navigate(`/search?query=${encodeURIComponent(input)}`)
+  }
 
 
   // TODO: check whether concurrent
@@ -60,7 +65,7 @@ const Dashboard = () => {
       <Header />
       
       <div className='dashboard'>
-        <Searchbar />
+        <Searchbar onSearch={(input) => handleSearch(input)}/>
         <div className='dashboard__ads-container'>
           <AdsCarousel ads={trendingAds} header="Currently trending"/>
 

@@ -6,15 +6,15 @@ import org.example.app.Exceptions.ExceptionUtil;
 import org.example.app.Exceptions.ParameterException;
 import org.example.app.Exceptions.UserException;
 import org.example.app.Models.Dtos.AdDto;
+import org.example.app.Models.Dtos.AdSearchResponse;
 import org.example.app.Models.Dtos.CreateAdDto;
 import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.User;
 import org.example.app.Security.JwtUtil;
 import org.example.app.Services.AdService;
-import org.example.app.Services.AdsFetching.FreshAdsStrat;
-import org.example.app.Services.AdsFetching.PersonalizedAdsStrat;
-import org.example.app.Services.AdsFetching.TrendingAdsStrat;
+import org.example.app.Services.AdsFetching.*;
 import org.example.app.Services.UserService;
+import org.example.app.Services.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -38,7 +38,11 @@ public class AdController {
     private final FreshAdsStrat freshAdsStrat;
     private final PersonalizedAdsStrat personalizedAdsStrat;
 
-    public AdController(AdService adService, JwtUtil jwtUtil, UserDao userDao, UserService userService, TrendingAdsStrat trendingAdsStrat, FreshAdsStrat freshAdsStrat, PersonalizedAdsStrat personalizedAdsStrat) {
+
+    public AdController(
+            AdService adService, JwtUtil jwtUtil, UserDao userDao, UserService userService,
+            TrendingAdsStrat trendingAdsStrat, FreshAdsStrat freshAdsStrat, PersonalizedAdsStrat personalizedAdsStrat
+    ) {
         this.adService = adService;
         this.jwtUtil = jwtUtil;
         this.userDao = userDao;
@@ -56,7 +60,7 @@ public class AdController {
             if (ad == null) {
                 return ResponseEntity.status(404).body(ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(404), "Ad not found", "/ad"));
             }
-            AdDto adDto = adService.toDto(ad);
+            AdDto adDto = Utils.toDto(ad);
             return ResponseEntity.ok(adDto);
         } catch (Exception e) {
             logger.error("error getting ad: ", e);
@@ -105,8 +109,13 @@ public class AdController {
         if (limit == null || limit <= 0) {
             throw new ParameterException("missing or invalid limit parameter");
         }
-        List<Ad> ads = adService.getAds(trendingAdsStrat, limit);
-        List<AdDto> adDtos = adService.toDtos(ads);
+
+        AdFetchingFilter filter = new AdFetchingFilter.Builder()
+                .limit(limit)
+                .build();
+
+        List<Ad> ads = adService.getAds(trendingAdsStrat, filter);
+        List<AdDto> adDtos = Utils.toDtos(ads);
 
         return ResponseEntity.ok(adDtos);
 
@@ -114,16 +123,38 @@ public class AdController {
 
 
     @GetMapping("/ads/fresh")
-    public ResponseEntity<?> getFreshAds(@RequestParam(required = false) Integer limit) throws Exception {
+    public ResponseEntity<?> getFreshAds(Integer limit) throws Exception {
         if (limit == null || limit <= 0) {
             throw new ParameterException("missing or invalid limit parameter");
         }
 
-        List<Ad> ads = adService.getAds(freshAdsStrat, limit);
-        List<AdDto> adDtos = adService.toDtos(ads);
+        AdFetchingFilter filter = new AdFetchingFilter.Builder()
+                .limit(limit)
+                .build();
+
+        List<Ad> ads = adService.getAds(freshAdsStrat, filter);
+        List<AdDto> adDtos = Utils.toDtos(ads);
 
         return ResponseEntity.ok(adDtos);
 
+    }
+
+
+    @GetMapping("/ads")
+    public ResponseEntity<?> getSearchedAds(String searchText, Integer offset, Integer limit) throws Exception {
+        if (searchText == null || searchText.isBlank() || offset == null || limit == null) {
+            throw new ParameterException("Missing or invalid Parameters. Provide the following Parameters: " + "<searchText>, <offset>, <limit>");
+        }
+
+        AdFetchingFilter filter = new AdFetchingFilter.Builder()
+                .limit(limit)
+                .offset(offset)
+                .query(searchText)
+                .build();
+
+        AdSearchResponse response = adService.getSearchedAds(filter);
+
+        return ResponseEntity.ok(response);
     }
 
 

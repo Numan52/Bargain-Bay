@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ParameterException.class)
     public ResponseEntity<?> handleParameterException(ParameterException e, HttpServletRequest request) {
-        logger.error("Parameter Exceptiopn: ", e);
+        logger.error("Parameter Exception: ", e);
         return ResponseEntity.status(400).body(ExceptionUtil.buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request.getServletPath()));
     }
 

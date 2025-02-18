@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import "../css/login.css"
 import PropTypes from 'prop-types';
-import { loginUser } from '../api/api';
+import { loginUser } from '../api/userApi';
 const apiUrl = import.meta.env.VITE_API_URL
 
 const Login = ({setToken, jwtMessage}) => {

@@ -1,0 +1,43 @@
+.search-results__container {
+    margin: 0 60px;
+}
+
+.search-result-ads__ads-container {
+    display: flex;
+    flex-direction: column;
+    
+    width: 40vw;
+    
+}
+
+
+.search-results__ads-container {
+    margin-top: 40px;
+}
+
+
+.search-result-ads__ad-container {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    height: 150px;
+}
+
+
+.search-result-ads__image-container {
+    min-width: 300px;
+    max-width: 300px;
+}
+
+
+.search-result-ads__ad-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    
+    
+}
+
+.search-result-ads__ad-info {
+    
+}

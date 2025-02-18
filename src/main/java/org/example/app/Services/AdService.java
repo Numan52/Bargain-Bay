@@ -5,12 +5,14 @@ import org.example.app.Daos.AdDao;
 import org.example.app.Daos.UserDao;
 import org.example.app.Exceptions.UserException;
 import org.example.app.Models.Dtos.AdDto;
+import org.example.app.Models.Dtos.AdSearchResponse;
 import org.example.app.Models.Dtos.CreateAdDto;
 import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.AdView;
 import org.example.app.Models.Entities.Image;
 import org.example.app.Models.Entities.User;
 import org.example.app.Services.AdsFetching.AdFetchStrategy;
+import org.example.app.Services.AdsFetching.AdFetchingFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -49,8 +51,25 @@ public class AdService {
 
 
     @Transactional
-    public List<Ad> getAds(AdFetchStrategy fetchStrategy, int limit) {
-        return fetchStrategy.fetchAds(limit);
+    public List<Ad> getAds(AdFetchStrategy fetchStrategy, AdFetchingFilter filter) {
+        return fetchStrategy.fetchAds(filter);
+    }
+
+    //TODO: REWRITE
+    public AdSearchResponse getSearchedAds(AdFetchingFilter filter) {
+        List<Ad> ads = adDao.getSearchedAds(filter);
+        logger.info("total ads legnth: {}", ads.size());
+
+        int lastAdIndex = filter.getOffset() + filter.getLimit() > ads.size() ?
+                filter.getOffset() + (ads.size() % filter.getLimit()) :
+                filter.getOffset() + filter.getLimit();
+
+        List<Ad> paginatedAds = ads.subList(
+                filter.getOffset(),
+                lastAdIndex
+        );
+        logger.info("paginated ads legnth: {}", paginatedAds.size());
+        return new AdSearchResponse(paginatedAds, ads.size());
     }
 
 
@@ -114,28 +133,5 @@ public class AdService {
     }
 
 
-    public AdDto toDto(Ad ad) {
-        return new AdDto(
-                ad.getId(),
-                ad.getTitle(),
-                ad.getPrice(),
-                ad.getDescription(),
-                ad.getCondition(),
-                ad.getUser().getId(),
-                ad.getImages().stream().map((image -> image.getUrl())).collect(Collectors.toList()),
-                ad.isHasPriority(),
-                ad.getCreatedAt(),
-                ad.getLastBumpedAt()
-        );
 
-    }
-
-
-    public List<AdDto> toDtos(List<Ad> ads) {
-        List<AdDto> adDtos = new ArrayList<>();
-        for (Ad ad : ads) {
-            adDtos.add(toDto(ad));
-        }
-        return adDtos;
-    }
 }

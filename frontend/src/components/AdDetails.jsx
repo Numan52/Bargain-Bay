@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import "../css/adDetails.css"
 import Header from './Header'
-import { markAdSeenByGuest, markAdSeenByUser } from '../api/api'
+import { markAdSeenByGuest, markAdSeenByUser } from '../api/adsApi'
 import { getUser } from "../api/userApi"
 import { getAd } from "../api/adsApi"
 import { UserContext } from '../Context/UserContext'

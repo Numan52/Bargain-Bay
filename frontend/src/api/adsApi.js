@@ -51,6 +51,15 @@ function getAd(id) {
     })
 }
 
+
+function getSearchedAds(searchText, offset, limit) {
+    return makeApiRequest({
+        endpoint: `/ads?searchText=${searchText}&offset=${offset}&limit=${limit}`,
+        method: "GET",
+    })
+}
+
+
 function markAdSeenByUser(adId) {
     return makeApiRequest({
         endpoint: `/ads/${adId}/user-views`,
@@ -68,8 +77,8 @@ function markAdSeenByGuest(adId) {
 }
 
 export {
-    getAd, getAds, getFreshAds, getPersonalizedAds, getTrendingAds,
-    markAdSeenByGuest, markAdSeenByUser
+    getAd, getAds, getFreshAds, postAd, getPersonalizedAds, getTrendingAds,
+    markAdSeenByGuest, markAdSeenByUser, getSearchedAds
 }
 
 

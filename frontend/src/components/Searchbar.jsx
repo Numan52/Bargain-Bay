@@ -2,12 +2,8 @@ import React, { useState } from 'react'
 import { CiSearch } from "react-icons/ci";
 import "../css/searchbar.css"
 
-const Searchbar = () => {
+const Searchbar = ({onSearch}) => {
   const [input, setInput] = useState("")
-
-  function handleSearch() {
-    
-  }
 
   return (
     <div className='searchbar__container'>
@@ -19,7 +15,7 @@ const Searchbar = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)} 
             />
-            <button className='searchbar__search-button' onClick={handleSearch}>
+            <button className='searchbar__search-button' onClick={() => onSearch(input)}>
                 <CiSearch size={24}/>
             </button>
         </div>

@@ -15,7 +15,7 @@ public class PersonalizedAdsStrat implements AdFetchStrategy {
     }
 
     @Override
-    public List<Ad> fetchAds(int limit) {
+    public List<Ad> fetchAds(AdFetchingFilter filter) {
         return List.of();
     }
 }

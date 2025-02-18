@@ -16,9 +16,9 @@ public class TrendingAdsStrat implements AdFetchStrategy{
     }
 
     @Override
-    public List<Ad> fetchAds(int limit) {
+    public List<Ad> fetchAds(AdFetchingFilter filter) {
         List<Ad> ads = adDao.getTrendingAds(40);
         Collections.shuffle(ads);
-        return ads.subList(0, Math.min(ads.size(), limit));
+        return ads.subList(0, Math.min(ads.size(), filter.getLimit()));
     }
 }

@@ -17,9 +17,10 @@ public class FreshAdsStrat implements AdFetchStrategy{
 
 
     @Override
-    public List<Ad> fetchAds(int limit) {
+    public List<Ad> fetchAds(AdFetchingFilter filter) {
         List<Ad> ads = adDao.getFreshAds(40);
         Collections.shuffle(ads);
-        return ads.subList(0, Math.min(ads.size(), limit));
+        return ads.subList(0, Math.min(ads.size(), filter.getLimit()));
+
     }
 }

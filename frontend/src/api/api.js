@@ -7,7 +7,7 @@ async function makeApiRequest({
     method = "GET", 
     body = null, 
     requiresAuth = false, 
-    customHeaders = {} 
+    customHeaders = {},
 }) {
     if (requiresAuth) {
         const token = getJwt()
@@ -22,7 +22,7 @@ async function makeApiRequest({
         const response = await fetch(`${apiUrl}${endpoint}`, {
             method,
             headers: customHeaders,
-            body
+            body,
         })
     
         const data = await response.json().catch(() => null)

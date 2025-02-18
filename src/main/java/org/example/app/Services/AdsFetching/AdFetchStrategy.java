@@ -8,5 +8,5 @@ import java.util.List;
 @Component
 public interface AdFetchStrategy {
 
-    List<Ad> fetchAds(int limit);
+    List<Ad> fetchAds(AdFetchingFilter filter);
 }

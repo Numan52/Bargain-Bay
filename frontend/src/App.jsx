@@ -12,6 +12,8 @@ import { UserContext } from './Context/UserContext'
 import { getUserId } from "./api/userApi"
 import {WebSocketProvider} from './Context/WebSocketContext'
 import Chats from './components/Chats'
+import SearchResults from './components/SearchResults'
+import SearchResultsPage from './components/SearchResultsPage'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -125,6 +127,13 @@ function App() {
             <Route
               path="/success" 
               element={token ? <CreateAdSuccess /> : <Navigate to="/login" replace />} 
+            >
+            </Route>
+
+
+            <Route
+              path="/search" 
+              element={<SearchResultsPage />} 
             >
             </Route>
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.AdView;
 import org.example.app.Models.Entities.Image;
+import org.example.app.Services.AdsFetching.AdFetchingFilter;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -44,6 +45,29 @@ public class AdDao {
                 .getResultList();
         return freshAds;
     }
+
+//    // TODO: create indices on lower(title) and lower(description)
+//    public List<Ad> getSearchedAds(AdFetchingFilter filter) {
+//        List<Ad> freshAds = entityManager.createQuery(
+//                        "SELECT a from Ad a WHERE lower(a.title) LIKE :query OR lower(a.description) LIKE :query", Ad.class
+//                )
+//                .setParameter("query", "%" + filter.getQuery().toLowerCase() + "%")
+//                .setFirstResult(filter.getOffset())
+//                .setMaxResults(filter.getLimit())
+//                .getResultList();
+//        return freshAds;
+//    }
+
+
+    public List<Ad> getSearchedAds(AdFetchingFilter filter) {
+        List<Ad> freshAds = entityManager.createQuery(
+                        "SELECT a from Ad a WHERE lower(a.title) LIKE :query OR lower(a.description) LIKE :query", Ad.class
+                )
+                .setParameter("query", "%" + filter.getQuery().toLowerCase() + "%")
+                .getResultList();
+        return freshAds;
+    }
+
 
 
     public void updateViewsCount(UUID adId) {
