@@ -100,6 +100,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     public boolean requiresAuth(String path, HttpServletRequest request) {
         logger.info("PATH: {}", path);
+        if (path.equals("/ads/personalized")) {
+            return true;
+
+        }
         if (path.equals("/register") ||
                 path.equals("/login") ||
                 (path.startsWith("/ads") && request.getMethod().equalsIgnoreCase("GET")) ||

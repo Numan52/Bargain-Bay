@@ -28,16 +28,9 @@ const SearchResults = () => {
     console.log(allFetchedAds)
 
 
-    // useEffect(() => {
-    //   setAllFetchedAds({})
-    //   setFetchedPages([]);
-    //   setPage(1)
-    //   setTotalAds(0)
-    //   console.log("query changed")
-    // }, [query])
+    
 
-
-    // FIX
+  
     let adsToDisplay = useMemo(() => {
       return allFetchedAds[currentPage] || []
      
@@ -45,7 +38,11 @@ const SearchResults = () => {
     
 
     function handleSearch(input) {
-      navigate(`/search?query=${encodeURIComponent(input)}`)
+      console.log(input)
+      if (input !== null && input.length > 0) {
+        navigate(`/search?query=${encodeURIComponent(input)}`)
+      }
+      
     }
 
 
@@ -56,7 +53,7 @@ const SearchResults = () => {
         return
       }
 
-      if (fetchedPages.includes(currentPage)) {
+      if (fetchedPages.includes(currentPage) || !query) {
         return
       }
 

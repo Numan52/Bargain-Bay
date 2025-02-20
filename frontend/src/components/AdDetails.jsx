@@ -18,6 +18,8 @@ const AdDetails = () => {
   const userInfo = useContext(UserContext)
   const {publishMessage} = useContext(WebSocketContext)
   
+  console.log(JSON.stringify(userInfo))
+
   console.log("user: ", userInfo)
   // update ad view count
   useEffect(() => {
@@ -32,7 +34,7 @@ const AdDetails = () => {
     if (!viewedAds.includes(adId)) {
       try {
         console.log("includes")
-        if (userInfo) {
+        if (userInfo.userId) {
           markAdSeenByUser(adId)
           console.log("marked ad as seen by user")
         } else {

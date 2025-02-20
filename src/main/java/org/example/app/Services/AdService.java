@@ -4,11 +4,10 @@ import jakarta.transaction.Transactional;
 import org.example.app.Daos.AdDao;
 import org.example.app.Daos.UserDao;
 import org.example.app.Exceptions.UserException;
-import org.example.app.Models.Dtos.AdDto;
 import org.example.app.Models.Dtos.AdSearchResponse;
 import org.example.app.Models.Dtos.CreateAdDto;
 import org.example.app.Models.Entities.Ad;
-import org.example.app.Models.Entities.AdView;
+import org.example.app.Models.Entities.UserActivity;
 import org.example.app.Models.Entities.Image;
 import org.example.app.Models.Entities.User;
 import org.example.app.Services.AdsFetching.AdFetchStrategy;
@@ -21,10 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class AdService {
@@ -115,7 +112,7 @@ public class AdService {
 
         boolean hasSeenAd = adDao.checkIfUserSeen(user.getId(), adId);
         if (!hasSeenAd) {
-            adDao.saveAdView(new AdView(user, ad, null));
+            adDao.saveAdView(new UserActivity(user, ad, null));
             adDao.updateViewsCount(adId);
         }
     }
@@ -127,7 +124,7 @@ public class AdService {
 
         boolean hasSeenAd = adDao.checkIfGuestSeen(ipAddress, adId);
         if (!hasSeenAd) {
-            adDao.saveAdView(new AdView(null, ad, ipAddress));
+            adDao.saveAdView(new UserActivity(null, ad, ipAddress));
             adDao.updateViewsCount(adId);
         }
     }

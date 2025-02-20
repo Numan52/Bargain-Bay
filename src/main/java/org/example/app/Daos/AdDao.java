@@ -2,7 +2,7 @@ package org.example.app.Daos;
 
 import jakarta.persistence.*;
 import org.example.app.Models.Entities.Ad;
-import org.example.app.Models.Entities.AdView;
+import org.example.app.Models.Entities.UserActivity;
 import org.example.app.Models.Entities.Image;
 import org.example.app.Services.AdsFetching.AdFetchingFilter;
 import org.springframework.stereotype.Repository;
@@ -58,16 +58,35 @@ public class AdDao {
 //        return freshAds;
 //    }
 
-
+    // TODO: PLACE LIMIT HERE OR NOT?
     public List<Ad> getSearchedAds(AdFetchingFilter filter) {
-        List<Ad> freshAds = entityManager.createQuery(
+        List<Ad> searchedAds = entityManager.createQuery(
                         "SELECT a from Ad a WHERE lower(a.title) LIKE :query OR lower(a.description) LIKE :query", Ad.class
                 )
                 .setParameter("query", "%" + filter.getQuery().toLowerCase() + "%")
                 .getResultList();
-        return freshAds;
+        return searchedAds;
     }
 
+
+    public List<Ad> getPersonalizedAds(AdFetchingFilter filter) {
+        List<Ad> lastViewedAds = entityManager.createQuery(
+                "SELECT ua.ad FROM UserActivity ua WHERE ua.user.id = :userId ORDER BY ua.timestamp DESC", Ad.class
+        )
+                .setParameter("userId", filter.getUserId())
+                .setMaxResults(5)
+                .getResultList();
+
+        if (lastViewedAds.isEmpty()) {
+            // No previous views, return trending ads instead
+            return getTrendingAds(filter.getLimit());
+        }
+
+        AdFetchingFilter filter = new AdFetchingFilter.Builder().query()
+
+        List<Ad> personalizedAds = getSearchedAds();
+        return personalizedAds;
+    }
 
 
     public void updateViewsCount(UUID adId) {
@@ -79,7 +98,7 @@ public class AdDao {
 
     public boolean checkIfUserSeen(UUID userId, UUID adId) {
         boolean hasSeen = (boolean) entityManager.createNativeQuery(
-                "SELECT EXISTS(SELECT av.user_id FROM ad_view av WHERE av.user_id = :userId and av.ad_id = :adId) "
+                "SELECT EXISTS(SELECT ua.user_id FROM user_activity ua WHERE ua.user_id = :userId and ua.ad_id = :adId) "
         )
                 .setParameter("adId", adId)
                 .setParameter("userId", userId)
@@ -91,7 +110,7 @@ public class AdDao {
 
     public boolean checkIfGuestSeen(String ipAddress, UUID adId) {
         boolean hasSeen = (boolean) entityManager.createNativeQuery(
-                        "SELECT EXISTS(SELECT av.user_id FROM ad_view av WHERE av.ip_address = :ipAddress and av.ad_id = :adId) "
+                        "SELECT EXISTS(SELECT ua.user_id FROM user_activity ua WHERE ua.ip_address = :ipAddress and ua.ad_id = :adId) "
                 )
                 .setParameter("adId", adId)
                 .setParameter("ipAddress", ipAddress)
@@ -115,8 +134,9 @@ public class AdDao {
         }
     }
 
-    public void saveAdView(AdView adView) {
-        entityManager.persist(adView);
+    public void saveAdView(UserActivity userActivity) {
+        entityManager.persist(userActivity);
     }
+
 
 }

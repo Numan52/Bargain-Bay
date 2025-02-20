@@ -27,7 +27,11 @@ const Dashboard = () => {
   console.log(19 / 10)
 
   function handleSearch(input) {
-    navigate(`/search?query=${encodeURIComponent(input)}`)
+    console.log(input)
+    if (input !== null && input.length > 0) {
+      navigate(`/search?query=${encodeURIComponent(input)}`)
+    }
+    
   }
 
 

@@ -1,47 +1,33 @@
 package org.example.app.Services.AdsFetching;
 
 
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.UUID;
+
+@Getter
+@Setter
 public class AdFetchingFilter {
     private int limit;
     private int offset;
     private String query;
+    private UUID userId;
 
     public AdFetchingFilter(Builder builder) {
         this.limit = builder.limit;
         this.offset = builder.offset;
         this.query = builder.query;
+        this.userId = builder.userId;
     }
 
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
-    public String getQuery() {
-        return query;
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
-    }
 
 
     public static class Builder {
         private int limit = 20;
         private int offset = 0;
         private String query = "";
+        private UUID userId = null;
 
         public Builder limit(int limit) {
             this.limit = limit;
@@ -55,6 +41,11 @@ public class AdFetchingFilter {
 
         public Builder query(String query) {
             this.query = query;
+            return this;
+        }
+
+        public Builder userId(UUID userId) {
+            this.userId = userId;
             return this;
         }
 

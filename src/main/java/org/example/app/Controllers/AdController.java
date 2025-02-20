@@ -136,6 +136,26 @@ public class AdController {
         List<AdDto> adDtos = Utils.toDtos(ads);
 
         return ResponseEntity.ok(adDtos);
+    }
+
+
+    @GetMapping("/ads/personalized")
+    public ResponseEntity<?> getPersonalizedAds(Integer limit, HttpServletRequest request) throws Exception {
+        if (limit == null || limit <= 0) {
+            throw new ParameterException("missing or invalid limit parameter");
+        }
+        String username = (String) request.getAttribute("username");
+        User user = userService.findUserByName(username);
+
+        AdFetchingFilter filter = new AdFetchingFilter.Builder()
+                .limit(limit)
+                .userId(user.getId())
+                .build();
+
+        List<Ad> ads = adService.getAds(personalizedAdsStrat, filter);
+        List<AdDto> adDtos = Utils.toDtos(ads);
+
+        return ResponseEntity.ok(adDtos);
 
     }
 
