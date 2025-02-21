@@ -78,7 +78,8 @@ const Dashboard = () => {
           <AdsCarousel ads={freshAds} header="Recently added"/>
 
           <Separator />
-          {/* <AdsCarousel ads={personalizedAds} header="For you"/>  */}
+          
+          <AdsCarousel ads={personalizedAds} header="For you"/> 
 
           {/* <Ads ads={ads}/> */}
         </div>

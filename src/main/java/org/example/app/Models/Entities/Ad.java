@@ -3,6 +3,7 @@ package org.example.app.Models.Entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@ToString
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,8 +23,11 @@ public class Ad {
     private String title;
     @Column(nullable = false)
     private float price;
-    @Column(nullable = false)
+
+    // TODO: check for errors regarding length
+    @Column(nullable = false, length = 1000)
     private String description;
+
     @Column(nullable = false)
     private String condition;
     @Column(nullable = false)

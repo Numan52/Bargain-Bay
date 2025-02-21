@@ -139,7 +139,7 @@ public class AdController {
     }
 
 
-    @GetMapping("/ads/personalized")
+    @GetMapping("/ads/personalized-user")
     public ResponseEntity<?> getPersonalizedAds(Integer limit, HttpServletRequest request) throws Exception {
         if (limit == null || limit <= 0) {
             throw new ParameterException("missing or invalid limit parameter");

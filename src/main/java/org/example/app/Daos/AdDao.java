@@ -1,10 +1,13 @@
 package org.example.app.Daos;
 
 import jakarta.persistence.*;
+import org.example.app.Controllers.AuthController;
 import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.UserActivity;
 import org.example.app.Models.Entities.Image;
 import org.example.app.Services.AdsFetching.AdFetchingFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,6 +15,10 @@ import java.util.UUID;
 
 @Repository
 public class AdDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(AdDao.class);
+
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -77,15 +84,39 @@ public class AdDao {
                 .setMaxResults(5)
                 .getResultList();
 
+        for (Ad ad : lastViewedAds) {
+            logger.info("last viewed Ad: {}", ad);
+        }
+
         if (lastViewedAds.isEmpty()) {
             // No previous views, return trending ads instead
             return getTrendingAds(filter.getLimit());
         }
 
-        AdFetchingFilter filter = new AdFetchingFilter.Builder().query()
+        Query query = getPersonalizedAdsQuery(lastViewedAds);
+        logger.info("final query: {}", query.toString());
 
-        List<Ad> personalizedAds = getSearchedAds();
-        return personalizedAds;
+        return query.setMaxResults(filter.getLimit()).getResultList();
+    }
+
+
+    private Query getPersonalizedAdsQuery(List<Ad> lastViewedAds) {
+        StringBuilder queryString = new StringBuilder("Select * FROM Ad WHERE ");
+        for (int i = 0; i < lastViewedAds.size(); i++) {
+            if (i > 0) {
+                queryString.append(" OR ");
+            }
+            queryString.append("(title_tokens || ' ' || description_tokens) @@ to_tsquery('english', :title" + i + ")");
+        }
+
+        Query query = entityManager.createNativeQuery(queryString.toString(), Ad.class);
+
+        for (int i = 0; i < lastViewedAds.size(); i++) {
+            String title = lastViewedAds.get(i).getTitle();
+            query.setParameter("title" + i, title.replaceAll("\\s+", " & "));
+        }
+
+        return query;
     }
 
 

@@ -28,11 +28,12 @@ function getTrendingAds(limit) {
 
 
 function getPersonalizedAds(limit) {
-    // return makeApiRequest({
-    //     endpoint: `/ads?offset=${offset}&limit=${limit}`,
-    //     method: "GET",
-    // })
-    return null
+    return makeApiRequest({
+        endpoint: `/ads/personalized-user?limit=${limit}`,
+        method: "GET",
+        requiresAuth: true
+    })
+    
 }
 
 

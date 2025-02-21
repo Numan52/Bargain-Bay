@@ -18,7 +18,7 @@ public class PersonalizedAdsStrat implements AdFetchStrategy {
     @Override
     public List<Ad> fetchAds(AdFetchingFilter filter) {
         List<Ad> ads = adDao.getPersonalizedAds(filter);
-        Collections.shuffle(ads);
+//        Collections.shuffle(ads);
         return ads.subList(0, Math.min(ads.size(), filter.getLimit()));
     }
 }
