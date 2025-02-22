@@ -43,7 +43,7 @@ const Dashboard = () => {
 
         const [trendingAds, personalizedAds, freshAds] = await Promise.all([
           getTrendingAds(20),
-          getPersonalizedAds(20),
+          userInfo.userId ? getPersonalizedAds(20) : [],
           getFreshAds(20)
         ])
         console.log("Fetching finished at:", new Date().toISOString());
