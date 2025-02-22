@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const AdsCarousel = ({ads, header}) => {
   const adsCarouselRef = useRef(null)
   console.log(`ads for ${header}: `, ads)
+  
   function scrollCarousel(direction) {
     const scrollAmount = 400
     adsCarouselRef.current.scrollBy({

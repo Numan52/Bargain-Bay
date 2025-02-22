@@ -1,0 +1,132 @@
+/* Chat container */
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  /* Floating chat button */
+  .chat-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chat-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Chat window */
+  .chat-box {
+    width: 300px;
+    max-height: 50vh;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+  }
+  
+  /* Chat header */
+  .chat-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  /* Chat messages */
+  .chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+  }
+  
+  /* Chat input */
+  .chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .chat-input button {
+    margin-left: 5px;
+    padding: 8px 12px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .chat-input button:hover {
+    background: #0056b3;
+  }
+  
+  /* Chat message styling */
+  .chat-message {
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    max-width: 80%;
+  }
+  
+
+  .chats__chat-ad-id {
+    width: 90%;
+    margin: auto;
+    margin-bottom: 5px;
+  }
+
+  .chats__ai-assistant-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+
+  .chat-message.user {
+    background: #007bff;
+    color: white;
+    align-self: flex-end;
+  }
+  
+  .chat-message.assistant {
+    background: #ddd;
+    color: black;
+    align-self: flex-start;
+  }
+  

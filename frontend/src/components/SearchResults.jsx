@@ -39,7 +39,7 @@ const SearchResults = () => {
 
     function handleSearch(input) {
       console.log(input)
-      if (input !== null && input.length > 0) {
+      if (input !== null && input.trim().length > 0) {
         navigate(`/search?query=${encodeURIComponent(input)}`)
       }
       

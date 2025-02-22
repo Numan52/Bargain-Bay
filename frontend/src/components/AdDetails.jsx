@@ -73,6 +73,10 @@ const AdDetails = () => {
 
 
   function sendMessage() {
+    if (!chatMessage.trim()) {
+      return
+    }
+
     const message = {
       senderId: userInfo.userId,
       receiverId: ad.userId,

@@ -10,6 +10,7 @@ import AdsCarousel from './AdsCarousel'
 import Searchbar from './Searchbar'
 import Separator from './Separator'
 import { useNavigate } from 'react-router-dom'
+import Button from '@mui/material/Button';
 
 const Dashboard = () => {
   const [ads, setAds] = useState([])
@@ -69,6 +70,7 @@ const Dashboard = () => {
       <Header />
       
       <div className='dashboard'>
+        
         <Searchbar onSearch={(input) => handleSearch(input)}/>
         <div className='dashboard__ads-container'>
           <AdsCarousel ads={trendingAds} header="Currently trending"/>

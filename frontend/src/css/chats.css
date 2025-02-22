@@ -12,6 +12,12 @@
 }
 
 
+.chats__main {
+    display: flex;
+    gap: 20px;
+}
+
+
 .chats__contact-container img {
     width: 30px;
     height: 30px;

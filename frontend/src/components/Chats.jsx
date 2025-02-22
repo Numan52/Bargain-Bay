@@ -6,6 +6,7 @@ import "../css/chats.css"
 import Header from './Header'
 import { WebSocketContext } from '../Context/WebSocketContext'
 import { formatDateTime, DateToTime } from '../util.js/dateUtils'
+import AiChatWidget from './AiChatWidget'
 // import { RotatingLines } from 'react-loader-spinner'
 
 
@@ -128,7 +129,7 @@ const Chats = () => {
 
 
   function sendMessage() {
-    if (!inputText) {
+    if (!inputText.trim()) {
       return
     }
 
@@ -189,70 +190,83 @@ const Chats = () => {
       <div className='chats__container'>
         <h2>Your Messages</h2>
 
-        <div className='messages-content-container'>
-        
-        <div className='messages-contacts-container'>
-          {allContacts.map((contact) => (
-            <div key={contact.chatId} className='chats__contact-container' onClick={() => handleContactSelection(contact.chatId, false)}>
-              <img src="/user.png" alt="user image" />
-              <div className='chats__contact-details'>
-                <div className='chats__contact_username-container'>
-                  <span className={`chats__contact-username ${contact.chatId === selectedChatId ? 'chats__contact-selected' : ''}`}>{contact.username}</span>
-                  {contact.unreadMessages > 0 && <span className='chats__contact-unseen-messages'>{contact.unreadMessages > 100 ? '100+' : contact.unreadMessages}</span>}
-                </div>
-                
-                <div className='chats_contact-last-message-container'>
-                  <span>{contact.lastMessage}</span>
-                  <span>{formatDateTime(contact.lastMessageTime)}</span>
-                </div>
-                
-              </div>
-            </div>
-          ))}
 
-          
-          {/* {loading &&
-                  <div className='feed-loading-info'>
-                    <RotatingLines
-                        visible={true}
-                        height="80"
-                        width="80"
-                        color="grey"
-                        strokeWidth="3"
-                        animationDuration="0.75"
-                        ariaLabel="rotating-lines-loading"
-                        wrapperStyle={{}}
-                        wrapperClass=""
-                    />
+        <div className='chats__main'>
+            <div className='messages-content-container'>
+            
+            <div className='messages-contacts-container'>
+              {allContacts.map((contact) => (
+                <div key={contact.chatId} className='chats__contact-container' onClick={() => handleContactSelection(contact.chatId, false)}>
+                  <img src="/user.png" alt="user image" />
+                  <div className='chats__contact-details'>
+                    <div className='chats__contact_username-container'>
+                      <span className={`chats__contact-username ${contact.chatId === selectedChatId ? 'chats__contact-selected' : ''}`}>{contact.username}</span>
+                      {contact.unreadMessages > 0 && <span className='chats__contact-unseen-messages'>{contact.unreadMessages > 100 ? '100+' : contact.unreadMessages}</span>}
+                    </div>
+                    
+                    <div className='chats_contact-last-message-container'>
+                      <span>{contact.lastMessage}</span>
+                      <span>{formatDateTime(contact.lastMessageTime)}</span>
+                    </div>
                     
                   </div>
-          } */}
-          
-        </div>
-        <div className='chats__messages-area-container'>
-          <div className='chats__messages-container' ref={chatRef}>
-            {renderMessages()}
+                </div>
+              ))}
+
+              
+              {/* {loading &&
+                      <div className='feed-loading-info'>
+                        <RotatingLines
+                            visible={true}
+                            height="80"
+                            width="80"
+                            color="grey"
+                            strokeWidth="3"
+                            animationDuration="0.75"
+                            ariaLabel="rotating-lines-loading"
+                            wrapperStyle={{}}
+                            wrapperClass=""
+                        />
+                        
+                      </div>
+              } */}
+              
+            </div>
+
+            <div className='chats__messages-area-container'>
+              <div className='chats__messages-container' ref={chatRef}>
+                {renderMessages()}
+              </div>
+
+              {selectedChatId  &&
+                  <div className='chats__send-message-container'>
+                      <textarea 
+                          ref={textareaRef} 
+                          placeholder="Type a message"
+                          rows={1}
+                          value={inputText}
+                          onChange={(e) => handleMsgInput(e)}
+                      >
+
+                  </textarea>
+                      <img src="/send.png" alt="" onClick={sendMessage}/>
+                  </div>
+              }
+            </div>
+            
+
+            
           </div>
 
-          {selectedChatId  &&
-              <div className='chats__send-message-container'>
-                  <textarea 
-                      ref={textareaRef} 
-                      placeholder="Type a message"
-                      rows={1}
-                      value={inputText}
-                      onChange={(e) => handleMsgInput(e)}
-                  >
-
-              </textarea>
-                  <img src="/send.png" alt="" onClick={sendMessage}/>
-              </div>
-          }
+          <div className='chats__ai-container'>
+            <AiChatWidget />
+          </div>
         </div>
-        
 
         
-      </div>
+        
+        
+
       </div>
       
       
