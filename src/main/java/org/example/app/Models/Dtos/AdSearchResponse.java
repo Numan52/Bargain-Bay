@@ -1,6 +1,5 @@
 package org.example.app.Models.Dtos;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.app.Models.Entities.Ad;
@@ -16,7 +15,7 @@ public class AdSearchResponse {
     private int totalAds;
 
     public AdSearchResponse(List<Ad> ads, int totalAds) {
-        this.ads = Utils.toDtos(ads);
+        this.ads = Utils.toAdDtos(ads);
         this.totalAds = totalAds;
     }
 }

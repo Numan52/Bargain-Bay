@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class Utils {
 
-    public static AdDto toDto(Ad ad) {
+    public static AdDto toAdDto(Ad ad) {
         return new AdDto(
                 ad.getId(),
                 ad.getTitle(),
@@ -26,10 +26,10 @@ public class Utils {
     }
 
 
-    public static List<AdDto> toDtos(List<Ad> ads) {
+    public static List<AdDto> toAdDtos(List<Ad> ads) {
         List<AdDto> adDtos = new ArrayList<>();
         for (Ad ad : ads) {
-            adDtos.add(toDto(ad));
+            adDtos.add(toAdDto(ad));
         }
         return adDtos;
     }

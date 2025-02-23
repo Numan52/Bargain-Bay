@@ -1,9 +1,12 @@
 package org.example.app.Models.Dtos;
 
+import lombok.ToString;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@ToString
 public class AdDto {
     private UUID id;
     private String title;

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.example.app.Daos.AdDao;
 import org.example.app.Daos.UserDao;
 import org.example.app.Exceptions.UserException;
+import org.example.app.Models.Dtos.AdDto;
 import org.example.app.Models.Dtos.AdSearchResponse;
 import org.example.app.Models.Dtos.CreateAdDto;
 import org.example.app.Models.Entities.Ad;

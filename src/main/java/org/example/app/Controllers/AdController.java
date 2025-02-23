@@ -60,7 +60,7 @@ public class AdController {
             if (ad == null) {
                 return ResponseEntity.status(404).body(ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(404), "Ad not found", "/ad"));
             }
-            AdDto adDto = Utils.toDto(ad);
+            AdDto adDto = Utils.toAdDto(ad);
             return ResponseEntity.ok(adDto);
         } catch (Exception e) {
             logger.error("error getting ad: ", e);
@@ -115,7 +115,7 @@ public class AdController {
                 .build();
 
         List<Ad> ads = adService.getAds(trendingAdsStrat, filter);
-        List<AdDto> adDtos = Utils.toDtos(ads);
+        List<AdDto> adDtos = Utils.toAdDtos(ads);
 
         return ResponseEntity.ok(adDtos);
 
@@ -133,7 +133,7 @@ public class AdController {
                 .build();
 
         List<Ad> ads = adService.getAds(freshAdsStrat, filter);
-        List<AdDto> adDtos = Utils.toDtos(ads);
+        List<AdDto> adDtos = Utils.toAdDtos(ads);
 
         return ResponseEntity.ok(adDtos);
     }
@@ -153,7 +153,7 @@ public class AdController {
                 .build();
 
         List<Ad> ads = adService.getAds(personalizedAdsStrat, filter);
-        List<AdDto> adDtos = Utils.toDtos(ads);
+        List<AdDto> adDtos = Utils.toAdDtos(ads);
 
         return ResponseEntity.ok(adDtos);
 

@@ -154,6 +154,8 @@ const Chats = () => {
 
 
   function renderMessages() {
+    
+    let lastMessage = null
     let lastMessageDate = null
 
     return chatMessages.map((message) => {
@@ -161,13 +163,33 @@ const Chats = () => {
       const messageDate = new Date(message.sentAt).toLocaleDateString()
       const fromToday = new Date().toLocaleDateString() === messageDate
       const showDate = messageDate !== lastMessageDate
+      
+
+      let displayAdInfo = message?.ad !== null && message.ad.id !== lastMessage.ad?.id
+      
+
       lastMessageDate = messageDate
+      lastMessage = message
+
+      const sender = allContacts.find((contact) => contact.userId === message.senderId)
+      const senderName = sender?.username ?? "You"
+      const verb = sender ? "is" : "are"
+      const adInfoMessage = `${senderName} ${verb} interested in the following product: `
 
       return (
         <>
           {showDate && 
             <div className='chats__date-separator'>
               {fromToday ? "Today" : messageDate}
+            </div>
+          }
+          {displayAdInfo &&
+            <div className='chats__ad-info'>
+              {adInfoMessage} 
+              <Link className='chats__ad-info-title' to={`/ad/${message.ad.id}`}>
+                {message.ad?.title}
+              </Link>
+              
             </div>
           }
           <div className={`chats__message ${message.senderId === userInfo.userId ? 'chats__own-message' : 'chats__other-message' }`} key={message.id}>

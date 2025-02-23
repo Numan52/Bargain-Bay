@@ -18,4 +18,5 @@ public class MessageDto {
     private UUID chatId;
     private LocalDateTime sentAt;
     private String content;
+    private AdDto ad;
 }

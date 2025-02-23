@@ -3,6 +3,7 @@ import { getJwt } from '../util.js/jwtUtils'
 import { postAd } from "../api/adsApi"
 import { useNavigate } from 'react-router-dom'
 import Header from './Header'
+import "../css/createAd.css"
 const apiUrl = import.meta.env.VITE_API_URL
 
 const CreateAd = () => {
@@ -71,29 +72,34 @@ const CreateAd = () => {
 
         
     return (
-        <div>
+        <div className='create-ad__container'>
             <Header />
-            <form onSubmit={submitAd}>
+            <form onSubmit={submitAd} className='create-ad__form'>
                 <div className='file-container'>
-                    <label htmlFor="images"></label>
-                    <input type="file" id='images' name='images' onChange={handleFileChange} multiple/>
+                    <label className='create-ad__section-label' htmlFor="images">Pictures</label>
+                    <input className='create-ad__input' type="file" id='images' name='images' onChange={handleFileChange} multiple/>
                 </div>
 
                 <div className='price-container'>
-                    <label htmlFor="price">Price</label> <br />
-                    <div>€</div>
-                    <input 
-                        inputMode='decimal' 
-                        id='price'
-                        name='price'
-                        value={adData.price}
-                        onChange={handleInputChange}
-                        required
-                    />
+                    <label className='create-ad__section-label' htmlFor="price">Price</label> <br />
+                    <div className='create-ad__price'>
+                        <div>€</div>
+                        <input 
+                            className='create-ad__input'
+                            inputMode='decimal' 
+                            id='price'
+                            name='price'
+                            value={adData.price}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </div>
+                    
                 </div>
                 <div className='title-container'>
-                    <label htmlFor="title">Title</label> <br />
+                    <label className='create-ad__section-label' htmlFor="title">Title</label> <br />
                     <input 
+                        className='create-ad__input'
                         type="text" 
                         id='title'
                         name='title'
@@ -103,26 +109,30 @@ const CreateAd = () => {
                     />
                 </div>
                 <div className='condition-container'>
-                    <div>Condition</div>
-                    {["NEW", "LIKE NEW", "USED", "BROKEN"].map((condition) => (
-                        <div key={condition}>
-                            <input 
-                                type="radio"
-                                name='condition'
-                                id={condition.toLowerCase()}
-                                value={condition}
-                                checked={condition === adData.condition}
-                                onChange={handleInputChange}
-                            />
-                            <label htmlFor={condition.toLocaleLowerCase()}>{condition}</label> <br />
-                        </div>
-                    ))}
+                    <label className='create-ad__section-label' >Condition</label>
+                    <div className='create-ad__conditions-container'>
+                        {["NEW", "LIKE NEW", "USED", "BROKEN"].map((condition) => (
+                            <div key={condition}>
+                                <input 
+                                    type="radio"
+                                    name='condition'
+                                    id={condition.toLowerCase()}
+                                    value={condition}
+                                    checked={condition === adData.condition}
+                                    onChange={handleInputChange}
+                                />
+                                <label htmlFor={condition.toLocaleLowerCase()}>{condition}</label> <br />
+                            </div>
+                        ))}
+                    </div>
+                    
                 
                 </div>
 
                 <div className='description-container'>
-                    <label htmlFor="description">Description</label> <br />
+                    <label className='create-ad__section-label' htmlFor="description">Description</label> <br />
                     <textarea 
+                        className='create-ad__textarea'
                         name="description" 
                         id="description"
                         value={adData.description}
@@ -132,7 +142,7 @@ const CreateAd = () => {
 
                     </textarea>
                 </div>
-                <button className='submit-ad-btn'>Create Ad</button>
+                <button className='create-ad__submit-ad-btn'>Create Ad</button>
 
                 {errorMsg && 
                     <div>

@@ -33,19 +33,24 @@ public class Message {
     private LocalDateTime sentAt;
     private String content;
 
+    @ManyToOne
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
+
 
     public Message() {
 
     }
 
 
-    public Message(User sender, User receiver, boolean wasSeen, Chat chat, LocalDateTime sentAt, String content) {
+    public Message(User sender, User receiver, boolean wasSeen, Chat chat, LocalDateTime sentAt, String content, Ad ad) {
         this.sender = sender;
         this.receiver = receiver;
         this.wasSeen = wasSeen;
         this.chat = chat;
         this.sentAt = sentAt;
         this.content = content;
+        this.ad = ad;
     }
 
 

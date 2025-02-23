@@ -2,14 +2,18 @@ package org.example.app.Controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.app.Exceptions.ExceptionUtil;
+import org.example.app.Models.Dtos.AdDto;
 import org.example.app.Models.Dtos.ChatContactsDto;
 import org.example.app.Models.Dtos.ChatDto;
 import org.example.app.Models.Dtos.MessageDto;
+import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.Chat;
 import org.example.app.Models.Entities.Message;
 import org.example.app.Models.Entities.User;
+import org.example.app.Services.AdService;
 import org.example.app.Services.ChatService;
 import org.example.app.Services.UserService;
+import org.example.app.Services.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,51 +40,61 @@ public class ChatController {
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatService chatService;
     private final UserService userService;
+    private final AdService adService;
 
     @Autowired
-    public ChatController(SimpMessagingTemplate messagingTemplate, ChatService chatService, UserService userService) {
+    public ChatController(SimpMessagingTemplate messagingTemplate, ChatService chatService, UserService userService, AdService adService) {
         this.messagingTemplate = messagingTemplate;
         this.chatService = chatService;
         this.userService = userService;
+        this.adService = adService;
     }
 
 
     @GetMapping("/chats/{chatId}/messages")
     public ResponseEntity<?> getChat(@PathVariable UUID chatId, HttpServletRequest request) {
-        try {
-            String username = (String) request.getAttribute("username");
-            User currentUser = userService.findUserByName(username);
-            Chat chat= chatService.findChat(chatId);
+        String username = (String) request.getAttribute("username");
+        User currentUser = userService.findUserByName(username);
+        Chat chat= chatService.findChat(chatId);
 
-                if (!chat.getUserOne().getId().equals(currentUser.getId()) && !chat.getUserTwo().getId().equals(currentUser.getId())) {
-                logger.warn("User {} is not allowed to view chat {}", currentUser.getId(), chat.getId());
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ExceptionUtil.buildErrorResponse(HttpStatus.FORBIDDEN,
-                        "You are not allowed to view this chat", "/chats/" + chatId +  "/messages"));
-            }
-
-            List<Message> messages = chatService.findMessagesByChat(chat.getId());
-            ChatDto chatDto = new ChatDto(
-                    chat.getId(),
-                    chat.getCreatedAt(),
-                    chat.getUserOne().getId(),
-                    chat.getUserTwo().getId(),
-                    chat.getLastMessage().getContent(),
-                    chat.getLastMessage().getSentAt(),
-                    messages.stream().map(message -> new MessageDto(
-                            message.getId(),
-                            message.getSender().getId(),
-                            message.getReceiver().getId(),
-                            false,
-                            message.getChat().getId(),
-                            message.getSentAt(),
-                            message.getContent()
-                    )).toList());
-
-            return ResponseEntity.ok(chatDto);
-        } catch (Exception e) {
-            logger.error("error getting chats: ", e);
-            throw e;
+            if (!chat.getUserOne().getId().equals(currentUser.getId()) && !chat.getUserTwo().getId().equals(currentUser.getId())) {
+            logger.warn("User {} is not allowed to view chat {}", currentUser.getId(), chat.getId());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ExceptionUtil.buildErrorResponse(HttpStatus.FORBIDDEN,
+                    "You are not allowed to view this chat", "/chats/" + chatId +  "/messages"));
         }
+
+        List<Message> messages = chatService.findMessagesByChat(chat.getId());
+
+        List<MessageDto> messageDtos = messages.stream().map(message -> {
+            AdDto adDto = null;
+            if (message.getAd() != null) {
+                Ad ad = adService.getAd(message.getAd().getId());
+                adDto = Utils.toAdDto(ad);
+            }
+            return new MessageDto(
+                    message.getId(),
+                    message.getSender().getId(),
+                    message.getReceiver().getId(),
+                    false,
+                    message.getChat().getId(),
+                    message.getSentAt(),
+                    message.getContent(),
+                    adDto
+            );
+        }).toList();
+
+        ChatDto chatDto = new ChatDto(
+                chat.getId(),
+                chat.getCreatedAt(),
+                chat.getUserOne().getId(),
+                chat.getUserTwo().getId(),
+                chat.getLastMessage().getContent(),
+                chat.getLastMessage().getSentAt(),
+                messageDtos
+        );
+
+        return ResponseEntity.ok(chatDto);
+
     }
 
 
@@ -123,7 +137,7 @@ public class ChatController {
             if (!messageDto.getSenderId().equals(senderId)) {
                 throw new Exception("Unauthorized: Sender ID does not match authenticated user");
             }
-
+            
 
             MessageDto savedMsgDto = chatService.saveMessage(messageDto);
             logger.info("saved msg dto: {}", savedMsgDto.toString());

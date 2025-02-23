@@ -29,12 +29,15 @@ public class ChatServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private AdService adService;
+
     private User userOne;
     private User userTwo;
 
     @BeforeEach
     void setUp() {
-        chatService = new ChatService(chatDao, userService);
+        chatService = new ChatService(chatDao, userService, adService);
 
         userOne = new User(
                 "Anna",
@@ -64,7 +67,7 @@ public class ChatServiceTest {
         User sender = userOne;
         User receiver = userTwo;
         MessageDto messageDto = new MessageDto(null, senderId, receiverId, false,
-                null, null, "Hello");
+                null, null, "Hello", null);
 
         when(userService.findUserById(senderId)).thenReturn(sender);
         when(userService.findUserById(receiverId)).thenReturn(receiver);

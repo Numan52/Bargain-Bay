@@ -3,6 +3,7 @@ package org.example.app.Services;
 import jakarta.transaction.Transactional;
 import org.example.app.Daos.ChatDao;
 import org.example.app.Models.Dtos.MessageDto;
+import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.Chat;
 import org.example.app.Models.Entities.Message;
 import org.example.app.Models.Entities.User;
@@ -15,12 +16,14 @@ import java.util.UUID;
 
 @Service
 public class ChatService {
+    private final AdService adService;
     private ChatDao chatDao;
     private UserService userService;
 
-    public ChatService(ChatDao chatDao, UserService userService) {
+    public ChatService(ChatDao chatDao, UserService userService, AdService adService) {
         this.chatDao = chatDao;
         this.userService = userService;
+        this.adService = adService;
     }
 
 
@@ -52,6 +55,7 @@ public class ChatService {
     public MessageDto saveMessage(MessageDto messageDto) {
         User sender = userService.findUserById(messageDto.getSenderId());
         User receiver = userService.findUserById(messageDto.getReceiverId());
+        Ad ad = messageDto.getAd() != null ? adService.getAd(messageDto.getAd().getId()) : null;
         LocalDateTime time = LocalDateTime.now();
 
         Message message = new Message(
@@ -60,7 +64,8 @@ public class ChatService {
                 false,
                 null,
                 time,
-                messageDto.getContent()
+                messageDto.getContent(),
+                ad
         );
         chatDao.saveMessage(message);
 

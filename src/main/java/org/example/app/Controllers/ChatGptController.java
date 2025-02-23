@@ -1,6 +1,8 @@
 package org.example.app.Controllers;
 
 import org.example.app.Services.ChatGptService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.UUID;
 public class ChatGptController {
 
     private final ChatGptService openAIService;
+    private final static Logger logger = LoggerFactory.getLogger(ChatGptController.class);
 
     public ChatGptController(ChatGptService openAIService) {
         this.openAIService = openAIService;
@@ -19,7 +22,11 @@ public class ChatGptController {
 
     @PostMapping("/ai/ask")
     public ResponseEntity<?> chatWithGPT(@RequestBody Map<String, Object> message) {
-        return ResponseEntity.ok().body(Map.of("reply", openAIService.getChatResponse((String) message.get("message"), UUID.fromString((String) message.get("adId")))));
+        logger.info("adId: {}", message.get("adId"));
+        UUID adId = message.get("adId") != null && !String.valueOf(message.get("adId")).isBlank() ?
+                UUID.fromString((String) message.get("adId")) :
+                null;
+        return ResponseEntity.ok().body(Map.of("reply", openAIService.getChatResponse((String) message.get("message"), adId)));
     }
 }
 

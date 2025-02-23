@@ -1,0 +1,85 @@
+
+
+/* Form container */
+.create-ad__form {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    background: white;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    gap: 15px;
+}
+
+
+.create-ad__section-label {
+    font-weight: bold;
+}
+
+
+/* Input fields */
+.create-ad__input, .create-ad__textarea, .create-ad__submit-ad-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* Price input */
+.create-ad__price {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+
+/* Description */
+.create-ad__textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* File upload */
+.file-container input {
+    border: none;
+    padding: 5px;
+}
+
+/* Submit button */
+.create-ad__submit-ad-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+
+.create-ad__conditions-container {
+    margin-top: 10px;
+}
+
+
+.submit-ad-btn:hover {
+    background: #0056b3;
+}
+
+/* Error message */
+div[errorMsg] {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    form {
+        width: 90%;
+    }
+}

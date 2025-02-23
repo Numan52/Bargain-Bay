@@ -24,7 +24,7 @@ public class ChatGptService {
     }
 
     public String getChatResponse(String userMessage, UUID adId) {
-        Ad ad = adService.getAd(adId);
+        Ad ad = adId != null ? adService.getAd(adId) : null;
         RestTemplate restTemplate = new RestTemplate();
         String requestMessage = userMessage;
 
@@ -35,9 +35,9 @@ public class ChatGptService {
         // Prepare request body
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", "gpt-4o-mini");
-        requestBody.put("max_tokens", 100);
+
         requestBody.put("messages", List.of(
-                Map.of("role", "system", "content", "You are a helpful assistant that is helping users buy and sell products on an online marketplace. Keep responses and under 100 tokens."),
+                Map.of("role", "system", "content", "You are a helpful assistant that is helping users buy and sell products on an online marketplace. Keep responses short"),
                 Map.of("role", "user", "content", requestMessage)
         ));
 

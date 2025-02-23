@@ -189,3 +189,15 @@
     color: rgb(75, 75, 75);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+
+.chats__ad-info {
+    align-self: center;
+    color: rgb(236, 3, 3);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.chats__ad-info-title {
+    text-decoration: underline;
+}
