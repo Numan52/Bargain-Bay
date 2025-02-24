@@ -72,7 +72,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
                 StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-                logger.info("Headers: {}", accessor);
+//                logger.info("Headers: {}", accessor);
 
                 assert accessor != null;
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {

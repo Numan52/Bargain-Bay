@@ -1,0 +1,23 @@
+.categories__container li {
+    list-style: none;
+    margin-bottom: 0.8em;
+}
+
+
+.categories__category-link {
+
+}
+
+
+.categories__selected {
+    color: rgb(0, 68, 255);
+    font-weight: bolder;
+}
+
+
+.categories__category-link :hover {
+    text-decoration: underline;
+    
+}
+
+

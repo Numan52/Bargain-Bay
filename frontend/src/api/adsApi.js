@@ -77,9 +77,17 @@ function markAdSeenByGuest(adId) {
     })
 }
 
+function getAdCategories() {
+    return makeApiRequest({
+        endpoint: `/categories`,
+        method: "GET",
+    })
+}
+
+
 export {
     getAd, getAds, getFreshAds, postAd, getPersonalizedAds, getTrendingAds,
-    markAdSeenByGuest, markAdSeenByUser, getSearchedAds
+    markAdSeenByGuest, markAdSeenByUser, getSearchedAds, getAdCategories
 }
 
 

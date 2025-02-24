@@ -63,6 +63,8 @@ const SearchResults = () => {
         console.log(query)
         console.log(offset)
         console.log(adsPerPage)
+
+        
         try {
           const {ads, totalAds: newTotalAds} = await getSearchedAds(query, offset, adsPerPage)
           setAllFetchedAds((prev) => ({

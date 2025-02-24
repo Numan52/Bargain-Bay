@@ -47,6 +47,10 @@ public class Ad {
     @JoinColumn(name = "ad_id")
     private List<Image> images;
 
+    @ManyToOne()
+    @JoinColumn(name = "category_id")
+    private Category category;
+
 
     private int viewsCount = 0;
 

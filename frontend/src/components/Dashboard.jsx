@@ -11,6 +11,7 @@ import Searchbar from './Searchbar'
 import Separator from './Separator'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button';
+import AdCategories from './AdCategories'
 
 const Dashboard = () => {
   const [ads, setAds] = useState([])
@@ -21,11 +22,7 @@ const Dashboard = () => {
   const [errorMessage, setErrorMessage] = useState("")
   const navigate = useNavigate()
 
-  console.log("dashboard user id: ", userInfo)
-
-  console.log("ads", ads)
-
-  console.log(19 / 10)
+  
 
   function handleSearch(input) {
     console.log(input)
@@ -72,6 +69,7 @@ const Dashboard = () => {
       <div className='dashboard'>
         
         <Searchbar onSearch={(input) => handleSearch(input)}/>
+        <AdCategories />
         <div className='dashboard__ads-container'>
           <AdsCarousel ads={trendingAds} header="Currently trending"/>
 

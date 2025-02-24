@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 const SearchResultsPage = () => {
     const [searchParams, setSearchParams] = useSearchParams(); 
     const query = searchParams.get("query");
+    const categoryId = searchParams.get("categoryId")
     const currentPage = parseInt(searchParams.get("page")) || 1
 
     const navigate = useNavigate()
