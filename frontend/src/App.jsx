@@ -14,6 +14,7 @@ import {WebSocketProvider} from './Context/WebSocketContext'
 import Chats from './components/Chats'
 import SearchResults from './components/SearchResults'
 import SearchResultsPage from './components/SearchResultsPage'
+import NotFound from './components/NotFound'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -136,6 +137,8 @@ function App() {
               element={<SearchResultsPage />} 
             >
             </Route>
+
+            <Route path="*" element={<NotFound />} />
 
           </Routes> 
         </WebSocketProvider>

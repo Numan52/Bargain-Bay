@@ -31,6 +31,7 @@ import java.util.UUID;
 public class AdController {
     private final UserDao userDao;
     private final UserService userService;
+
     private AdService adService;
     private JwtUtil jwtUtil;
     private final static Logger logger = LoggerFactory.getLogger(AdController.class);
@@ -41,8 +42,7 @@ public class AdController {
 
     public AdController(
             AdService adService, JwtUtil jwtUtil, UserDao userDao, UserService userService,
-            TrendingAdsStrat trendingAdsStrat, FreshAdsStrat freshAdsStrat, PersonalizedAdsStrat personalizedAdsStrat
-    ) {
+            TrendingAdsStrat trendingAdsStrat, FreshAdsStrat freshAdsStrat, PersonalizedAdsStrat personalizedAdsStrat) {
         this.adService = adService;
         this.jwtUtil = jwtUtil;
         this.userDao = userDao;
@@ -69,17 +69,22 @@ public class AdController {
     }
 
 
-//    @GetMapping("/ads")
-//    public ResponseEntity<?> getAds(@RequestParam int offset, @RequestParam int limit) throws Exception {
-//        try {
-//            List<Ad> ads = adService.getAds(offset, limit);
-//            List<AdDto> adDtos = adService.toDtos(ads);
-//            return ResponseEntity.ok(adDtos);
-//        } catch (Exception e) {
-//            logger.error("error getting ads: ", e);
-//            throw new Exception("An unexpected error occurred.");
-//        }
-//    }
+    @GetMapping("/ads")
+    public ResponseEntity<?> getAds(@RequestParam int offset, @RequestParam int limit) throws Exception {
+        try {
+            AdFetchingFilter filter = new AdFetchingFilter.Builder()
+                    .limit(limit)
+                    .offset(offset)
+                    .build();
+
+            AdSearchResponse response = adService.getAllAds(filter);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("error getting ads: ", e);
+            throw new Exception("An unexpected error occurred.");
+        }
+    }
 
     // TODO: FIX MAXIMUM SIZE EXCEEDED ERROR
     @PostMapping(path = "/ads", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})

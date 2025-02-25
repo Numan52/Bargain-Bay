@@ -52,6 +52,7 @@ const CreateAd = () => {
 
         if (selectedCategory === null) {
             setErrorMsg("Please select one category")
+            window.scrollTo(0, 0)
             return
         }
 
@@ -156,7 +157,7 @@ const CreateAd = () => {
                             setAdData((oldForm) => (
                                 {
                                     ...oldForm,
-                                    ['categoryId']: category.id
+                                    ['categoryId']: category?.id
                                 }
                             ))
                         }} 

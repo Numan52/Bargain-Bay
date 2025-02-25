@@ -2,6 +2,7 @@ package org.example.app.Daos;
 
 import jakarta.persistence.*;
 import org.example.app.Controllers.AuthController;
+import org.example.app.Models.Dtos.AdSearchResponse;
 import org.example.app.Models.Entities.Ad;
 import org.example.app.Models.Entities.UserActivity;
 import org.example.app.Models.Entities.Image;
@@ -23,14 +24,20 @@ public class AdDao {
     private EntityManager entityManager;
 
 
-    public List<Ad> getAds(int offset, int limit) {
-        TypedQuery<Ad> query = entityManager.createQuery(
+    public AdSearchResponse getAds(int offset, int limit) {
+        List<Ad> ads = entityManager.createQuery(
                 "SELECT a from Ad a order by a.hasPriority DESC, a.lastBumpedAt DESC", Ad.class
-        );
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
+        )
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
 
-        return query.getResultList();
+        Long countRows = entityManager.createQuery(
+                "SELECT COUNT(a) from Ad a", Long.class
+        )
+                .getSingleResult();
+
+        return new AdSearchResponse(ads, countRows);
     }
 
 
@@ -53,30 +60,31 @@ public class AdDao {
         return freshAds;
     }
 
-//    // TODO: create indices on lower(title) and lower(description)
-//    public List<Ad> getSearchedAds(AdFetchingFilter filter) {
-//        List<Ad> freshAds = entityManager.createQuery(
-//                        "SELECT a from Ad a WHERE lower(a.title) LIKE :query OR lower(a.description) LIKE :query", Ad.class
-//                )
-//                .setParameter("query", "%" + filter.getQuery().toLowerCase() + "%")
-//                .setFirstResult(filter.getOffset())
-//                .setMaxResults(filter.getLimit())
-//                .getResultList();
-//        return freshAds;
-//    }
+// TODO: create indices on lower(title) and lower(description)
+
 
     // TODO: PLACE LIMIT HERE OR NOT?
-    public List<Ad> getSearchedAds(AdFetchingFilter filter) {
+    public AdSearchResponse getSearchedAds(AdFetchingFilter filter) {
+        logger.info("query: {}", filter.getQuery());
         List<Ad> searchedAds = entityManager.createQuery(
                         "SELECT a from Ad a WHERE lower(a.title) LIKE :query OR lower(a.description) LIKE :query", Ad.class
                 )
                 .setParameter("query", "%" + filter.getQuery().toLowerCase() + "%")
+                .setFirstResult(filter.getOffset())
+                .setMaxResults(filter.getLimit())
                 .getResultList();
-        return searchedAds;
+
+        Long countRows = entityManager.createQuery(
+                "SELECT COUNT(a) FROM Ad a where lower(a.title) LIKE :query OR lower(a.description) LIKE :query", Long.class
+        )
+                .setParameter("query", "%" + filter.getQuery().toLowerCase() + "%")
+                .getSingleResult();
+
+        return new AdSearchResponse(searchedAds, countRows);
     }
 
 
-    public List<Ad> getAdsByCategory(AdFetchingFilter filter) {
+    public AdSearchResponse getAdsByCategory(AdFetchingFilter filter) {
         List<Ad> adsInCategory = entityManager.createNativeQuery(
                         "WITH RECURSIVE category_tree AS (" +
                                     "SELECT id, name, parent_id FROM category " +
@@ -90,8 +98,25 @@ public class AdDao {
                         Ad.class
                 )
                 .setParameter("rootCategoryId", filter.getCategoryId())
+                .setFirstResult(filter.getOffset())
+                .setMaxResults(filter.getLimit())
                 .getResultList();
-        return adsInCategory;
+
+        Long totalAds = (Long) entityManager.createNativeQuery(
+                "WITH RECURSIVE category_tree AS (" +
+                        "SELECT id, name, parent_id FROM category " +
+                        "WHERE id = :rootCategoryId " +
+                        "UNION ALL " +
+                        "SELECT c.id, c.name, c.parent_id " +
+                        "FROM category c " +
+                        "INNER JOIN category_tree ct ON c.parent_id = ct.id" +
+                        ") " +
+                        "SELECT COUNT(*) FROM ad WHERE ad.category_id IN (SELECT id FROM category_tree)", Long.class
+        )
+                .setParameter("rootCategoryId", filter.getCategoryId())
+                .getSingleResult();
+
+        return new AdSearchResponse(adsInCategory, totalAds);
     }
 
 

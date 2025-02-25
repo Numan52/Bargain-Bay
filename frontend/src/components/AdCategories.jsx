@@ -124,6 +124,17 @@ const AdCategories = ({selectedCategory, onCategorySelected, jumpToSearch}) => {
                 
               </li>
             )}
+
+            {jumpToSearch && !selectedCategory &&
+              <li>
+                <Link 
+                  className={`categories__category-link`}
+                  to={`/search?category=all`}
+                >
+                  All
+                </Link>
+              </li>
+            }
         </ul>
         )}
       </>

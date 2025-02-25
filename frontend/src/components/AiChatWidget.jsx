@@ -10,7 +10,7 @@ const AiChatWidget = () => {
             content: "Hi! I am your AI Assistant. I can help you in the selling or buying process. Just ask me a question and also include the product ID relating to your question. \nFor example, try the following: 'How can I get a lower price on this product?'"
         }
     ]);
-    const [adId, setAdId] = useState(null); // Input for ad ID
+    const [adId, setAdId] = useState(""); // Input for ad ID
     const [input, setInput] = useState(""); // Input for user message
 
 

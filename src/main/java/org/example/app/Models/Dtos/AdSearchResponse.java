@@ -12,9 +12,9 @@ import java.util.List;
 
 public class AdSearchResponse {
     private List<AdDto> ads;
-    private int totalAds;
+    private long totalAds;
 
-    public AdSearchResponse(List<Ad> ads, int totalAds) {
+    public AdSearchResponse(List<Ad> ads, long totalAds) {
         this.ads = Utils.toAdDtos(ads);
         this.totalAds = totalAds;
     }

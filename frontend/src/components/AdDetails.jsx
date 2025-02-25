@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import "../css/adDetails.css"
 import Header from './Header'
 import { markAdSeenByGuest, markAdSeenByUser } from '../api/adsApi'
@@ -17,7 +17,7 @@ const AdDetails = () => {
   const [chatMessage, setChatMessage] = useState("")
   const userInfo = useContext(UserContext)
   const {publishMessage} = useContext(WebSocketContext)
-  
+  const navigate = useNavigate()
   console.log(JSON.stringify(userInfo))
 
   console.log("user: ", userInfo)
@@ -63,6 +63,7 @@ const AdDetails = () => {
 
       } catch (error) {
         console.log(error)
+        navigate("/not-found")
       }
     }
 

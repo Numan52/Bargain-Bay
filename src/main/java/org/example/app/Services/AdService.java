@@ -52,38 +52,36 @@ public class AdService {
         return fetchStrategy.fetchAds(filter);
     }
 
-    //TODO: REWRITE
+
+
+//    public AdSearchResponse getPaginatedAds(AdFetchingFilter filter, List<Ad> ads) {
+//        int lastAdIndex = filter.getOffset() + filter.getLimit() > ads.size() ?
+//                filter.getOffset() + (ads.size() % filter.getLimit()) :
+//                filter.getOffset() + filter.getLimit();
+//
+//        List<Ad> paginatedAds = ads.subList(
+//                filter.getOffset(),
+//                lastAdIndex
+//        );
+//
+//        logger.info("paginated ads legnth: {}", paginatedAds.size());
+//        return new AdSearchResponse(paginatedAds, ads.size());
+//    }
+
+
+    public AdSearchResponse getAllAds(AdFetchingFilter filter) {
+        return adDao.getAds(filter.getOffset(), filter.getLimit());
+
+    }
+
+
     public AdSearchResponse getSearchedAds(AdFetchingFilter filter) {
-        List<Ad> ads = adDao.getSearchedAds(filter);
-        logger.info("total ads legnth: {}", ads.size());
-
-        int lastAdIndex = filter.getOffset() + filter.getLimit() > ads.size() ?
-                filter.getOffset() + (ads.size() % filter.getLimit()) :
-                filter.getOffset() + filter.getLimit();
-
-        List<Ad> paginatedAds = ads.subList(
-                filter.getOffset(),
-                lastAdIndex
-        );
-        logger.info("paginated ads legnth: {}", paginatedAds.size());
-        return new AdSearchResponse(paginatedAds, ads.size());
+        return adDao.getSearchedAds(filter);
     }
 
 
     public AdSearchResponse getAdsByCategory(AdFetchingFilter filter) {
-        List<Ad> ads = adDao.getAdsByCategory(filter);
-        logger.info("total ads legnth: {}", ads.size());
-
-        int lastAdIndex = filter.getOffset() + filter.getLimit() > ads.size() ?
-                filter.getOffset() + (ads.size() % filter.getLimit()) :
-                filter.getOffset() + filter.getLimit();
-
-        List<Ad> paginatedAds = ads.subList(
-                filter.getOffset(),
-                lastAdIndex
-        );
-        logger.info("paginated ads legnth: {}", paginatedAds.size());
-        return new AdSearchResponse(paginatedAds, ads.size());
+        return adDao.getAdsByCategory(filter);
     }
 
 

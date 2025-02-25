@@ -6,6 +6,7 @@ const SearchResultsPage = () => {
     const [searchParams, setSearchParams] = useSearchParams(); 
     const query = searchParams.get("query");
     const categoryId = searchParams.get("categoryId")
+    const categoryName = searchParams.get("category")
     const currentPage = parseInt(searchParams.get("page")) || 1
 
     const navigate = useNavigate()
@@ -17,6 +18,7 @@ const SearchResultsPage = () => {
         key={`${query}-${categoryId}`}
         query={query}
         categoryId={categoryId}
+        category={categoryName}
         currentPage={currentPage}
       />
     </div>

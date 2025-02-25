@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Header from './Header'
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { getAdsByCategory, getAdsByQuery } from '../api/adsApi';
+import { getAds, getAdsByCategory, getAdsByQuery } from '../api/adsApi';
 import SearchResultAds from './SearchResultAds';
 import Pagination from './Pagination';
 import Searchbar from './Searchbar';
@@ -9,7 +9,7 @@ import "../css/searchbar.css"
 import { useMemo } from 'react';
 
 
-const SearchResults = ({query, currentPage, categoryId}) => {
+const SearchResults = ({query, currentPage, categoryId, category}) => {
     
 
     const [allFetchedAds, setAllFetchedAds] = useState({})
@@ -19,16 +19,18 @@ const SearchResults = ({query, currentPage, categoryId}) => {
     const isFirstRender = useRef(true)
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate()
-
+    
     const setPage = (newPage) => {
-      setSearchParams({query, page: newPage})
+      setSearchParams((prev) => {
+        const newParams = new URLSearchParams(prev)
+        newParams.set("page", newPage)
+        return newParams
+      })
+      
+      window.scrollTo(0,0)
     }
 
     console.log(allFetchedAds)
-
-
-    
-
   
     let adsToDisplay = useMemo(() => {
       return allFetchedAds[currentPage] || []
@@ -52,7 +54,7 @@ const SearchResults = ({query, currentPage, categoryId}) => {
         return
       }
 
-      if (fetchedPages.includes(currentPage) || (!query && !categoryId)) {
+      if (fetchedPages.includes(currentPage) || (!query && !categoryId && !category)) {
         return
       }
 
@@ -65,10 +67,21 @@ const SearchResults = ({query, currentPage, categoryId}) => {
 
 
         try {
-          const {ads, totalAds: newTotalAds} = query ? 
-              await getAdsByQuery(query, offset, adsPerPage) :
-              await getAdsByCategory(categoryId, offset, adsPerPage)
+          let ads, newTotalAds, result;
 
+          if (category === "all") {
+            result = await getAds(offset, adsPerPage);
+          } else if (query) {
+            result = await getAdsByQuery(query, offset, adsPerPage);
+          } else {
+            result = await getAdsByCategory(categoryId, offset, adsPerPage);
+          }
+
+          ads = result.ads;
+          newTotalAds = result.totalAds;
+
+          console.log("fetched ads :", ads)
+ 
           setAllFetchedAds((prev) => ({
               ...prev,
               [currentPage]: ads

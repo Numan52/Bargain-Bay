@@ -2,3 +2,9 @@
     color: red;
     font-size: 1.3rem;
 }
+
+
+textarea, p {
+    white-space: pre-wrap;
+
+}
