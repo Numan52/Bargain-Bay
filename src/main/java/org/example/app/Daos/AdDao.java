@@ -77,12 +77,21 @@ public class AdDao {
 
 
     public List<Ad> getAdsByCategory(AdFetchingFilter filter) {
-        List<Ad> searchedAds = entityManager.createQuery(
-                        "SELECT a from Ad a WHERE a.category.id = :categoryId", Ad.class
+        List<Ad> adsInCategory = entityManager.createNativeQuery(
+                        "WITH RECURSIVE category_tree AS (" +
+                                    "SELECT id, name, parent_id FROM category " +
+                                    "WHERE id = :rootCategoryId " +
+                                    "UNION ALL " +
+                                    "SELECT c.id, c.name, c.parent_id " +
+                                    "FROM category c " +
+                                    "INNER JOIN category_tree ct ON c.parent_id = ct.id" +
+                                ") " +
+                                "SELECT * FROM ad WHERE ad.category_id IN (SELECT id FROM category_tree)",
+                        Ad.class
                 )
-                .setParameter("categoryId", filter.getCategoryId())
+                .setParameter("rootCategoryId", filter.getCategoryId())
                 .getResultList();
-        return searchedAds;
+        return adsInCategory;
     }
 
 
