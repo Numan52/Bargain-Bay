@@ -20,6 +20,8 @@ const Dashboard = () => {
   const [trendingAds, setTrendingAds] = useState([])
   const userInfo = useContext(UserContext)
   const [errorMessage, setErrorMessage] = useState("")
+
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const navigate = useNavigate()
 
   
@@ -31,6 +33,9 @@ const Dashboard = () => {
     }
     
   }
+
+
+ 
 
 
   // TODO: check whether concurrent
@@ -69,7 +74,14 @@ const Dashboard = () => {
       <div className='dashboard'>
         
         <Searchbar onSearch={(input) => handleSearch(input)}/>
-        <AdCategories />
+
+        <div className='categories__container'>
+          <h3>All Categories</h3>
+          <AdCategories selectedCategory={selectedCategory} onCategorySelected={(category) => setSelectedCategory(category)} jumpToSearch={true} />
+          <Separator />
+        </div>
+        
+        
         <div className='dashboard__ads-container'>
           <AdsCarousel ads={trendingAds} header="Currently trending"/>
 

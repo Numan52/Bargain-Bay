@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class CategoryDao {
@@ -23,5 +24,10 @@ public class CategoryDao {
         ).getResultList();
 
         return categories;
+    }
+
+
+    public Category getCategory(UUID categoryId) {
+        return entityManager.find(Category.class, categoryId);
     }
 }

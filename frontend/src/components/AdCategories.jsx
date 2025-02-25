@@ -4,11 +4,11 @@ import "../css/categories.css"
 import { Link, useNavigate } from 'react-router-dom'
 import Separator from './Separator'
 
-const AdCategories = () => {
+
+const AdCategories = ({selectedCategory, onCategorySelected, jumpToSearch}) => {
   const [allCategories, setAllCategories] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState(null)
   const [categoryPath, setCategoryPath] = useState([])
-  const navigate = useNavigate()
+  
   
 
   const categoriesToDisplay = useMemo(() => {
@@ -30,10 +30,11 @@ const AdCategories = () => {
   }, [])
 
 
+
   function handleCategoryClick(clickedCategory) {
     
     console.log(clickedCategory)
-    setSelectedCategory(clickedCategory)
+    onCategorySelected(clickedCategory)
 
     setCategoryPath((prev) => {
       const index = prev.findIndex((category) => category.id === clickedCategory.id)
@@ -49,6 +50,8 @@ const AdCategories = () => {
     })
   }
 
+  
+
 
   function displayCategoryPath() {
     if (!selectedCategory) return null
@@ -59,7 +62,7 @@ const AdCategories = () => {
         <span>
           <Link 
             onClick={() => {
-              setSelectedCategory(null)
+              onCategorySelected(null)
               setCategoryPath([])
             }} 
             className='categories__breadcrumb'
@@ -97,7 +100,7 @@ const AdCategories = () => {
         {(
           <ul>
 
-            {selectedCategory &&
+            {selectedCategory && jumpToSearch &&
               <li>
                 <Link 
                   className={`categories__category-link`}
@@ -130,12 +133,12 @@ const AdCategories = () => {
 
 
   return (
-    <div className='categories__container'>
-      <h3>All Categories</h3>
+    <>
       {displayCategoryPath()}
       {displayCategoriesTree()}
-      <Separator />
-    </div>
+    </>
+      
+      
   )
 }
 

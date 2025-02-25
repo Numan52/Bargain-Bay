@@ -65,6 +65,7 @@ public class Ad {
             String description,
             String condition,
             LocalDateTime createdAt,
+            Category category,
             LocalDateTime lastBumpedAt,
             User user,
             List<Image> images,
@@ -75,6 +76,7 @@ public class Ad {
         this.description = description;
         this.condition = condition;
         this.createdAt = createdAt;
+        this.category = category;
         this.lastBumpedAt = lastBumpedAt;
         this.user = user;
         this.images = images;
