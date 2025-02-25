@@ -71,6 +71,24 @@ public class AdService {
     }
 
 
+    public AdSearchResponse getAdsByCategory(AdFetchingFilter filter) {
+        List<Ad> ads = adDao.getAdsByCategory(filter);
+        logger.info("total ads legnth: {}", ads.size());
+
+        int lastAdIndex = filter.getOffset() + filter.getLimit() > ads.size() ?
+                filter.getOffset() + (ads.size() % filter.getLimit()) :
+                filter.getOffset() + filter.getLimit();
+
+        List<Ad> paginatedAds = ads.subList(
+                filter.getOffset(),
+                lastAdIndex
+        );
+        logger.info("paginated ads legnth: {}", paginatedAds.size());
+        return new AdSearchResponse(paginatedAds, ads.size());
+    }
+
+
+
     @Transactional
     public void postAd(CreateAdDto createAdDto) throws IOException, UserException {
         User user = userDao.findUserByUsername(createAdDto.getUsername());

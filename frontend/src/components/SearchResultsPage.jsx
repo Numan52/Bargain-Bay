@@ -14,7 +14,10 @@ const SearchResultsPage = () => {
   return (
     <div>
       <SearchResults 
-        key={query}
+        key={`${query}-${categoryId}`}
+        query={query}
+        categoryId={categoryId}
+        currentPage={currentPage}
       />
     </div>
   )

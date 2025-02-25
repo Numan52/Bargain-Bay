@@ -1,13 +1,46 @@
+
+.categories__container {
+    margin-top: 1.3em;
+    margin-bottom: 2em;
+}
+
+.categories__container h3 {
+    color: rgb(94, 94, 94);
+}
+
+.categories__container ul {
+    padding: 0;
+}
+
+
 .categories__container li {
     list-style: none;
     margin-bottom: 0.8em;
 }
 
 
+.categories__container a:hover,
+.categories__container a:focus {
+    text-decoration: underline;
+}
+
+
+
+
 .categories__category-link {
 
 }
 
+
+.categories__breadcrumb-container {
+    margin-bottom: 1.4em;
+}
+
+.categories__breadcrumb-selected {
+    color: rgb(4, 83, 255);
+    font-weight: bolder;
+    font-size: 1.2rem;
+}
 
 .categories__selected {
     color: rgb(0, 68, 255);

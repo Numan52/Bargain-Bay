@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { getAdCategories } from '../api/adsApi'
 import "../css/categories.css"
 import { Link, useNavigate } from 'react-router-dom'
+import Separator from './Separator'
 
 const AdCategories = () => {
   const [allCategories, setAllCategories] = useState([])
@@ -53,7 +54,8 @@ const AdCategories = () => {
     if (!selectedCategory) return null
 
     return (
-      <div>
+      <div className='categories__breadcrumb-container'>
+        
         <span>
           <Link 
             onClick={() => {
@@ -70,7 +72,10 @@ const AdCategories = () => {
 
         {categoryPath.map((category, index) => 
           <span key={category.id}>
-            <Link onClick={() => handleCategoryClick(category)} className='categories__breadcrumb'>
+            <Link 
+              onClick={() => handleCategoryClick(category)} 
+              className={`categories__breadcrumb ${category.id === selectedCategory?.id && "categories__breadcrumb-selected"} `}
+              >
               {category.name}
             </Link>
             {index < categoryPath.length - 1 && " --- "}
@@ -98,7 +103,7 @@ const AdCategories = () => {
                   className={`categories__category-link`}
                   to={`/search?category=${selectedCategory.name}&categoryId=${selectedCategory.id}`}
                 >
-                  {`View all ${selectedCategory.name}`}
+                  {`View all in ${selectedCategory.name}`}
                 </Link>
               </li>
             }
@@ -106,7 +111,7 @@ const AdCategories = () => {
             {categoriesToDisplay.map((category) => 
               <li key={category.id}>
                 <Link 
-                  className={`categories__category-link ${selectedCategory === category.id ? 'categories__selected' : ""}` }
+                  className={`categories__category-link ${selectedCategory?.id === category.id ? 'categories__selected' : ""}` }
                   onClick={() => handleCategoryClick(category)}
                 >
 
@@ -126,8 +131,10 @@ const AdCategories = () => {
 
   return (
     <div className='categories__container'>
+      <h3>All Categories</h3>
       {displayCategoryPath()}
       {displayCategoriesTree()}
+      <Separator />
     </div>
   )
 }

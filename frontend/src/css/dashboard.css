@@ -1,10 +1,16 @@
+body {
+    
+}
+
 .dashboard {
     margin: 20px 60px;
+    width: 70vw;
+    
 }
 
 
 .dashboard__ads-container {
-    width: 70vw;
+    
 }
 
 

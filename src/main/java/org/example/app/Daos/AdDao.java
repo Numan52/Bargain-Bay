@@ -76,6 +76,16 @@ public class AdDao {
     }
 
 
+    public List<Ad> getAdsByCategory(AdFetchingFilter filter) {
+        List<Ad> searchedAds = entityManager.createQuery(
+                        "SELECT a from Ad a WHERE a.category.id = :categoryId", Ad.class
+                )
+                .setParameter("categoryId", filter.getCategoryId())
+                .getResultList();
+        return searchedAds;
+    }
+
+
     public List<Ad> getPersonalizedAds(AdFetchingFilter filter) {
         List<Ad> lastViewedAds = entityManager.createQuery(
                 "SELECT ua.ad FROM UserActivity ua WHERE ua.user.id = :userId ORDER BY ua.timestamp DESC", Ad.class
