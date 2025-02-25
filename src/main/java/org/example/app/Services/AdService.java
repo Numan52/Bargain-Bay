@@ -53,22 +53,6 @@ public class AdService {
     }
 
 
-
-//    public AdSearchResponse getPaginatedAds(AdFetchingFilter filter, List<Ad> ads) {
-//        int lastAdIndex = filter.getOffset() + filter.getLimit() > ads.size() ?
-//                filter.getOffset() + (ads.size() % filter.getLimit()) :
-//                filter.getOffset() + filter.getLimit();
-//
-//        List<Ad> paginatedAds = ads.subList(
-//                filter.getOffset(),
-//                lastAdIndex
-//        );
-//
-//        logger.info("paginated ads legnth: {}", paginatedAds.size());
-//        return new AdSearchResponse(paginatedAds, ads.size());
-//    }
-
-
     public AdSearchResponse getAllAds(AdFetchingFilter filter) {
         return adDao.getAds(filter.getOffset(), filter.getLimit());
 
@@ -83,7 +67,6 @@ public class AdService {
     public AdSearchResponse getAdsByCategory(AdFetchingFilter filter) {
         return adDao.getAdsByCategory(filter);
     }
-
 
 
     @Transactional

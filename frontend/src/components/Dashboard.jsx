@@ -40,6 +40,7 @@ const Dashboard = () => {
 
   // TODO: check whether concurrent
   useEffect(() => {
+    console.log(userInfo)
     const fetchAds = async () => {
       try {
         console.log("Fetching started at:", new Date().toISOString());
@@ -64,7 +65,7 @@ const Dashboard = () => {
 
     fetchAds()
 
-  }, [])
+  }, [userInfo])
 
 
   return (
@@ -91,7 +92,9 @@ const Dashboard = () => {
 
           <Separator />
           
-          <AdsCarousel ads={personalizedAds} header="For you"/> 
+          {userInfo.userId && 
+            <AdsCarousel ads={personalizedAds} header="For you"/> 
+          }
 
           {/* <Ads ads={ads}/> */}
         </div>

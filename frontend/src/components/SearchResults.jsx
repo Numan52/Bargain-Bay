@@ -114,7 +114,7 @@ const SearchResults = ({query, currentPage, categoryId, category}) => {
         
         <div className='search-results__ads-container'>
           <SearchResultAds ads={adsToDisplay}/>
-          <Pagination totalAds={totalAds} page={currentPage} setPage={setPage} adsPerPage={adsPerPage}/>
+          <Pagination totalAds={totalAds} currentPage={currentPage} setPage={setPage} adsPerPage={adsPerPage}/>
         </div>
         
       </div>

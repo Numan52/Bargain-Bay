@@ -32,6 +32,24 @@ a {
 } 
 
 
+.header-create-ad-container {
+    display: flex;
+    align-items: end;
+    gap: 10px;
+    cursor: pointer;
+}
+
+
+.header-create-ad-container img {
+    width: 25px;
+}
+
+.header-create-ad-container:focus ,
+.header-create-ad-container:hover {
+    color: rgb(27, 87, 255);
+}
+
+
 .header-profile-container {
     display: flex;
     flex-direction: row;
@@ -43,9 +61,14 @@ a {
 .header-chat-container {
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: end;
 }
 
+
+.header-chat-container:focus,
+.header-chat-container:hover {
+    color: rgb(27, 87, 255);
+}
 
 .header-chat-container img {
     width: 25px;

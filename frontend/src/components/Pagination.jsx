@@ -13,21 +13,27 @@ const Pagination = ({totalAds, currentPage, setPage, adsPerPage}) => {
         setPage(number)
     }
 
+
+    console.log(currentPage)
+    
+
     return (
         <nav>
           <ul className="pagination">
             {pageNumbers.map((number) => (
               <li
                 key={number}
+                onClick={(e) => handleClick(e, number)} 
                 className={`page-item ${currentPage === number ? "active" : ""}`}
               >
                 <a
-                  onClick={(e) => handleClick(e, number)} 
+                  
                 //   href='!#'
-                  className="page-link"
+                  className="pagination__page-link"
                 >
                   {number}
                 </a>
+
               </li>
             ))}
           </ul>

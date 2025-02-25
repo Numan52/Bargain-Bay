@@ -8,6 +8,8 @@ function loginUser(username, password) {
         body: JSON.stringify({ username, password })
     })
 }
+
+
 function registerUser(firstName, lastName, username, password, email) {
     return makeApiRequest({
         endpoint: "/register",

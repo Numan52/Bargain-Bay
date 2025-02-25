@@ -22,7 +22,7 @@ const SearchResultAds = ({ads}) => {
                 
             </Link>
             
-            {index !== ads.length - 1 && <Separator />}
+            {<Separator />}
         </div>
             
       ))}

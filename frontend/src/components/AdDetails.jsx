@@ -19,6 +19,8 @@ const AdDetails = () => {
   const {publishMessage} = useContext(WebSocketContext)
   const navigate = useNavigate()
   console.log(JSON.stringify(userInfo))
+  const [errorMessage, setErrorMessage] = useState("")
+  const [successMessage, setSuccessMessage] = useState("")
 
   console.log("user: ", userInfo)
   // update ad view count
@@ -74,7 +76,17 @@ const AdDetails = () => {
 
 
   function sendMessage() {
+    setErrorMessage("")
+    setSuccessMessage("")
     if (!chatMessage.trim()) { 
+      return
+    }
+
+    if(!userInfo.userId) {
+      setErrorMessage("You need to be logged in to send messages.")
+      setTimeout(() => {
+        setErrorMessage("")
+      }, 3000);
       return
     }
 
@@ -90,6 +102,12 @@ const AdDetails = () => {
     } catch (error) {
       console.log(error)
     }
+
+
+    setSuccessMessage("Message was sent.")
+    setTimeout(() => {
+      setSuccessMessage("")
+    }, 3000)
   }
 
 
@@ -159,6 +177,20 @@ const AdDetails = () => {
                     <img src="/chat.png" alt="" />
                     Send Message
                   </button>
+
+                  {errorMessage &&
+                    <div className='error-message'>
+                      {errorMessage}
+                    </div>
+                  }
+                  
+                  {successMessage &&
+                    <div className='success-message'>
+                    {successMessage}
+                  </div>
+                  }
+                  
+                  
                 </div>}
 
               </div>
