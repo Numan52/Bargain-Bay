@@ -111,7 +111,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 (path.startsWith("/user") && request.getMethod().equalsIgnoreCase("GET")) ||
                 "websocket".equalsIgnoreCase(request.getHeader("Upgrade")) ||
                 (path.matches("^/ads/[^/]+/guest-views$")) ||
-                path.startsWith("/ai/ask")
+                path.startsWith("/ai/ask") ||
+                path.startsWith("/categories")
         ) {
             return false;
         }

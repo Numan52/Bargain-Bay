@@ -53,12 +53,21 @@ function getAd(id) {
 }
 
 
-function getSearchedAds(searchText, offset, limit) {
+function getAdsByQuery(query, offset, limit) {
     return makeApiRequest({
-        endpoint: `/ads?searchText=${searchText}&offset=${offset}&limit=${limit}`,
+        endpoint: `/ads/filtered-by-query?searchText=${query}&offset=${offset}&limit=${limit}`,
         method: "GET",
     })
 }
+
+
+function getAdsByCategory(categoryId, offset, limit) {
+    return makeApiRequest({
+        endpoint: `/ads/filtered-by-category?categoryId=${categoryId}&offset=${offset}&limit=${limit}`,
+        method: "GET",
+    })
+}
+
 
 
 function markAdSeenByUser(adId) {
@@ -77,9 +86,17 @@ function markAdSeenByGuest(adId) {
     })
 }
 
+function getAdCategories() {
+    return makeApiRequest({
+        endpoint: `/categories`,
+        method: "GET",
+    })
+}
+
+
 export {
     getAd, getAds, getFreshAds, postAd, getPersonalizedAds, getTrendingAds,
-    markAdSeenByGuest, markAdSeenByUser, getSearchedAds
+    markAdSeenByGuest, markAdSeenByUser, getAdsByQuery, getAdsByCategory, getAdCategories
 }
 
 

@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 const SearchResultsPage = () => {
     const [searchParams, setSearchParams] = useSearchParams(); 
     const query = searchParams.get("query");
+    const categoryId = searchParams.get("categoryId")
     const currentPage = parseInt(searchParams.get("page")) || 1
 
     const navigate = useNavigate()
@@ -13,7 +14,10 @@ const SearchResultsPage = () => {
   return (
     <div>
       <SearchResults 
-        key={query}
+        key={`${query}-${categoryId}`}
+        query={query}
+        categoryId={categoryId}
+        currentPage={currentPage}
       />
     </div>
   )

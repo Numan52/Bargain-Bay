@@ -41,7 +41,7 @@ public class ChatGptService {
                 Map.of("role", "user", "content", requestMessage)
         ));
 
-        // Set headers
+        // Set headers dasdasd
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(API_KEY);

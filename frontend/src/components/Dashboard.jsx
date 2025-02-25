@@ -11,6 +11,7 @@ import Searchbar from './Searchbar'
 import Separator from './Separator'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button';
+import AdCategories from './AdCategories'
 
 const Dashboard = () => {
   const [ads, setAds] = useState([])
@@ -19,13 +20,11 @@ const Dashboard = () => {
   const [trendingAds, setTrendingAds] = useState([])
   const userInfo = useContext(UserContext)
   const [errorMessage, setErrorMessage] = useState("")
+
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const navigate = useNavigate()
 
-  console.log("dashboard user id: ", userInfo)
-
-  console.log("ads", ads)
-
-  console.log(19 / 10)
+  
 
   function handleSearch(input) {
     console.log(input)
@@ -34,6 +33,9 @@ const Dashboard = () => {
     }
     
   }
+
+
+ 
 
 
   // TODO: check whether concurrent
@@ -72,6 +74,14 @@ const Dashboard = () => {
       <div className='dashboard'>
         
         <Searchbar onSearch={(input) => handleSearch(input)}/>
+
+        <div className='categories__container'>
+          <h3>All Categories</h3>
+          <AdCategories selectedCategory={selectedCategory} onCategorySelected={(category) => setSelectedCategory(category)} jumpToSearch={true} />
+          <Separator />
+        </div>
+        
+        
         <div className='dashboard__ads-container'>
           <AdsCarousel ads={trendingAds} header="Currently trending"/>
 

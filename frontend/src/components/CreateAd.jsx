@@ -4,11 +4,14 @@ import { postAd } from "../api/adsApi"
 import { useNavigate } from 'react-router-dom'
 import Header from './Header'
 import "../css/createAd.css"
+import AdCategories from './AdCategories'
 const apiUrl = import.meta.env.VITE_API_URL
 
 const CreateAd = () => {
     const [errorMsg, setErrorMsg] = useState("")
     const [submitted, setSubmitted] = useState(false)
+    const [selectedCategory, setSelectedCategory] = useState(null)
+    console.log(selectedCategory)
     const navigate = useNavigate()
 
     const [images, setImages] = useState([])
@@ -16,7 +19,8 @@ const CreateAd = () => {
         price: "",
         title: "",
         condition: "",
-        description: ""
+        description: "",
+        categoryId: null
     })
     
     
@@ -41,9 +45,16 @@ const CreateAd = () => {
 
 
     async function submitAd(event) {
+        event.preventDefault()
         if (submitted) {
             return
         }
+
+        if (selectedCategory === null) {
+            setErrorMsg("Please select one category")
+            return
+        }
+
         setSubmitted(true)
 
         setErrorMsg("")
@@ -75,6 +86,12 @@ const CreateAd = () => {
         <div className='create-ad__container'>
             <Header />
             <form onSubmit={submitAd} className='create-ad__form'>
+
+                {errorMsg && 
+                    <div className='error-message'>
+                        {errorMsg}
+                    </div>
+                }
                 <div className='file-container'>
                     <label className='create-ad__section-label' htmlFor="images">Pictures</label>
                     <input className='create-ad__input' type="file" id='images' name='images' onChange={handleFileChange} multiple/>
@@ -84,7 +101,8 @@ const CreateAd = () => {
                     <label className='create-ad__section-label' htmlFor="price">Price</label> <br />
                     <div className='create-ad__price'>
                         <div>€</div>
-                        <input 
+                        <input
+                            type='number'
                             className='create-ad__input'
                             inputMode='decimal' 
                             id='price'
@@ -129,6 +147,23 @@ const CreateAd = () => {
                 
                 </div>
 
+                <div className='categories__container'>
+                    <label className='create-ad__section-label' htmlFor="">Category</label>
+                    <AdCategories 
+                        selectedCategory={selectedCategory} 
+                        onCategorySelected={(category) => {
+                            setSelectedCategory(category)
+                            setAdData((oldForm) => (
+                                {
+                                    ...oldForm,
+                                    ['categoryId']: category.id
+                                }
+                            ))
+                        }} 
+                        jumpToSearch={false}
+                    />
+                </div>
+
                 <div className='description-container'>
                     <label className='create-ad__section-label' htmlFor="description">Description</label> <br />
                     <textarea 
@@ -144,11 +179,7 @@ const CreateAd = () => {
                 </div>
                 <button className='create-ad__submit-ad-btn'>Create Ad</button>
 
-                {errorMsg && 
-                    <div>
-                        {errorMsg}
-                    </div>
-                }
+                
             </form>
             
         </div>

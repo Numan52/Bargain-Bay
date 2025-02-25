@@ -160,8 +160,8 @@ public class AdController {
     }
 
 
-    @GetMapping("/ads")
-    public ResponseEntity<?> getSearchedAds(String searchText, Integer offset, Integer limit) throws Exception {
+    @GetMapping("/ads/filtered-by-query")
+    public ResponseEntity<?> getAdsByQuery(String searchText, Integer offset, Integer limit) throws Exception {
         if (searchText == null || searchText.isBlank() || offset == null || limit == null) {
             throw new ParameterException("Missing or invalid Parameters. Provide the following Parameters: " + "<searchText>, <offset>, <limit>");
         }
@@ -173,6 +173,24 @@ public class AdController {
                 .build();
 
         AdSearchResponse response = adService.getSearchedAds(filter);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/ads/filtered-by-category")
+    public ResponseEntity<?> getAdsByCategory(UUID categoryId, Integer offset, Integer limit) throws Exception {
+        if (categoryId == null || offset == null || limit == null) {
+            throw new ParameterException("Missing or invalid Parameters. Provide the following Parameters: " + "<searchText>, <offset>, <limit>");
+        }
+
+        AdFetchingFilter filter = new AdFetchingFilter.Builder()
+                .limit(limit)
+                .offset(offset)
+                .category(categoryId)
+                .build();
+
+        AdSearchResponse response = adService.getAdsByCategory(filter);
 
         return ResponseEntity.ok(response);
     }
