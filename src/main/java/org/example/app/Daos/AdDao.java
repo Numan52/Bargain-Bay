@@ -138,26 +138,36 @@ public class AdDao {
         }
 
         Query query = getPersonalizedAdsQuery(lastViewedAds);
+//        query.setMaxResults(filter.getLimit());
+
         logger.info("final query: {}", query.toString());
 
-        return query.setMaxResults(filter.getLimit()).getResultList();
+        return query.getResultList();
     }
 
 
     private Query getPersonalizedAdsQuery(List<Ad> lastViewedAds) {
-        StringBuilder queryString = new StringBuilder("Select * FROM Ad WHERE ");
+        StringBuilder queryString = new StringBuilder();
         for (int i = 0; i < lastViewedAds.size(); i++) {
             if (i > 0) {
-                queryString.append(" OR ");
+                queryString.append(" UNION ");
             }
-            queryString.append("(title_tokens || ' ' || description_tokens) @@ to_tsquery('english', :title" + i + ")");
+            queryString.append(
+                    "(Select * FROM Ad WHERE (title_tokens || ' ' || description_tokens) @@ to_tsquery('english', :title" + i + ") " +
+                    "OR category_id = :categoryId" + i + " " +
+                    "LIMIT 3)"
+            );
         }
 
         Query query = entityManager.createNativeQuery(queryString.toString(), Ad.class);
+        logger.info("query: {}", queryString);
 
         for (int i = 0; i < lastViewedAds.size(); i++) {
             String title = lastViewedAds.get(i).getTitle();
+            UUID categoryId = lastViewedAds.get(i).getCategory().getId();
+
             query.setParameter("title" + i, title.replaceAll("\\s+", " & "));
+            query.setParameter("categoryId" + i, categoryId);
         }
 
         return query;

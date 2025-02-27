@@ -75,6 +75,7 @@ body {
 
 .details__ad-images-container {
     width: 60%;
+    
 }
 
 .details__ad-all-images-container {
@@ -106,11 +107,14 @@ body {
 }
 
 
+.details__ad-current-image-container {
+   
+}
+
+
 .details__ad-current-image-container img {
     width: 100%;
-    /* height: 500px; */
-    min-height: 300px;
-    max-height: 400px;
+    height: 400px;
     object-fit: contain;
 }
 

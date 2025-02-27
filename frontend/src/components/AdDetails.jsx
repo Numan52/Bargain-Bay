@@ -125,7 +125,7 @@ const AdDetails = () => {
             <div className='details__ad-overview-container'>
               <div className='details__ad-images-container'>
                   <div className='details__ad-current-image-container'>
-                    <img src={ad.imageUrls[slideshowIndex]} alt="" />
+                    <img src={ad.imageUrls[slideshowIndex] || "/image.png"} alt="" />
                   </div>
 
                   <div className='details__ad-all-images-container'>

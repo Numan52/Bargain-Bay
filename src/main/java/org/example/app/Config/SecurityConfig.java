@@ -13,7 +13,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")  // Allow all endpoints
-                        .allowedOrigins("http://localhost:5173")  // Allow frontend URL
+                        .allowedOrigins("http://localhost:5173", "")  // Allow frontend URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // Allow HTTP methods
                         .allowedHeaders("*")
                         .allowCredentials(true);  // Allow cookies/auth headers

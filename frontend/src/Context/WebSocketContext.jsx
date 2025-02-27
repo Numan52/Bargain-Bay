@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { Client } from '@stomp/stompjs';
 import { UserContext } from './UserContext';
 
-const SOCKET_URL = "ws://localhost:8080/ws"
+const SOCKET_URL = import.meta.env.VITE_WEB_SOCKET_URL
 
 const WebSocketContext = createContext(null)
 

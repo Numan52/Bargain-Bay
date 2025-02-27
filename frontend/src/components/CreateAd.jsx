@@ -25,12 +25,37 @@ const CreateAd = () => {
     
     
     function handleFileChange(event) {
-        console.log([...event.target.files])
-        if (event.target.files) {
-            setImages([...event.target.files])
-        }
-    }
+        const files = [...event.target.files];
+    
+        const allowedTypes = ["image/png", "image/jpeg"];
 
+        // Validate file types
+        const invalidFiles = files.filter(file => !allowedTypes.includes(file.type));
+    
+        if (invalidFiles.length > 0) {
+            setErrorMsg("Only PNG and JPG files are allowed.");
+            event.target.value = ""
+            setImages([])
+            return;
+        }
+
+        // Calculate total size in bytes
+        const totalSize = files.reduce((acc, file) => acc + file.size, 0);
+    
+        // Convert bytes to MB (1 MB = 1048576 bytes)
+        const maxSizeMB = 10;
+        const maxSizeBytes = maxSizeMB * 1048576;
+    
+        if (totalSize > maxSizeBytes) {
+            setErrorMsg(`Total images size exceeds ${maxSizeMB} MB. Please upload smaller or less images.`);
+            event.target.value = ""
+            setImages([])
+            return;
+        }
+    
+        setImages(files);
+        setErrorMsg(""); 
+    }
 
     function handleInputChange(event) {
         const {name, value} = event.target
@@ -111,6 +136,8 @@ const CreateAd = () => {
                             value={adData.price}
                             onChange={handleInputChange}
                             required
+                            max={100000}
+                            min={0}
                         />
                     </div>
                     
@@ -125,6 +152,7 @@ const CreateAd = () => {
                         value={adData.title}
                         onChange={handleInputChange}
                         required
+                        maxLength={60}
                     />
                 </div>
                 <div className='condition-container'>
@@ -174,6 +202,7 @@ const CreateAd = () => {
                         value={adData.description}
                         onChange={handleInputChange}
                         required
+                        maxLength={200}
                     >
 
                     </textarea>

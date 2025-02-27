@@ -151,13 +151,14 @@ public class AdController {
         }
         String username = (String) request.getAttribute("username");
         User user = userService.findUserByName(username);
-
+        logger.info("limit: {}", limit);
         AdFetchingFilter filter = new AdFetchingFilter.Builder()
                 .limit(limit)
                 .userId(user.getId())
                 .build();
 
         List<Ad> ads = adService.getAds(personalizedAdsStrat, filter);
+        logger.info("personalized ads length: {}", ads.size());
         List<AdDto> adDtos = Utils.toAdDtos(ads);
 
         return ResponseEntity.ok(adDtos);

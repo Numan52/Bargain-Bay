@@ -27,7 +27,7 @@
 .messages-contacts-container {
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-y: auto;
     flex: 1;
     min-width: 300px;
 }
@@ -125,7 +125,7 @@
     gap: 10px;
     padding: 10px;
     flex-grow: 1;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 
@@ -195,6 +195,7 @@
     align-self: center;
     color: rgb(236, 3, 3);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 60%;
 }
 
 

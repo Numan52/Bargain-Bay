@@ -34,7 +34,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+        List<String> allowedOrigins = List.of("http://localhost:5173", "https://bargainbay.netlify.app");
+        String originHeader = request.getHeader("Origin");
+
+        if (originHeader != null && allowedOrigins.contains(originHeader)) {
+            response.setHeader("Access-Control-Allow-Origin", originHeader);
+            response.setHeader("Vary", "Origin"); // Important for caching and preventing conflicts
+        }
+
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
         response.setHeader("Access-Control-Allow-Credentials", "true");

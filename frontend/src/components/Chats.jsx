@@ -165,7 +165,7 @@ const Chats = () => {
       const showDate = messageDate !== lastMessageDate
       
 
-      let displayAdInfo = message?.ad !== null && message.ad.id !== lastMessage.ad?.id
+      let displayAdInfo = message?.ad !== null && message?.ad.id !== lastMessage?.ad?.id
       
 
       lastMessageDate = messageDate
@@ -215,8 +215,15 @@ const Chats = () => {
 
         <div className='chats__main'>
             <div className='messages-content-container'>
+              {allContacts.length < 1 && 
+                  <div>
+                    You have no chat history
+                  </div>
+              }
+
             
             <div className='messages-contacts-container'>
+              
               {allContacts.map((contact) => (
                 <div key={contact.chatId} className='chats__contact-container' onClick={() => handleContactSelection(contact.chatId, false)}>
                   <img src="/user.png" alt="user image" />

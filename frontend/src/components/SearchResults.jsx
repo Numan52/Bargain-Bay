@@ -16,7 +16,7 @@ const SearchResults = ({query, currentPage, categoryId, category}) => {
     const [fetchedPages, setFetchedPages] = useState([])
     const [totalAds, setTotalAds] = useState(0)
     const adsPerPage = 10
-    const isFirstRender = useRef(true)
+    
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate()
     
@@ -49,12 +49,9 @@ const SearchResults = ({query, currentPage, categoryId, category}) => {
 
   
     useEffect(() => {
-      if (isFirstRender.current) {
-        isFirstRender.current = false
-        return
-      }
-
+      
       if (fetchedPages.includes(currentPage) || (!query && !categoryId && !category)) {
+        
         return
       }
 

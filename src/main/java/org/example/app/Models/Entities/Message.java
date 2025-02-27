@@ -3,6 +3,8 @@ package org.example.app.Models.Entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -35,6 +37,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "ad_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Ad ad;
 
 

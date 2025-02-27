@@ -40,6 +40,7 @@
 .ads-section__ad {
     display: flex;
     flex-direction: column;
+    
     font-size: 1.3rem;
     max-width: 200px;
     word-break: break-all;
