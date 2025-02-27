@@ -15,14 +15,13 @@ const AdCategories = ({selectedCategory, onCategorySelected, jumpToSearch}) => {
     return selectedCategory ? selectedCategory.childCategories : allCategories
   }, [selectedCategory, allCategories])
 
-  console.log("all categories: ", allCategories)
-  console.log("selected category: ", selectedCategory)
+  
 
 
   useEffect(() => {
     async function fetchAdCategories() {
       const data = await getAdCategories()
-      console.log(data)
+      
       setAllCategories(data)
     }
 

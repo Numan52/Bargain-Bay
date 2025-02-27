@@ -22,12 +22,12 @@ const AdDetails = () => {
   const [errorMessage, setErrorMessage] = useState("")
   const [successMessage, setSuccessMessage] = useState("")
 
-  console.log("user: ", userInfo)
+  
   // update ad view count
   useEffect(() => {
-    let viewedAds = localStorage.getItem("viewedAds")
-    console.log("viewed ads update")
-    if (viewedAds === null || !viewedAds) {
+    let viewedAds = localStorage.getItem("viewedAds") || []
+  
+    if (viewedAds.length < 1) {
       localStorage.setItem("viewedAds", [])
     } else {
       viewedAds = JSON.parse(viewedAds)

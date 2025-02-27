@@ -17,7 +17,7 @@ import SearchResultsPage from './components/SearchResultsPage'
 import NotFound from './components/NotFound'
 
 function App() {
-  const [token, setToken] = useState(null)
+  const [token, setToken] = useState(localStorage.getItem("token")) || null
   const [jwtMessage, setJwtMessage] = useState("")
   const [user, setUser] = useState({})
 

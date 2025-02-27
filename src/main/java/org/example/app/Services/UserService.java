@@ -49,7 +49,7 @@ public class UserService {
             throw new UserException("Username \"" + user.getUsername() + "\" is already taken");
         }
         if (userByEmail != null) {
-            throw new UserException("User with email address \"" + user.getUsername() + "\" already exists");
+            throw new UserException("User with email address \"" + user.getEmail() + "\" already exists");
         }
 
         String[] hashedPassword = PasswordEncoder.hashPassword(user.getPassword(), null);

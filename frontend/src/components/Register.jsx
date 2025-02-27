@@ -28,7 +28,7 @@ const Register = () => {
       await registerUser(firstName, lastName, username, password, email)
       navigate("/login")
     } catch (error) {
-      setErrorMessage(error)
+      setErrorMessage(error.message)
     }
   }
 

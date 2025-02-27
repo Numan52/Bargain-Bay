@@ -12,6 +12,7 @@ import Separator from './Separator'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button';
 import AdCategories from './AdCategories'
+import { stepIconClasses } from '@mui/material'
 
 const Dashboard = () => {
   const [ads, setAds] = useState([])
@@ -20,8 +21,9 @@ const Dashboard = () => {
   const [trendingAds, setTrendingAds] = useState([])
   const userInfo = useContext(UserContext)
   const [errorMessage, setErrorMessage] = useState("")
-
+  const userId = userInfo?.userId
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   
@@ -35,13 +37,13 @@ const Dashboard = () => {
   }
 
 
- 
-
 
   // TODO: check whether concurrent
   useEffect(() => {
+    let ignore = false
     console.log(userInfo)
     const fetchAds = async () => {
+      setLoading(true)
       try {
         console.log("Fetching started at:", new Date().toISOString());
 
@@ -52,20 +54,29 @@ const Dashboard = () => {
         ])
         console.log("Fetching finished at:", new Date().toISOString());
 
-        setTrendingAds(trendingAds)
-        setPersonalizedAds(personalizedAds)
-        setFreshAds(freshAds)
+        if (!ignore) {
+          setTrendingAds(trendingAds)
+          setPersonalizedAds(personalizedAds)
+          setFreshAds(freshAds)
+        }
+       
         
       } catch (error) {
         console.error(error)
         setErrorMessage("Could not load the ads. Try again later")
+      } finally {
+        setLoading(false)
       }
       
     }
 
     fetchAds()
 
-  }, [userInfo])
+    return () => {
+      ignore = true
+    }
+
+  }, [userId])
 
 
   return (
@@ -84,16 +95,16 @@ const Dashboard = () => {
         
         
         <div className='dashboard__ads-container'>
-          <AdsCarousel ads={trendingAds} header="Currently trending"/>
+          <AdsCarousel loading={loading} ads={trendingAds} header="Currently trending"/>
 
           <Separator />
 
-          <AdsCarousel ads={freshAds} header="Recently added"/>
+          <AdsCarousel loading={loading} ads={freshAds} header="Recently added"/>
 
           <Separator />
           
           {userInfo.userId && 
-            <AdsCarousel ads={personalizedAds} header="For you"/> 
+            <AdsCarousel loading={loading} ads={personalizedAds} header="For you"/> 
           }
 
           {/* <Ads ads={ads}/> */}

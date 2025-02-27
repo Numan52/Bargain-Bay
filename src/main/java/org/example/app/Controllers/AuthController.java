@@ -51,11 +51,9 @@ public class AuthController {
             return ResponseEntity.ok("Registration successfull");
 
         } catch (UserException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
-        } catch (Exception e) {
-            throw new Exception("An unexpected Error occurred.");
-        }
+            return ResponseEntity.status(400).body(ExceptionUtil.buildErrorResponse(HttpStatus.valueOf(400), e.getMessage(), "/register"));
 
+        }
 
     }
 

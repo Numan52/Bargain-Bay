@@ -26,7 +26,7 @@ async function makeApiRequest({
         })
     
         const data = await response.json().catch(() => null)
-        console.log("data", data)
+        
         if (!response.ok) {
             const message = data?.error || "An unexpected error occurred."
             console.log(data)
