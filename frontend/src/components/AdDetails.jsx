@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import "../css/adDetails.css"
 import Header from './Header'
-import { markAdSeenByGuest, markAdSeenByUser } from '../api/adsApi'
+import { updateGuestActivity, updateUserActivity } from '../api/adsApi'
 import { getUser } from "../api/userApi"
 import { getAd } from "../api/adsApi"
 import { UserContext } from '../Context/UserContext'
@@ -33,23 +33,23 @@ const AdDetails = () => {
       viewedAds = JSON.parse(viewedAds)
     }
 
-    if (!viewedAds.includes(adId)) {
-      try {
-        console.log("includes")
-        if (userInfo.userId) {
-          markAdSeenByUser(adId)
-          console.log("marked ad as seen by user")
-        } else {
-          markAdSeenByGuest(adId)
-          console.log("marked ad as seen by guest")
-        }
-        
-        localStorage.setItem("viewedAds", JSON.stringify([...viewedAds, adId]))
-
-      } catch (error) {
-        console.log(error)
+    
+    try {
+      console.log("includes")
+      if (userInfo.userId) {
+        updateUserActivity(adId)
+        console.log("marked ad as seen by user")
+      } else {
+        updateGuestActivity(adId)
+        console.log("marked ad as seen by guest")
       }
+      
+      localStorage.setItem("viewedAds", JSON.stringify([...viewedAds, adId]))
+
+    } catch (error) {
+      console.log(error)
     }
+    
     
   }, [adId, userInfo])
 

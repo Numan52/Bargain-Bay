@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -125,7 +126,7 @@ public class AdDao {
                 "SELECT ua.ad FROM UserActivity ua WHERE ua.user.id = :userId ORDER BY ua.timestamp DESC", Ad.class
         )
                 .setParameter("userId", filter.getUserId())
-                .setMaxResults(5)
+                .setMaxResults(3)
                 .getResultList();
 
         for (Ad ad : lastViewedAds) {
@@ -155,7 +156,7 @@ public class AdDao {
             queryString.append(
                     "(Select * FROM Ad WHERE (title_tokens || ' ' || description_tokens) @@ to_tsquery('english', :title" + i + ") " +
                     "OR category_id = :categoryId" + i + " " +
-                    "LIMIT 3)"
+                    "LIMIT 7)"
             );
         }
 
@@ -224,6 +225,14 @@ public class AdDao {
     }
 
     // TODO FINISH
-    public void updateAdView(UUID id, UUID adId) {
+    public void updateAdView(UUID userId, UUID adId) {
+        entityManager.createQuery(
+                "UPDATE UserActivity ua SET ua.timestamp = :now " +
+                        "where ua.user.id = :userId AND ua.ad.id = :adId"
+                )
+                .setParameter("now", LocalDateTime.now())
+                .setParameter("userId", userId)
+                .setParameter("adId", adId)
+                .executeUpdate();
     }
 }

@@ -15,7 +15,7 @@ const Header = () => {
     return (
         <header className='header-container'>
             <Link to={"/"}>
-                <h1>Bargain Bay</h1>
+                <h1>Bargain-Bay</h1>
             </Link>
             
             

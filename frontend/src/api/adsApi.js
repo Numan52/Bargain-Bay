@@ -70,7 +70,7 @@ function getAdsByCategory(categoryId, offset, limit) {
 
 
 
-function markAdSeenByUser(adId) {
+function updateUserActivity(adId) {
     return makeApiRequest({
         endpoint: `/ads/${adId}/user-views`,
         method: "PATCH",
@@ -79,7 +79,7 @@ function markAdSeenByUser(adId) {
 }
 
 
-function markAdSeenByGuest(adId) {
+function updateGuestActivity(adId) {
     return makeApiRequest({
         endpoint: `/ads/${adId}/guest-views`,
         method: "PATCH",
@@ -96,7 +96,7 @@ function getAdCategories() {
 
 export {
     getAd, getAds, getFreshAds, postAd, getPersonalizedAds, getTrendingAds,
-    markAdSeenByGuest, markAdSeenByUser, getAdsByQuery, getAdsByCategory, getAdCategories
+    updateGuestActivity, updateUserActivity, getAdsByQuery, getAdsByCategory, getAdCategories
 }
 
 
