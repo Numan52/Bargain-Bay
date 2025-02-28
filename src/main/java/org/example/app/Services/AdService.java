@@ -112,7 +112,9 @@ public class AdService {
         Ad ad = adDao.getAd(adId);
 
         boolean hasSeenAd = adDao.checkIfUserSeen(user.getId(), adId);
-        if (!hasSeenAd) {
+        if (hasSeenAd) {
+            adDao.updateAdView(user.getId(), adId);
+        } else {
             adDao.saveAdView(new UserActivity(user, ad, null));
             adDao.updateViewsCount(adId);
         }

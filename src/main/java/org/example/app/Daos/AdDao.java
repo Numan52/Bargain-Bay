@@ -223,5 +223,7 @@ public class AdDao {
         entityManager.persist(userActivity);
     }
 
-
+    // TODO FINISH
+    public void updateAdView(UUID id, UUID adId) {
+    }
 }

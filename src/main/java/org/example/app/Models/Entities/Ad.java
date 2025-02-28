@@ -24,7 +24,7 @@ public class Ad {
     @Column(nullable = false)
     private float price;
 
-    // TODO: check for errors regarding length
+
     @Column(nullable = false, length = 1000)
     private String description;
 

@@ -86,7 +86,7 @@ public class AdController {
         }
     }
 
-    // TODO: FIX MAXIMUM SIZE EXCEEDED ERROR
+
     @PostMapping(path = "/ads", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> postAd(@RequestPart("ad") CreateAdDto createAdDto,
                                     @RequestPart(value = "images", required = false) List<MultipartFile> images,

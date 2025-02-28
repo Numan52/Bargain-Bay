@@ -29,3 +29,13 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+       creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
+    - name: deploy to Azure Spring Apps using Maven
+      run: |
+         mvn azure-spring-apps:deploy
