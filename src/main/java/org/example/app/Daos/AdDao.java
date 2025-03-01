@@ -224,7 +224,7 @@ public class AdDao {
         entityManager.persist(userActivity);
     }
 
-    // TODO FINISH
+
     public void updateAdView(UUID userId, UUID adId) {
         entityManager.createQuery(
                 "UPDATE UserActivity ua SET ua.timestamp = :now " +
