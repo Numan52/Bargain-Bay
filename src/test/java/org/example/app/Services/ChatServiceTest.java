@@ -61,7 +61,7 @@ public class ChatServiceTest {
 
 
     @Test
-    void CreatesChatIfFirstMessage() {
+    void createsChatIfFirstMessage() {
         UUID senderId = UUID.randomUUID();
         UUID receiverId = UUID.randomUUID();
         User sender = userOne;
