@@ -2,7 +2,7 @@
 
 ## 📌 Overview
 
-The Marketplace App is a modern web application that allows users to post/browse products and chat with other users. Built with Spring Boot (backend) and React (frontend), it offers a seamless experience for buyers and sellers.
+Bargain-Bay is a modern web application that allows users to post/browse products and chat with other users. Built with Spring Boot (backend) and React (frontend), it offers a seamless experience for buyers and sellers.
 
 ## 🚀 Features
 
