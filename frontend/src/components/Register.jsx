@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import "../css/register.css"
 import { registerUser } from "../api/userApi"
+import Header from './Header'
 const apiUrl = import.meta.env.VITE_API_URL
 
 const Register = () => {
@@ -33,7 +34,9 @@ const Register = () => {
   }
 
   return (
-    <div className='register-container'>
+    <>
+      <Header />
+      <div className='register-container'>
       
       <form onSubmit={handleRegister}>
         <div className='register-header'>Register</div>
@@ -116,6 +119,8 @@ const Register = () => {
         </div>
       }
     </div>
+    </>
+    
   )
 }
 

@@ -80,7 +80,7 @@ const Dashboard = () => {
 
 
   return (
-    <div>
+    <div className='dashboard__container'>
       <Header />
       
       <div className='dashboard'>

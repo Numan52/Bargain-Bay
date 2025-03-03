@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import "../css/login.css"
 import PropTypes from 'prop-types';
 import { loginUser } from '../api/userApi';
+import Header from './Header';
 const apiUrl = import.meta.env.VITE_API_URL
 
 const Login = ({setToken, jwtMessage}) => {
@@ -27,7 +28,9 @@ const Login = ({setToken, jwtMessage}) => {
   }
 
   return (
-    <div className='login-container'>
+    <>
+      <Header />
+      <div className='login-container'>
       
       <form onSubmit={handleLogin}>
         <div className='login-header'>Login</div>
@@ -71,6 +74,8 @@ const Login = ({setToken, jwtMessage}) => {
         </div>
       }
     </div>
+    </>
+    
   )
 }
 

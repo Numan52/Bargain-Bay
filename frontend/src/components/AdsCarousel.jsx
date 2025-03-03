@@ -9,7 +9,7 @@ const AdsCarousel = ({ads, header, loading}) => {
   
   
   function scrollCarousel(direction) {
-    const scrollAmount = 400
+    const scrollAmount = 300
     adsCarouselRef.current.scrollBy({
       left: direction === "left" ? -scrollAmount : scrollAmount,
       behaviour: "smooth"
@@ -35,7 +35,7 @@ const AdsCarousel = ({ads, header, loading}) => {
             wrapperClass=""
         /> :
         <div className='ads-section__container' >
-          <button className='ads-section__arrow' onClick={() => scrollCarousel("left")}>
+          <button className='ads-section__arrow mobile' onClick={() => scrollCarousel("left")}>
             <FaChevronLeft size={24}/>
           </button>
           
@@ -51,7 +51,7 @@ const AdsCarousel = ({ads, header, loading}) => {
             )}
           </div>
 
-          <button className='ads-section__arrow' onClick={() => scrollCarousel("right")}>
+          <button className='ads-section__arrow mobile' onClick={() => scrollCarousel("right")}>
             <FaChevronRight size={24}/>
           </button>
         </div>

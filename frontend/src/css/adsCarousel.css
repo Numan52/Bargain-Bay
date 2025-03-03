@@ -60,3 +60,10 @@
 .ads__section__header {
     margin-bottom: 0;
 }
+
+
+@media (max-width:499px) {
+    .mobile {
+        display: none;
+    }
+}

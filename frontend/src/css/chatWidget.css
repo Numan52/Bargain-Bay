@@ -130,3 +130,12 @@
     align-self: flex-start;
   }
   
+
+  @media (max-width: 1000px) {
+    .chat-container {
+      position: static;
+      
+    }
+  
+    
+  }

@@ -8,7 +8,7 @@
     flex-direction: column;
     
     width: 40vw;
-    
+    min-width: 600px;
 }
 
 
@@ -77,4 +77,40 @@
 
 .search-result-ads__ad-info {
     
+}
+
+
+
+@media (max-width:690px) {
+    
+    .container {
+        width: 95%;
+        margin: auto;
+    }
+
+    .search-results__container {
+        margin: 0 10px;
+    }
+
+
+    .search-result-ads__ad-container {
+        height: 250px;
+        gap: 10px;
+    
+    }
+
+
+    .search-result-ads__ads-container {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .search-result-ads__image-container {
+        width: 40%;
+        min-width: 0px;
+    }
+
+    .search-result-ads__ad-info {
+        width: 60%;
+    }
 }

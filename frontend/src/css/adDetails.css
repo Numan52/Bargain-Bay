@@ -11,6 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 50%;
+    min-width: 700px;
 }
 
 
@@ -113,7 +114,7 @@ body {
 
 
 .details__ad-current-image-container img {
-    width: 100%;
+    width: 400px;
     height: 400px;
     object-fit: contain;
 }
@@ -144,6 +145,7 @@ body {
     border-radius: 5px;
     width: 200px;
     cursor: pointer;
+    font-size: 1rem;
 }
 
 
@@ -153,3 +155,32 @@ body {
 }
 
 
+@media (max-width:700px) {
+    .details__ad-overview-container {
+        flex-direction: column;
+        
+    }
+
+    .details__ad-current-image-container img {
+        width: 100%;
+        
+    }
+
+    .details__ad-container {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .details__ad-images-container {
+        width: 100%;
+    }
+
+    .details__chat-container textarea {
+        width: 90%;
+        font-size: 1rem;
+    }
+
+    .details__container {
+        margin: 20px 10px;
+    }
+}

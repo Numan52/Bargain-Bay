@@ -210,9 +210,9 @@ const AdDetails = () => {
 
         </div>
 
-        <div className='details__similar-ads-container'>
+        {/* <div className='details__similar-ads-container'>
           Similar ads ..
-        </div>
+        </div> */}
       </div>
       }
       

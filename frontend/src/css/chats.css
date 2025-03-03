@@ -8,7 +8,7 @@
     display: flex;
     gap: 30px;
     height: 80vh;
-    width: 70vw;
+    
 }
 
 
@@ -81,6 +81,7 @@
     display: flex;
     gap: 20px;
     align-items: center;
+    margin-top: 20px;
 }
 
 
@@ -126,6 +127,7 @@
     padding: 10px;
     flex-grow: 1;
     overflow-y: auto;
+    background-color: rgba(170, 170, 170, 0.171);
 }
 
 
@@ -156,7 +158,7 @@
 .chats__messages-area-container {
    display: flex;
    flex-direction: column;
-   gap: 20px;
+   
    width: 50vw;
    min-width: 400px;
    flex: 3;
@@ -196,9 +198,50 @@
     color: rgb(236, 3, 3);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 60%;
+    text-align: center;
 }
 
 
 .chats__ad-info-title {
     text-decoration: underline;
+}
+
+
+.chats__selected-user-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: blue;
+}
+
+.chats__selected-user-container img {
+    width: 50px;
+}
+
+@media (max-width:850px) {
+    .chats__hidden {
+        display: none;
+    }
+    
+
+    .messages-content-container {
+        width: 100%;
+    }
+
+    .chats__messages-area-container {
+        width: 90%;
+    }
+
+    .chats__container {
+        margin: 10px;
+    }
+
+    .chats__send-message-container {
+        width: 99%;
+        
+    }
+
+    .chat-container {
+        
+    }
 }

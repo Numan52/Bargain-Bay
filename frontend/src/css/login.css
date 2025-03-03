@@ -8,10 +8,11 @@ html, body, #root {
 
 .login-container {
     display: flex;
-    margin: 100px auto;
+    margin: 50px auto;
     background-color: #d3d3d38c;
     padding: 30px;
-    width: 500px;
+    width: 80%;
+    max-width: 600px;
     flex-direction: column;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);

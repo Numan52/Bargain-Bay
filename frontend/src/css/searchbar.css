@@ -53,3 +53,16 @@
     border-bottom-right-radius: 5px;
     height: 100%;
 }
+
+
+@media (max-width:600px) {
+    .searchbar__container {
+        width: 100%;
+    }
+
+
+    .searchbar__searchbar-container {
+        width: 80%;
+    }
+
+}

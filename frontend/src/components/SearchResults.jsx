@@ -100,7 +100,7 @@ const SearchResults = ({query, currentPage, categoryId, category}) => {
 
     
     return (
-    <div>
+    <div className='container'>
       <Header />
       <div className='search-results__container'>
         <Searchbar onSearch={(input) => handleSearch(input)}/>

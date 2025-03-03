@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { UserContext } from '../Context/UserContext'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getAllContacts, getChatMessages, markChatAsSeen } from "../api/chatsApi"
@@ -7,6 +7,7 @@ import Header from './Header'
 import { WebSocketContext } from '../Context/WebSocketContext'
 import { formatDateTime, DateToTime } from '../util.js/dateUtils'
 import AiChatWidget from './AiChatWidget'
+import Separator from './Separator'
 // import { RotatingLines } from 'react-loader-spinner'
 
 
@@ -22,9 +23,14 @@ const Chats = () => {
   const chatRef = useRef(null)
   const [inputText, setInputText] = useState("")
   const [loading, setLoading] = useState(false);
-
+  const isChatOpen = selectedChatId !== null // for mobile
   const textareaRef = useRef(null)
   
+  const selectedContact = useMemo(() => {
+    return allContacts.find(contact => selectedChatId === contact.chatId)
+  }, [selectedChatId, allContacts]) 
+
+  console.log(selectedContact)
   const navigate = useNavigate()
 
   console.log("all contacts: ", allContacts)
@@ -41,8 +47,11 @@ const Chats = () => {
             if (chatId) {
               handleContactSelection(chatId, true)
             } else {
-              handleContactSelection(json[0].chatId, true)
+              setSelectedChatId(null)
             }
+            // else {
+            //   handleContactSelection(json[0].chatId, true)
+            // }
           }
       } catch (error) {
           console.log(error)
@@ -59,12 +68,15 @@ const Chats = () => {
     setInputText(e.target.value)
 
     textareaRef.current.style.height = 'auto'; // Reset height to auto
-    textareaRef.current.style.height = `${textareaRef.current.scrollHeight - 20}px`; // Set height to the scroll height
+    textareaRef.current.style.height = `${textareaRef.current?.scrollHeight - 20}px`; // Set height to the scroll height
   }
 
 
   useEffect(() => {
-    scrollToBottom()
+    if (textareaRef.current) {
+      scrollToBottom()
+    }
+    
   }, [chatMessages])
    
 
@@ -124,7 +136,7 @@ const Chats = () => {
 
 
   function scrollToBottom() {
-    chatRef.current.scrollTop = chatRef.current.scrollHeight
+    chatRef.current.scrollTop = chatRef.current?.scrollHeight
   }
 
 
@@ -222,7 +234,7 @@ const Chats = () => {
               }
 
             
-            <div className='messages-contacts-container'>
+            <div className={`messages-contacts-container ${isChatOpen ? 'chats__hidden' : ''}`}>
               
               {allContacts.map((contact) => (
                 <div key={contact.chatId} className='chats__contact-container' onClick={() => handleContactSelection(contact.chatId, false)}>
@@ -262,34 +274,49 @@ const Chats = () => {
               
             </div>
 
-            <div className='chats__messages-area-container'>
-              <div className='chats__messages-container' ref={chatRef}>
-                {renderMessages()}
-              </div>
 
-              {selectedChatId  &&
-                  <div className='chats__send-message-container'>
-                      <textarea 
-                          ref={textareaRef} 
-                          placeholder="Type a message"
-                          rows={1}
-                          value={inputText}
-                          onChange={(e) => handleMsgInput(e)}
-                      >
-
-                  </textarea>
-                      <img src="/send.png" alt="" onClick={sendMessage}/>
+            {selectedChatId && 
+               <div className={`chats__messages-area-container ${isChatOpen ? '' : 'chats__hidden'}`}>
+                  <div className='chats__selected-user-container'>
+                    <img src="/user.png" alt="" />
+                    {selectedContact?.username}
                   </div>
-              }
-            </div>
+                  <Separator />
+
+                  <div className='chats__messages-container' ref={chatRef}>
+                    {renderMessages()}
+                  </div>
+ 
+               
+                   <div className='chats__send-message-container'>
+                      <textarea 
+                           ref={textareaRef} 
+                           placeholder="Type a message"
+                           rows={1}
+                           value={inputText}
+                           onChange={(e) => handleMsgInput(e)}
+                       >
+ 
+                      </textarea>
+                      
+                      <img src="/send.png" alt="" onClick={sendMessage}/>
+
+                      <div className='chats__ai-container'>
+                        <AiChatWidget />
+                      </div>
+                   </div>
+
+
+               
+             </div>
+            }
+           
             
 
             
           </div>
 
-          <div className='chats__ai-container'>
-            <AiChatWidget />
-          </div>
+          
         </div>
 
         

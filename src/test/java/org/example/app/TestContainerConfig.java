@@ -14,8 +14,8 @@ public class TestContainerConfig {
         PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
                 .withDatabaseName("testdb")
                 .withUsername("testuser")
-                .withPassword("testpass")
-                .withInitScript("testData.sql");
+                .withPassword("testpass");
+//                .withInitScript("testData.sql")
         postgres.start();
         return postgres;
     }

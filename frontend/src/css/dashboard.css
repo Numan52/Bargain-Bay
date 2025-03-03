@@ -14,3 +14,58 @@ body {
 }
 
 
+@media (max-width:600px) {
+    .dashboard {
+        width: 95%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        margin: 10px;
+    }
+
+    .dashboard__ads-container{
+        width: 100%;
+    }
+
+    .dashboard__container {
+        
+    }
+
+
+    .categories__container {
+        width: 95%;
+    }
+
+}
+
+
+@media (max-width:1000px) {
+    .dashboard {
+        width: 95%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        margin: 10px;
+    }
+
+    .dashboard__ads-container{
+        width: 100%;
+    }
+
+    .dashboard__container {
+        
+    }
+
+
+    .categories__container {
+        width: 95%;
+    }
+
+   
+
+   
+
+}
+

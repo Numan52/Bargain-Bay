@@ -4,6 +4,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 
 public class PasswordEncoder {
@@ -25,5 +26,9 @@ public class PasswordEncoder {
 
         byte[] hash = factory.generateSecret(spec).getEncoded();
         return new String[] {Base64.getEncoder().encodeToString(salt), Base64.getEncoder().encodeToString(hash)};
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println(Arrays.toString(hashPassword("password", null)));
     }
 }
