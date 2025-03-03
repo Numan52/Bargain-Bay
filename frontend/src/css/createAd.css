@@ -69,6 +69,10 @@
 }
 
 
+.create-ad__success {
+    margin: 0 20px;
+}
+
 .submit-ad-btn:hover {
     background: #0056b3;
 }
@@ -80,7 +84,7 @@ div[errorMsg] {
     margin-top: 10px;
 }
 
-/* Responsive */
+
 @media (max-width: 600px) {
     form {
         width: 90%;

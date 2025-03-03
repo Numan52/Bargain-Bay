@@ -15,8 +15,11 @@ const CreateAdSuccess = () => {
   return (
     <div>
       <Header />
-      <h2>{`Your Ad "${location.state?.title}" was successfully posted!`}</h2>
-      <Link to={"/"}>Back to home</Link>
+      <div className='create-ad__success'>
+        <h2>{`Your Ad "${location.state?.title}" was successfully posted!`}</h2>
+        <Link to={"/"}>Back to home</Link>
+      </div>
+      
     </div>
   )
 }
