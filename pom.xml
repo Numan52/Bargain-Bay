@@ -135,14 +135,14 @@
                 <artifactId>azure-spring-apps-maven-plugin</artifactId>
                 <version>1.18.0</version>
                 <configuration>
-                    <subscriptionId>49b5bfd0-c8ed-426d-8587-27e9554339d9</subscriptionId>
-                    <resourceGroup>marketplace</resourceGroup>
-                    <clusterName>marketplace</clusterName>
-                    <appName>marketplace</appName>
+                    <subscriptionId>e2c61202-05e3-451d-a4ec-3d5dd6742308</subscriptionId>
+                    <resourceGroup>test</resourceGroup>
+                    <clusterName>spring-apps-numan</clusterName>
+                    <appName>bargain-bay</appName>
                     <isPublic>true</isPublic>
                     <deployment>
-                        <cpu>1</cpu>
-                        <memoryInGB>1</memoryInGB>
+                        <cpu>0.5</cpu>
+                        <memoryInGB>0.5</memoryInGB>
                         <instanceCount>1</instanceCount>
                         <runtimeVersion>Java 17</runtimeVersion>
                         <resources>
